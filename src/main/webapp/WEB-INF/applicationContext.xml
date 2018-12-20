@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+      
+    <import resource="datasources-config.xml" />
+    <import resource="mongoAppContext.xml" />
+    
+    <bean id="baseDao" class="com.olsa.bo.BaseDao" scope="singleton">
+		<property name="olsaJdbcTemplate">
+			<ref bean="olsaJdbcTemplate"/>
+		</property>
+	</bean>
+    
+    <bean id="olsaJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="olsaDataSource"/>
+		</property>
+		<!-- <property name="nativeJdbcExtractor">
+			<ref bean="nativeJdbcExtractor"/>
+		</property>  -->
+	</bean>
+	
+    <bean name="userProfileAction" class="com.olsa.action.UserProfileAction" scope="prototype">
+	<property name="userService">
+			<ref bean="userService" />
+		</property>
+	<property name="ritvikService">
+			<ref bean="ritvikService" />
+		</property>
+	</bean>
+	<bean name="braintreeGateway" class="com.braintreegateway.BraintreeGateway">
+		<!-- <constructor-arg value="Environment.SANDBOX"/> -->
+		<constructor-arg>
+			<value type="com.braintreegateway.Environment">SANDBOX</value>
+		</constructor-arg>
+		<constructor-arg value="ty5m9dd9k9cgwrrf"/>
+		<constructor-arg value="m8jx83zmf2d943pm"/>
+		<constructor-arg value="bdc8dfd06fbd183c304f45a1f2a00057"/>
+	</bean>
+	 <bean name="checkoutAction" class="com.olsa.action.CheckoutAction">
+		<property name="paymentServic" ref="paymentService"></property>
+	</bean> 
+	
+	<bean name="paymentService" class="com.olsa.services.PaymentServiceImpl">
+		<property name="gateway" ref="braintreeGateway"></property>
+		<property name="paymentCard" ref="paymentCardDao"></property>
+	</bean>
+	
+	
+	<bean name="ishtAction" class="com.olsa.action.IshtAction" scope="prototype">
+		<property name="userService">
+			<ref bean="userService" />
+		</property>
+		<property name="ishtService">
+			<ref bean="ishtService" />
+		</property>
+	</bean>
+
+	<bean name="flexAction" class="com.example.FlexAction" scope="prototype">
+	<property name="userService">
+			<ref bean="userService" />
+		</property>
+	</bean>
+	
+	
+	<bean name="userService" class="com.olsa.services.UserServiceImpl" scope="prototype">
+		<property name="userDao">
+			<ref bean="userDao"/>
+		</property>
+		
+		<property name="MongoBaseDao">
+			<ref bean="mongoBaseDao"/>
+		</property>
+		
+		<property name="UserProfileMDBDao">
+			<ref bean="userProfileMDBDao"/>
+		</property>
+		
+	</bean>
+
+	<bean name="ishtService" class="com.olsa.services.IshtServiceImpl" scope="prototype">
+		<property name="MongoBaseDao">
+			<ref bean="mongoBaseDao"/>
+		</property>
+		
+		<property name="UserProfileMDBDao">
+			<ref bean="userProfileMDBDao"/>
+		</property>
+		
+		<property name="IshtMDBDao">
+			<ref bean="ishtMDBDao"/>
+		</property>
+		
+	</bean>
+
+	<bean name="ritvikService" class="com.olsa.services.RitvikServiceImpl" scope="prototype">
+		<property name="MongoBaseDao">
+			<ref bean="mongoBaseDao"/>
+		</property>
+		
+		<property name="RitvikMDBDao">
+			<ref bean="ritvikMDBDao"/>
+		</property>
+		
+	</bean>
+	<bean name="paymentCardDao" parent="mongoBaseDao" class="com.olsa.bo.PaymentCardDaoImpl">
+		<property name="mongoClient" value="#{osMongoClient.mongoClient}"/>	
+	</bean>
+	<bean name="userDao" parent="baseDao" class="com.olsa.bo.UserDao" scope="prototype" />
+	
+	<bean name="userProfileMDBDao" parent="mongoBaseDao" class="com.olsa.bo.UserProfileMDBDao" scope="prototype" />
+	<bean name="ishtMDBDao" parent="mongoBaseDao" class="com.olsa.bo.IshtMDBDao" scope="prototype" />
+	<bean name="ritvikMDBDao" parent="mongoBaseDao" class="com.olsa.bo.RitvikMDBDao" scope="prototype" />
+		
+	<bean name="user" class="com.olsa.pojo" scope="prototype"/>
+
+	<bean name="contextApplicationContextProvider" class="com.olsa.utility.ApplicationContextProvider" />
+	
+	<bean id="mongoBaseDao" parent="baseDao" class="com.olsa.bo.MongoBaseDao" scope="singleton">
+		<property name="mongoClient" value="#{osMongoClient.mongoClient}"/>		
+		<property name="mongoDbName" value="#{osMongoClient.mongoDbName}"/>			
+	</bean>
+	<context:component-scan base-package="com.olsa.payment"/>
+</beans>
