@@ -109,7 +109,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
  		   var contextPath = "addPrimaryUser.do"+"?primaryUserDetails="+ JSON.stringify(primaryUserDetails)+"&applicationFlow="+applicationFlow;
 				$http({
 					 method : "POST",
-					 url : contextPath
+					 url : contextPath,
+					 
+				
 				 }).then(function mySucces(data) {
 					 var returnObject = eval(data); // Parse Return Data
 					 if(returnObject.data.returnCode=='error') {

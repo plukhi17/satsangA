@@ -429,3 +429,549 @@ function cardNameChacking(num) {
 	}
 	
 }
+
+
+
+
+(function() {
+	var courseApp = angular.module("ishtApp", [ "xeditable" ]);
+	courseApp
+			.controller(
+					'ishtCtrl',
+					[
+							'$scope',
+							'$http',
+							'$filter',
+							function($scope, $http, $filter,$compile) {
+								$scope.spinerFlag=false;
+								
+								/* 
+								$scope.afterTransactionSuccess=function(id){
+									var contextPath = "transactionsuccess.do";
+									$http({
+										 method : "POST",
+										 url : contextPath,
+										 data:{
+											 	"transactionId":id
+											 },
+										 headers: {'Content-Type': 'application/json'}
+									}).then(function mySucces(data) {
+										 window.location = 'ishtpayconfirm.jsp';
+									},function myError(d) {
+										 console.log("Error:    "+d);
+										 alert("fail");
+										 $scope.spinerFlag=false;
+									 });	 
+								} */
+								$scope.selPmtMethod="AUTO";
+								$scope.paymentFun=function(){
+									removePNode();
+									var res=paymentIstarghya();
+									if(res.toString()=='false'){
+										alert("Fill this required field.");
+									}else{
+										$scope.spinerFlag=true;
+										var contextPath = "transactions.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "amount":document.getElementById("GTotalPre").value,
+												 "familyCode":document.getElementById("familyCode").value,
+												 "contact":document.getElementById("contact").value,
+												 "cardNumber":$scope.cardNumberText,
+												 "expirationDate":$scope.expirationDateText,
+												 "cvv":$scope.cvvText
+											 },
+											 headers: {'Content-Type': 'application/json'}
+											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+										 }).then(function mySucces(data) {
+											 $scope.spinerFlag=false;
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  
+											  	if(obj.status.toString()=="false"){
+											  		var node = document.createElement("P");
+											  		var failedTxt = document.createTextNode("Failed transaction");
+										  			node.appendChild(failedTxt); 
+											  		for(var i=0;i<obj.errorValidations.length;i++){
+											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+											  		    node.appendChild(textnode);
+											  			node.style.color = "red";
+											  			node.style.margin="22px";
+											  		    document.getElementById("paymentResponse").appendChild(node);
+											  		  $scope.spinerFlag=false;
+											  		  
+											  		}
+											  	}else{
+											  		/* var node = document.createElement("P");
+											  		var seccussTxt = document.createTextNode("Transaction ");
+										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
+										  			
+										  		    node.appendChild(seccussTxt); 
+										  		 	node.appendChild(textnode);
+										  		  
+										  			node.style.color = "green";
+										  			node.style.margin="22px";
+										  		    document.getElementById("paymentResponse").appendChild(node); */
+											  		
+										  		  $scope.spinerFlag=false;
+										  		//$scope.afterTransactionSuccess(obj.trasactionId);
+										  		 
+										  		sessionStorage.setItem("transactionId", obj.trasactionId);
+										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
+										  		//alert(sessionStorage.getItem("transactionId"));
+										  		window.location = 'ishtpayconfirm.jsp';
+											  	}
+											  $scope.spinerFlag=false;
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+											 alert("fail");
+											 $scope.spinerFlag=false;
+										 });
+									}
+								};
+								
+								
+								function removePNode(){
+									var length = document.getElementById("paymentResponse").childElementCount;
+									var childNodeEle = document.getElementById("paymentResponse");   
+									for(var i=0; i<length;i++){
+										childNodeEle.removeChild(childNodeEle.childNodes[i]);
+									}
+								}
+								$scope.addCard=function(){
+									removePNode();
+									var res=paymentIstarghya();
+									if(res.toString()=='false'){
+										alert("Fill this required field.");
+									}else{
+										var contextPath = "addcards.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "familyCode":document.getElementById("familyCode").value,
+												 "contact":document.getElementById("contact").value,
+												 "cardNumber":$scope.cardNumberText,
+												 "expirationDate":$scope.expirationDateText,
+												 "cvv":$scope.cvvText
+											 },
+											 headers: {'Content-Type': 'application/json'}
+										 }).then(function mySucces(data) {
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  var node = document.createElement("P");
+									  		   var textnode = document.createTextNode(obj.responseMsg);
+									  		    node.appendChild(textnode);
+									  			node.style.color = "green";
+									  			node.style.margin="20px";
+									  		    document.getElementById("paymentResponse").appendChild(node);
+											  
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+										 });
+									}//else
+								}//addCard
+								
+								$scope.viewCard=function(){
+									var removeTBody = document.getElementById("cardDetailsTBody");
+									removeTBody.innerHTML = "";
+										var contextPath = "viewCards.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "contact":document.getElementById("contact").value,
+											 },
+											 headers: {'Content-Type': 'application/json'}
+											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+										 }).then(function mySucces(data) {
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  var call = null;
+											  for(var i=0;i<obj.length;i++){
+												  call=
+													"<td scope='row'>"+obj[i].cardNumber +"</td>"+
+													"<td scope='row'>"+obj[i].expirationDate +"</td>"+
+													"<td scope='row'>"+obj[i].cvv +"</td>"+
+													"<td scope='row'><a  href="+obj[i].cardNumber+" class='btn btn-success' onclick='pay()'>Pay</a></td>"+
+													"<td scope='row'><a  href="+obj[i].cardNumber+" class='btn btn-danger'  data-ng-click='removeCard()'><i class='fa fa-trash-o'></i>&nbsp;Remove</a></td>";
+													
+												  $('#cardDetailsTBody').append('<tr align="center">' + call + '</tr>');
+												  call = null;
+											  }
+											  
+											$('.paymentForm').hide();
+											$('.cardDdetailsPage').show();
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+										 });
+								}//viewCard
+								
+								
+								$scope.changeMe= function(){
+									// alert('hello'+ $scope.selPmtMethod);
+								}
+								$(document)
+										.ready(
+												function() {
+													$("#submit_1").prop('disabled', true);
+													var istPhone = $(
+															'#phoneNo')
+															.val();
+													var applicationFlow = $(
+															'#txtApplicationFlow')
+															.val();
+													var contextPath = "getIshtJSONObject.do"
+															+ "?phoneNo="
+															+ istPhone
+															+ "&applicationFlow="
+															+ applicationFlow;
+													//var contextPath = "getIshtJSONObject.do"+"?phoneNo="+ istPhone;
+													$http({
+														method : "POST",
+														url : contextPath
+													})
+															.then(
+																	function mySucces(
+																			data) {
+																		var returnObject = eval(data); // Parse Return Data
+																		if (returnObject.data.returnCode == 'error') {
+																			$scope.PostDataResponse = returnObject.data.returnMessage;
+																		} else {
+																			$scope.ishtLine = returnObject.data.userJSONObject.line;
+																			var $table=$("#sum_table");
+																			//$table.bootstrapTable('load', returnObject.data.userJSONObject.line);
+																			$table.bootstrapTable('hideLoading');
+																			// $table.tableEditor();
+																		}
+																	},
+																	function myError(
+																			d) {
+																		alert("failed to get Inside");
+																	});
+												});
+
+								$(document)
+										.on(
+												'change',
+												'#sum_table tr:not(.totalCol) input:text',
+												function() {
+													var $table = $(this).closest('table');
+													var total = 0;
+													var thisNumber = $(this)
+															.attr('class')
+															.match(/(\d+)/)[1];
+													
+													var count = 1;
+													var mySelectOp = 0.00;
+													var mytextValue = 0.00;
+													var outVal = 0.00;
+													var queryArr = [];
+
+													$(this)
+															.closest('tr')
+															.find(
+																	".mySelectOp")
+															.each(
+																	function() {
+																		mySelectOp = this.value;
+																	});
+													$(this)
+															.closest('tr')
+															.find(
+																	".mytextValue")
+															.each(
+																	function() {
+																		mytextValue = this.value;
+																	});
+
+													$(this)
+															.closest('tr')
+															.find("input")
+															.each(
+																	function() {
+																		if (count > 3
+																				&& count < 13) {
+																			//queryArr.push(this.value);
+																			if (mySelectOp == "+") {
+																				outVal = parseFloat(this.value)
+																						+ parseFloat(mytextValue);
+																				$(
+																						this)
+																						.val(
+																								formatCurrency(outVal));
+																				outVal = 0.00;
+																			} else if (mySelectOp == "-") {
+																				outVal = parseFloat(this.value)
+																						- parseFloat(mytextValue);
+																				if (outVal < 0) {
+																					//alert(outVal);
+																					$(
+																							this)
+																							.val(
+																									formatCurrency(0.00));
+																				} else {
+																					$(
+																							this)
+																							.val(
+																									formatCurrency(outVal));
+																				}
+																				outVal = 0.00;
+																			} else if (mySelectOp == "*") {
+																				outVal = parseFloat(mytextValue)
+																						* parseFloat(this.value);
+																				$(
+																						this)
+																						.val(
+																								formatCurrency(outVal));
+																				outVal = 0.00;
+																			} else if (mySelectOp == "/") {
+																				outVal = parseFloat(this.value)
+																						/ parseFloat(mytextValue);
+																				$(
+																						this)
+																						.val(
+																								formatCurrency(outVal));
+																				outVal = 0.00;
+																			}
+																			count++;
+																		} else {
+																			count++;
+																		}
+																	});
+
+													/* var v= myOnFunction(queryArr);
+													alert(v); */
+
+													//alert('RowVal :'+$(this).attr('class').match(/(\d+)/)[1]);
+													$table
+															.find(
+																	'tr:not(.totalCol) .sum'
+																			+ thisNumber)
+															.each(
+																	function() {
+																		total += parseFloat(
+																				this.value)
+																				.toFixed(
+																						2);
+																	});
+													total = formatCurrency(total); //added b shyam
+
+													$table
+															.find(
+																	'.totalCol td:nth-child('
+																			+ thisNumber
+																			+ ')')
+															.html(total);
+
+												});
+
+								$(document).on('change', 'input', newSum);
+								function newSum() {
+									
+									var sum = 0;
+									var thisRow = $(this).closest('tr');
+									var total = 0;
+									var GrTotal = 0;
+									var count = 0;
+									var tempValue = 0;
+									$(thisRow)
+											.find("td:not(.total) input")
+											.each(
+													function() {
+														if (!isNaN(this.value)) {
+															$(this)
+																	.closest(
+																			'tr')
+																	.find(
+																			".mytextValue")
+																	.each(
+																			function() {
+																				tempValue = this.value;
+																			});
+															sum += parseFloat(parseFloat(
+																	Math
+																			.round(this.value * 100) / 100)
+																	.toFixed(
+																			2));
+														}
+													});
+
+									sum = formatCurrency(sum - tempValue); //added b shyam
+									$(thisRow).find(".total").html(sum);
+									$('.total')
+											.each(
+													function() {
+														GrTotal += parseFloat($(
+																this)
+																.html());
+														//alert('GrTotal :'+GrTotal);
+														//document.getElementById("GTotal").innerHTML = GrTotal;
+														$("#GTotal")
+																.val(
+																		GrTotal
+																				.toFixed(2));
+															if(GrTotal>=1){
+																$scope.ishtPayForm.$valid = true;
+																$scope.ishtPayForm.$invalid = false;
+																$("#submit_1").prop('disabled', false);
+															}else{
+																$scope.ishtPayForm.$valid = false;
+																$scope.ishtPayForm.$invalid = true;
+																$("#submit_1").prop('disabled', true);
+															}
+													
+
+													});
+								}
+
+								$scope.loadUser = function() {
+									var istPhone = $('#phoneNo').val();
+									var applicationFlow = $(
+											'#txtApplicationFlow').val();
+									var contextPath = "getIshtJSONObject.do"
+											+ "?phoneNo="
+											+ istPhone
+											+ "&applicationFlow="
+											+ applicationFlow;
+									$http({
+										method : "POST",
+										url : contextPath
+									})
+											.then(
+													function mySucces(data) {
+														var returnObject = eval(data); // Parse Return Data
+														alert(returnObject.data.returnCode);
+														if (returnObject.data.returnCode == 'error') {
+															$scope.PostDataResponse = returnObject.data.returnMessage;
+														} else {
+															$scope.ishtLine = returnObject.data.userJSONObject.line;
+														}
+													},
+													function myError(d) {
+														alert("failed to load");
+													});
+								};
+							} ]);
+
+})();
+
+function CurrencyFormatted(amount, val) {
+	//alert('VAL:'+val);
+	var i = parseFloat(amount);
+	if (isNaN(i)) {
+		i = 0.00;
+	}
+	var minus = '';
+	if (i < 0) {
+		minus = '-';
+	}
+	i = Math.abs(i);
+	i = parseInt((i + .005) * 100);
+	i = i / 100;
+	s = new String(i);
+	if (s.indexOf('.') < 0) {
+		s += '.00';
+	}
+	if (s.indexOf('.') == (s.length - 2)) {
+		s += '0';
+	}
+	s = minus + s;
+	//document.getElementById("One").value=s;
+	document.getElementById(val).value = s;
+	
+	return s;
+}
+function formatCurrency(amount) {
+	var i = parseFloat(amount);
+	if (isNaN(i)) {
+		i = 0.00;
+	}
+	var minus = '';
+	if (i < 0) {
+		minus = '-';
+	}
+	i = Math.abs(i);
+	i = parseInt((i + .005) * 100);
+	i = i / 100;
+	s = new String(i);
+	if (s.indexOf('.') < 0) {
+		s += '.00';
+	}
+	if (s.indexOf('.') == (s.length - 2)) {
+		s += '0';
+	}
+	s = minus + s;
+	return s;
+}
+$(document).ready(function() {
+	//$("dtIshtDate").focus(function(){
+	$("dtChqDate").focus(function() {
+		//alert('Hi');
+		var dtToday = new Date();
+		var month = dtToday.getMonth() + 1;
+		var day = dtToday.getDate();
+		var year = dtToday.getFullYear();
+
+		if (month < 10)
+			month = '0' + month.toString();
+		if (day < 10)
+			day = '0' + day.toString();
+
+		var maxDate = year + '-' + month + '-' + day;
+		document.getElementById("dtChqDate").setAttribute("max", maxDate);
+		//$('#txtDate').attr('max', maxDate);
+	});
+
+	
+	
+
+		
+});
+
+
+
+	
+
+function checkDate() {
+	var selectedText = document.getElementById('dtChqDate').value;
+	var selectedDate = new Date(selectedText);
+
+   // alert("selectedDate :"+selectedDate);
+    
+	var selYear = selectedDate.getFullYear().toString();
+	var salMonth = (selectedDate.getMonth() + 101).toString().substring(1);
+	var salDay = (selectedDate.getDate() + 100).toString().substring(1);
+
+	//alert("selYear :"+selYear);
+	//alert("salMonth :"+salMonth);
+	//alert("salDay :"+salDay);
+	
+	var now = new Date();
+
+	var nowYear = now.getFullYear().toString();
+	var nowMonth = (now.getMonth() + 101).toString().substring(1);
+	var nowDay = (now.getDate() + 100).toString().substring(1);
+
+	//alert("nowYear :"+nowYear);
+	//alert("nowMonth :"+nowMonth);
+	//alert("nowDay :"+nowDay);
+	
+	if( (selYear>=nowYear)&&(salMonth>=nowMonth)&&(salDay>=nowDay) ){
+		alert("Transaction date should not be later than today's date.");
+		document.getElementById("dtChqDate").value = "DD-MM-YYYY";
+	}else{
+	
+	}
+	
+	/* var salactDate = Date.parse("" + salDay + "-" + salMonth + "-"
+			+ selYear + "");
+	var now = Date.parse("" + nowDay + "-" + nowMonth + "-" + nowYear + "");
+	//alert(salactDate+"                    "+now);
+	if (salactDate > now) {
+		alert("select valied date");
+		document.getElementById('dtChqDate').value = null;
+	} */
+} 

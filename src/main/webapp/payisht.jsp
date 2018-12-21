@@ -24,20 +24,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Satsang America - Istavrity</title>
 
-<script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script src="js/jquery.tabletojson.js"></script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
-<!-- jQuery Modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+
 <link
 	href="http://vitalets.github.io/angular-xeditable/dist/css/xeditable.css"
 	rel="stylesheet">
@@ -49,9 +51,16 @@
 <script src="js/lumino.glyphs.js"></script>
 <link href="css/styles.css" rel="stylesheet">
 <link href="css/apps.css" rel="stylesheet">
-<script src="js/jquery-2.1.4.js"></script>
-<script src="js/jquery.tabletojson.js"></script>
+
 <script src="js/operation.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.js"></script>
+
+<!-- Latest compiled and minified Locales -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <%
 
@@ -188,7 +197,7 @@ response.setDateHeader ("Expires", 0);
 		</div>
 		<div class="row">
 			<div id="dvErrAlert" class="alert alert-danger" style= "display:none">
-				<a class="close" href="#">×</a>
+				<a class="close" href="#">ï¿½</a>
 				<p><strong>{{PostDataResponse}}</strong> 
 			</div>
 			<div class="col-md-12">
@@ -229,7 +238,7 @@ response.setDateHeader ("Expires", 0);
 								</tbody>
 							</table>
 						</div>
-						<form name ="ishtPayForm" class="form-vertical">
+						<form name ="ishtPayForm" id="ishtPayForm" class="form-vertical">
 							<fieldset>
 								<div class="form-group ">
 									<div class="row">
@@ -241,31 +250,31 @@ response.setDateHeader ("Expires", 0);
 															<strong>Payment Method:</strong>
 														</td>
 														<td>
-															<select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" required>
-																<option ng-selected="selPmtMethod">AUTO</option>
-																<option>MANUAL</option> 
+															<select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" ng-change="changeMe()" required>
+																<option ng-selected="true" value="AUTO" >AUTO</option>
+																<option value="MANUAL" >MANUAL</option> 
 															</select>
 														</td>
 													</tr>
-													<tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td>
 															<strong>Bank Name</strong></td>
 														<td>
-															<input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" required>
+															<input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" ng-required="selPmtMethod == 'MANUAL'">
 														</td>
 													</tr>
-													<tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td>
 															<strong>Transaction Ref / Cheque No</strong>
 														</td>
 														<td>
 															<input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
-															class="form-control" ng-model = "stTrnNo" required>
+															class="form-control" ng-model = "stTrnNo" ng-required="selPmtMethod == 'MANUAL'">
 														</td>
 													</tr>
-													<tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td><strong>E-Transaction Date / Cheque Date:</strong></td>
-														<td><input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" required></td>
+														<td><input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" ng-required="selPmtMethod == 'MANUAL'"></td>
 													</tr>
 												</tbody>
 											</table>
@@ -311,9 +320,9 @@ response.setDateHeader ("Expires", 0);
 												</select>
 											</td>
 											
-											<td><input name="textValue" id="value{{$index}}" onblur="CurrencyFormatted(this.value,this.id)"  value="0.00" style="width:45px" onkeypress="getIdVal();" class="selecttextValue" /></td>
+											<!-- <td><input name="textValue" id="value{{$index}}" onblur="CurrencyFormatted(this.value,this.id)"  value="0.00" style="width:45px" onkeypress="getIdVal();" class="selecttextValue" /></td> -->
 											
-													
+											<td><input name="textValue" id="value{{$index}}" onblur="CurrencyFormatted(this.value,this.id)"  value="0.00" style="width:45px"  class="selecttextValue" /></td>	
 											<td><input name="swastyayani" id="S{{$index+1}}" onblur="CurrencyFormatted(this.value,this.id)"  value="{{ishtL.swastyayani | number:2}}"style="width:45px" class="sum1" /></td>
 											<td><input name = "istavrity" id="I{{$index+2}}" onblur="CurrencyFormatted(this.value,this.id)"  value= "{{ishtL.istavrity | number:2}}" style="width:45px" class="sum2" /></td>
 											<td><input name = "acharyavrity" id="A{{$index+3}}" onblur="CurrencyFormatted(this.value,this.id)" value= "{{ishtL.acharyavrity | number:2}}" style="width:45px" class="sum3" /></td>
@@ -342,7 +351,7 @@ response.setDateHeader ("Expires", 0);
 							</div>
 							<div class="form-group col-md-12">
                                  <input class="btn btn-primary" id = "submit_1" rel="modal:open" type="submit" ng-click="ishtPayForm.$valid && ishtPay($event)" 
-                                 value="Continue" ng-disabled="ishtPayForm.$invalid"  
+                                 value="Continue"   
                                  
                                  onclick="reviewForm()"
                                  />  
@@ -375,7 +384,7 @@ response.setDateHeader ("Expires", 0);
 		</div>
 		<div class="row">
 			<div id="dvErrAlert" class="alert alert-danger" style= "display:none">
-				<a class="close" href="#">×</a>
+				<a class="close" href="#">ï¿½</a>
 				<p><strong>{{PostDataResponse}}</strong> 
 			</div>
 			<div class="col-md-12">
@@ -413,7 +422,7 @@ response.setDateHeader ("Expires", 0);
 								</tbody>
 							</table>
 						</div>
-						<form name ="ishtPayForm" class="form-vertical">
+						<form name ="ishtPayForm1" class="form-vertical">
 							<fieldset>
 								<div class="form-group ">
 									<div class="row">
@@ -425,31 +434,39 @@ response.setDateHeader ("Expires", 0);
 															<strong>Payment Method:</strong>
 														</td>
 														<td>
-															 <select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" disabled required>
-																<option ng-selected="selPmtMethod">E-TRANSFER</option>
-																<option>CASH</option> 
-															</select>
+															<!--  <select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" disabled required>
+																<option ng-selected="selPmtMethod == 'AUTO'">E-TRANSFER</option>
+																<option ng-selected="selPmtMethod == 'MANUAL'">CASH</option> 
+															</select> -->
+															
+															{{selPmtMethod}}
 														</td>
 													</tr>
-													<tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td>
 															<strong>Bank Name</strong></td>
 														<td>
-															<input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required>
+															<!-- <input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required> -->
+															{{stBankName}}
 														</td>
 													</tr>
-													<tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td>
 															<strong>Transaction Ref / Cheque No</strong>
 														</td>
 														<td>
-															<input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
+															<!-- <input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
 															class="form-control" ng-model = "stTrnNo" required disabled>
+															 -->{{stTrnNo}}
 														</td>
 													</tr>
-													<tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td><strong>E-Transaction Date / Cheque Date:</strong></td>
-														<td><input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required></td>
+														<td><!-- <input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
+															 --> {{dtChqDate| date:'medium'}}
+														</td>
+													
+														
 													</tr>
 												</tbody>
 											</table>
@@ -519,7 +536,7 @@ response.setDateHeader ("Expires", 0);
 		</div>
 		<div class="row">
 			<div id="dvErrAlert" class="alert alert-danger" style="display: none">
-				<a class="close" href="#">×</a>
+				<a class="close" href="#">ï¿½</a>
 				<p>
 			</div>
 			<div class="col-md-12">
@@ -598,546 +615,6 @@ response.setDateHeader ("Expires", 0);
 
 	<% 	  System.out.println("1  phoneNo: "+root.getPhoneNo()); %>
 	
-<script>
-
-
-	(function() {
-		var courseApp = angular.module("ishtApp", [ "xeditable" ]);
-		courseApp
-				.controller(
-						'ishtCtrl',
-						[
-								'$scope',
-								'$http',
-								'$filter',
-								function($scope, $http, $filter,$compile) {
-									$scope.spinerFlag=false;
-									
-									/* 
-									$scope.afterTransactionSuccess=function(id){
-										var contextPath = "transactionsuccess.do";
-										$http({
-											 method : "POST",
-											 url : contextPath,
-											 data:{
-												 	"transactionId":id
-												 },
-											 headers: {'Content-Type': 'application/json'}
-										}).then(function mySucces(data) {
-											 window.location = 'ishtpayconfirm.jsp';
-										},function myError(d) {
-											 console.log("Error:    "+d);
-											 alert("fail");
-											 $scope.spinerFlag=false;
-										 });	 
-									} */
-									
-									$scope.paymentFun=function(){
-										removePNode();
-										var res=paymentIstarghya();
-										if(res.toString()=='false'){
-											alert("Fill this required field.");
-										}else{
-											$scope.spinerFlag=true;
-											var contextPath = "transactions.do";
-											$http({
-												 method : "POST",
-												 url : contextPath,
-												 data:{
-													 "amount":document.getElementById("GTotalPre").value,
-													 "familyCode":document.getElementById("familyCode").value,
-													 "contact":document.getElementById("contact").value,
-													 "cardNumber":$scope.cardNumberText,
-													 "expirationDate":$scope.expirationDateText,
-													 "cvv":$scope.cvvText
-												 },
-												 headers: {'Content-Type': 'application/json'}
-												 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-											 }).then(function mySucces(data) {
-												 $scope.spinerFlag=false;
-												  $scope.json = angular.toJson(data.data);
-												  var obj = JSON.parse($scope.json);
-												  
-												  	if(obj.status.toString()=="false"){
-												  		var node = document.createElement("P");
-												  		var failedTxt = document.createTextNode("Failed transaction");
-											  			node.appendChild(failedTxt); 
-												  		for(var i=0;i<obj.errorValidations.length;i++){
-												  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
-												  		    node.appendChild(textnode);
-												  			node.style.color = "red";
-												  			node.style.margin="22px";
-												  		    document.getElementById("paymentResponse").appendChild(node);
-												  		  $scope.spinerFlag=false;
-												  		  
-												  		}
-												  	}else{
-												  		/* var node = document.createElement("P");
-												  		var seccussTxt = document.createTextNode("Transaction ");
-											  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
-											  			
-											  		    node.appendChild(seccussTxt); 
-											  		 	node.appendChild(textnode);
-											  		  
-											  			node.style.color = "green";
-											  			node.style.margin="22px";
-											  		    document.getElementById("paymentResponse").appendChild(node); */
-												  		
-											  		  $scope.spinerFlag=false;
-											  		//$scope.afterTransactionSuccess(obj.trasactionId);
-											  		 
-											  		sessionStorage.setItem("transactionId", obj.trasactionId);
-											  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
-											  		//alert(sessionStorage.getItem("transactionId"));
-											  		window.location = 'ishtpayconfirm.jsp';
-												  	}
-												  $scope.spinerFlag=false;
-											 },function myError(d) {
-												 console.log("Error:    "+d);
-												 alert("fail");
-												 $scope.spinerFlag=false;
-											 });
-										}
-									};
-									
-									
-									function removePNode(){
-										var length = document.getElementById("paymentResponse").childElementCount;
-										var childNodeEle = document.getElementById("paymentResponse");   
-										for(var i=0; i<length;i++){
-											childNodeEle.removeChild(childNodeEle.childNodes[i]);
-										}
-									}
-									$scope.addCard=function(){
-										removePNode();
-										var res=paymentIstarghya();
-										if(res.toString()=='false'){
-											alert("Fill this required field.");
-										}else{
-											var contextPath = "addcards.do";
-											$http({
-												 method : "POST",
-												 url : contextPath,
-												 data:{
-													 "familyCode":document.getElementById("familyCode").value,
-													 "contact":document.getElementById("contact").value,
-													 "cardNumber":$scope.cardNumberText,
-													 "expirationDate":$scope.expirationDateText,
-													 "cvv":$scope.cvvText
-												 },
-												 headers: {'Content-Type': 'application/json'}
-											 }).then(function mySucces(data) {
-												  $scope.json = angular.toJson(data.data);
-												  var obj = JSON.parse($scope.json);
-												  var node = document.createElement("P");
-										  		   var textnode = document.createTextNode(obj.responseMsg);
-										  		    node.appendChild(textnode);
-										  			node.style.color = "green";
-										  			node.style.margin="20px";
-										  		    document.getElementById("paymentResponse").appendChild(node);
-												  
-											 },function myError(d) {
-												 console.log("Error:    "+d);
-											 });
-										}//else
-									}//addCard
-									
-									$scope.viewCard=function(){
-										var removeTBody = document.getElementById("cardDetailsTBody");
-										removeTBody.innerHTML = "";
-											var contextPath = "viewCards.do";
-											$http({
-												 method : "POST",
-												 url : contextPath,
-												 data:{
-													 "contact":document.getElementById("contact").value,
-												 },
-												 headers: {'Content-Type': 'application/json'}
-												 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-											 }).then(function mySucces(data) {
-												  $scope.json = angular.toJson(data.data);
-												  var obj = JSON.parse($scope.json);
-												  var call = null;
-												  for(var i=0;i<obj.length;i++){
-													  call=
-														"<td scope='row'>"+obj[i].cardNumber +"</td>"+
-														"<td scope='row'>"+obj[i].expirationDate +"</td>"+
-														"<td scope='row'>"+obj[i].cvv +"</td>"+
-														"<td scope='row'><a  href="+obj[i].cardNumber+" class='btn btn-success' onclick='pay()'>Pay</a></td>"+
-														"<td scope='row'><a  href="+obj[i].cardNumber+" class='btn btn-danger'  data-ng-click='removeCard()'><i class='fa fa-trash-o'></i>&nbsp;Remove</a></td>";
-														
-													  $('#cardDetailsTBody').append('<tr align="center">' + call + '</tr>');
-													  call = null;
-												  }
-												  
-												$('.paymentForm').hide();
-												$('.cardDdetailsPage').show();
-											 },function myError(d) {
-												 console.log("Error:    "+d);
-											 });
-									}//viewCard
-									
-									
-								
-									$(document)
-											.ready(
-													function() {
-														//alert('Hi Shyam 2');
-														var istPhone = $(
-																'#phoneNo')
-																.val();
-														var applicationFlow = $(
-																'#txtApplicationFlow')
-																.val();
-														var contextPath = "getIshtJSONObject.do"
-																+ "?phoneNo="
-																+ istPhone
-																+ "&applicationFlow="
-																+ applicationFlow;
-														//var contextPath = "getIshtJSONObject.do"+"?phoneNo="+ istPhone;
-														$http({
-															method : "POST",
-															url : contextPath
-														})
-																.then(
-																		function mySucces(
-																				data) {
-																			var returnObject = eval(data); // Parse Return Data
-																			if (returnObject.data.returnCode == 'error') {
-																				$scope.PostDataResponse = returnObject.data.returnMessage;
-																			} else {
-																				$scope.ishtLine = returnObject.data.userJSONObject.line;
-
-																				//$table.bootstrapTable('load', returnObject.data.userJSONObject.line);
-																				$table
-																						.bootstrapTable('hideLoading');
-																				$table
-																						.tableEditor();
-																			}
-																		},
-																		function myError(
-																				d) {
-																			alert("failed to get Inside");
-																		});
-													});
-
-									$(document)
-											.on(
-													'change',
-													'#sum_table tr:not(.totalCol) input:text',
-													function() {
-														var $table = $(this)
-																.closest(
-																		'table');
-														var total = 0;
-														var thisNumber = $(this)
-																.attr('class')
-																.match(/(\d+)/)[1];
-														var count = 1;
-														var mySelectOp = 0.00;
-														var mytextValue = 0.00;
-														var outVal = 0.00;
-														var queryArr = [];
-
-														$(this)
-																.closest('tr')
-																.find(
-																		".mySelectOp")
-																.each(
-																		function() {
-																			mySelectOp = this.value;
-																		});
-														$(this)
-																.closest('tr')
-																.find(
-																		".mytextValue")
-																.each(
-																		function() {
-																			mytextValue = this.value;
-																		});
-
-														$(this)
-																.closest('tr')
-																.find("input")
-																.each(
-																		function() {
-																			if (count > 3
-																					&& count < 13) {
-																				//queryArr.push(this.value);
-																				if (mySelectOp == "+") {
-																					outVal = parseFloat(this.value)
-																							+ parseFloat(mytextValue);
-																					$(
-																							this)
-																							.val(
-																									formatCurrency(outVal));
-																					outVal = 0.00;
-																				} else if (mySelectOp == "-") {
-																					outVal = parseFloat(this.value)
-																							- parseFloat(mytextValue);
-																					if (outVal < 0) {
-																						//alert(outVal);
-																						$(
-																								this)
-																								.val(
-																										formatCurrency(0.00));
-																					} else {
-																						$(
-																								this)
-																								.val(
-																										formatCurrency(outVal));
-																					}
-																					outVal = 0.00;
-																				} else if (mySelectOp == "*") {
-																					outVal = parseFloat(mytextValue)
-																							* parseFloat(this.value);
-																					$(
-																							this)
-																							.val(
-																									formatCurrency(outVal));
-																					outVal = 0.00;
-																				} else if (mySelectOp == "/") {
-																					outVal = parseFloat(this.value)
-																							/ parseFloat(mytextValue);
-																					$(
-																							this)
-																							.val(
-																									formatCurrency(outVal));
-																					outVal = 0.00;
-																				}
-																				count++;
-																			} else {
-																				count++;
-																			}
-																		});
-
-														/* var v= myOnFunction(queryArr);
-														alert(v); */
-
-														//alert('RowVal :'+$(this).attr('class').match(/(\d+)/)[1]);
-														$table
-																.find(
-																		'tr:not(.totalCol) .sum'
-																				+ thisNumber)
-																.each(
-																		function() {
-																			total += parseFloat(
-																					this.value)
-																					.toFixed(
-																							2);
-																		});
-														total = formatCurrency(total); //added b shyam
-
-														$table
-																.find(
-																		'.totalCol td:nth-child('
-																				+ thisNumber
-																				+ ')')
-																.html(total);
-
-													});
-
-									$(document).on('change', 'input', newSum);
-									function newSum() {
-										//alert('newSum')
-										var sum = 0;
-										var thisRow = $(this).closest('tr');
-										var total = 0;
-										var GrTotal = 0;
-										var count = 0;
-										var tempValue = 0;
-										$(thisRow)
-												.find("td:not(.total) input")
-												.each(
-														function() {
-															if (!isNaN(this.value)) {
-																$(this)
-																		.closest(
-																				'tr')
-																		.find(
-																				".mytextValue")
-																		.each(
-																				function() {
-																					tempValue = this.value;
-																				});
-																sum += parseFloat(parseFloat(
-																		Math
-																				.round(this.value * 100) / 100)
-																		.toFixed(
-																				2));
-															}
-														});
-
-										sum = formatCurrency(sum - tempValue); //added b shyam
-										$(thisRow).find(".total").html(sum);
-										$('.total')
-												.each(
-														function() {
-															GrTotal += parseFloat($(
-																	this)
-																	.html());
-															//alert('GrTotal :'+GrTotal);
-															//document.getElementById("GTotal").innerHTML = GrTotal;
-															$("#GTotal")
-																	.val(
-																			GrTotal
-																					.toFixed(2));
-
-														});
-									}
-
-									$scope.loadUser = function() {
-										var istPhone = $('#phoneNo').val();
-										var applicationFlow = $(
-												'#txtApplicationFlow').val();
-										var contextPath = "getIshtJSONObject.do"
-												+ "?phoneNo="
-												+ istPhone
-												+ "&applicationFlow="
-												+ applicationFlow;
-										$http({
-											method : "POST",
-											url : contextPath
-										})
-												.then(
-														function mySucces(data) {
-															var returnObject = eval(data); // Parse Return Data
-															alert(returnObject.data.returnCode);
-															if (returnObject.data.returnCode == 'error') {
-																$scope.PostDataResponse = returnObject.data.returnMessage;
-															} else {
-																$scope.ishtLine = returnObject.data.userJSONObject.line;
-															}
-														},
-														function myError(d) {
-															alert("failed to load");
-														});
-									};
-								} ]);
-
-	})();
-
-	function CurrencyFormatted(amount, val) {
-		//alert('VAL:'+val);
-		var i = parseFloat(amount);
-		if (isNaN(i)) {
-			i = 0.00;
-		}
-		var minus = '';
-		if (i < 0) {
-			minus = '-';
-		}
-		i = Math.abs(i);
-		i = parseInt((i + .005) * 100);
-		i = i / 100;
-		s = new String(i);
-		if (s.indexOf('.') < 0) {
-			s += '.00';
-		}
-		if (s.indexOf('.') == (s.length - 2)) {
-			s += '0';
-		}
-		s = minus + s;
-		//document.getElementById("One").value=s;
-		document.getElementById(val).value = s;
-		$scope.value = s;
-		return s;
-	}
-	function formatCurrency(amount) {
-		var i = parseFloat(amount);
-		if (isNaN(i)) {
-			i = 0.00;
-		}
-		var minus = '';
-		if (i < 0) {
-			minus = '-';
-		}
-		i = Math.abs(i);
-		i = parseInt((i + .005) * 100);
-		i = i / 100;
-		s = new String(i);
-		if (s.indexOf('.') < 0) {
-			s += '.00';
-		}
-		if (s.indexOf('.') == (s.length - 2)) {
-			s += '0';
-		}
-		s = minus + s;
-		return s;
-	}
-	$(document).ready(function() {
-		//$("dtIshtDate").focus(function(){
-		$("dtChqDate").focus(function() {
-			//alert('Hi');
-			var dtToday = new Date();
-			var month = dtToday.getMonth() + 1;
-			var day = dtToday.getDate();
-			var year = dtToday.getFullYear();
-
-			if (month < 10)
-				month = '0' + month.toString();
-			if (day < 10)
-				day = '0' + day.toString();
-
-			var maxDate = year + '-' + month + '-' + day;
-			document.getElementById("dtChqDate").setAttribute("max", maxDate);
-			//$('#txtDate').attr('max', maxDate);
-		});
-	
-		
-		
-	
-			
-	});
-
-	
-	
-		
-
-	function checkDate() {
-		var selectedText = document.getElementById('dtChqDate').value;
-		var selectedDate = new Date(selectedText);
-
-       // alert("selectedDate :"+selectedDate);
-        
-		var selYear = selectedDate.getFullYear().toString();
-		var salMonth = (selectedDate.getMonth() + 101).toString().substring(1);
-		var salDay = (selectedDate.getDate() + 100).toString().substring(1);
-
-		//alert("selYear :"+selYear);
-		//alert("salMonth :"+salMonth);
-		//alert("salDay :"+salDay);
-		
-		var now = new Date();
-
-		var nowYear = now.getFullYear().toString();
-		var nowMonth = (now.getMonth() + 101).toString().substring(1);
-		var nowDay = (now.getDate() + 100).toString().substring(1);
-
-		//alert("nowYear :"+nowYear);
-		//alert("nowMonth :"+nowMonth);
-		//alert("nowDay :"+nowDay);
-		
-		if( (selYear>=nowYear)&&(salMonth>=nowMonth)&&(salDay>=nowDay) ){
-			alert("Transaction date should not be later than today's date.");
-			document.getElementById("dtChqDate").value = "DD-MM-YYYY";
-		}else{
-		
-		}
-		
-		/* var salactDate = Date.parse("" + salDay + "-" + salMonth + "-"
-				+ selYear + "");
-		var now = Date.parse("" + nowDay + "-" + nowMonth + "-" + nowYear + "");
-		//alert(salactDate+"                    "+now);
-		if (salactDate > now) {
-			alert("select valied date");
-			document.getElementById('dtChqDate').value = null;
-		} */
-	} 
-</script>
-
-
-
 
 
 
