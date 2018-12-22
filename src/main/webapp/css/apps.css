@@ -99,7 +99,7 @@
 
 /* spiner  */
 .spinerClass {
-	    padding-block-end: 50%;
+	    padding-block-end: 38%;
     padding-top: 100px;
     width: 100%;
     height: 100%;
@@ -127,3 +127,10 @@
 
 
 
+.grand_sum_table{
+	
+	    width: 0px;
+    float: right;
+}
+	    
+}

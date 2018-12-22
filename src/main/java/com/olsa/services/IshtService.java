@@ -16,5 +16,6 @@ public interface IshtService {
 	ResultObject getIshtTranAdmin(String phoneNo);
 	String formatDate(String dateValue);
 	ResultObject getRootMDBObject(ResultObject resObj);
-	List<RootMDB> findReport(ReportDTO reportDTO);
+	List<IshtMDB> findReport(ReportDTO reportDTO);
+	
 }

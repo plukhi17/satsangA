@@ -67,14 +67,8 @@ public class CheckoutAction extends BaseAction {
 		manualPay.setAmount(obj.getString("amount"));
 		manualPay.setContact(obj.getString("contact"));
 		manualPay.setFamilyCode(obj.getString("familyCode"));
-		
-		
 		//PaymentUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentUtils.class);
-		
-		
 		PaymentResponseUtils paymentResponseUtils=paymentServic.transaction(manualPay);
-		
-		
 		writer.append(mapper.writeValueAsString(paymentResponseUtils));
 	}
 	

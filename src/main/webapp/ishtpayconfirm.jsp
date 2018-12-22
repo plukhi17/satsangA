@@ -25,6 +25,8 @@
 		<script src="js/html5shiv.js"></script>
 		<script src="js/respond.min.js"></script>
 	<![endif]-->
+	
+	
 </head>
 
 <%
@@ -180,28 +182,32 @@ response.setDateHeader ("Expires", 0);
 									</tr>
 									<tr>
 									<td>Receipt No</td>
-									<td><%-- <%= ishtPay.getReceiptNo()%> --%>
+									<td><%= ishtPay.getReceiptNo() %>
 										<p id="transactionIdSuccess" style="padding: 0"></p>
-										<script>
-										document.getElementById("transactionIdSuccess").innerHTML = sessionStorage.getItem("transactionId");
-										//alert(sessionStorage.getItem("transactionId"));
-										  //sessionStorage.setItem("transactionId", "");
-										  //alert(sessionStorage.getItem("transactionId"));
-										</script>
+										
 									 </td>
 									</tr>
 									<tr>
 										<td>Amount</td>
 										<td>
-											<p id="GradTotalAmount"></p>
-											<script type="text/javascript">
+											<p id="GradTotalAmount"> <%= ishtPay.getTotal() %></p>
+										<!-- 	<script type="text/javascript">
 											document.getElementById("GradTotalAmount").innerHTML = sessionStorage.getItem("GradTotalAmount");
-											</script>
+											</script> -->
 										</td>
 									</tr>
 							</tbody>
 						</table>
+							<div class="form-group col-md-12">
+														<input class="btn btn-primary" id="goPayHome" rel="modal:open" type="button"
+															value="Transactions"
+															onclick="goTOTransactionLIst()" />
+
+
+													</div>
 						</div>
+						
+												
 					</div>
 					
 					<div class="panel-footer">
@@ -239,6 +245,10 @@ response.setDateHeader ("Expires", 0);
 		$(window).on('resize', function () {
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		})
+		
+		function goTOTransactionLIst() {
+	 window.location = 'searchIsht.jsp';
+}
 	</script>
 </body>
 

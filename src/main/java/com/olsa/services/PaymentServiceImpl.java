@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -138,7 +139,8 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	
 				paymentResponseUtils.setResMessage("Success");
 				paymentResponseUtils.setStatus(true);
-				paymentResponseUtils.setTrasactionId("TOBESET");
+				String uniqueID = UUID.randomUUID().toString();
+				paymentResponseUtils.setTrasactionId(uniqueID);
 				paymentCard.transactionDetail(paymentUtils, paymentResponseUtils.getTrasactionId());
 				
 				logger.info("Transaction Successfully went through !! paymentResponseUtils Response :  "+paymentResponseUtils);

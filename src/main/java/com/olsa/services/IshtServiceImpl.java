@@ -125,8 +125,8 @@ public class IshtServiceImpl implements IshtService{
 	}
 
 	@Override
-	public List<RootMDB> findReport(ReportDTO reportDTO) {
-		List<RootMDB> reportRootMDB=new ArrayList<RootMDB>();
+	public List<IshtMDB> findReport(ReportDTO reportDTO) {
+		List<IshtMDB> reportRootMDB=new ArrayList<IshtMDB>();
 		
 		reportRootMDB=getIshtMDBDao().findReport(reportDTO);
 		

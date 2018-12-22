@@ -234,7 +234,12 @@ public class IshtMDBDao extends MongoBaseDao {
     	response.setSuccess(true);
     	IshtMDB ishtMDB = (IshtMDB)response.getObject1();
     	ishtMDB.setReceiptNo(getIshtSeqID());
-    	ishtMDB.setIssuedFlag("N");
+    	if(ishtMDB.getPaymentMethod()=="MANUAL") {
+    		ishtMDB.setIssuedFlag("N");
+    	}else {
+    		ishtMDB.setIssuedFlag("Y");
+    	}
+    	
     	ishtMDB.setActive("Y");
     	MongoCollection<IshtMDB > rootSubmit = getMongoClient().
 				getDatabase(getMongoDbName()).getCollection("Isht", IshtMDB.class);
@@ -258,12 +263,19 @@ public class IshtMDBDao extends MongoBaseDao {
     			while(cursor.hasNext()){
     				Document result = cursor.next();
     				IshtMDB ishtMDB = new IshtMDB();
-    				logger.info("Collected On : "+result.get("collectedOn").toString());
-    				ishtMDB.setCollectedOn(formatDate((result.get("collectedOn").toString())));
+    				if(result.get("collectedOn")!=null) {
+    					logger.info("Collected On : "+result.get("collectedOn").toString());
+        				ishtMDB.setCollectedOn(formatDate((result.get("collectedOn").toString())));
+        				
+    				}
+    				if(result.get("trnDetails")!=null) {
+        				ishtMDB.setTrnDetails(result.get("trnDetails").toString());
+        				ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString().toUpperCase());
+        				
+    				}
     				ishtMDB.setFamilyID(result.get("familyID").toString());
-    				ishtMDB.setTrnDetails(result.get("trnDetails").toString());
+
     				//ishtMDB.setChecqNo(result.get("checqNo").toString());
-    				ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString().toUpperCase());
     				ishtMDB.setTotal((Double) result.get("total"));
     				ishtMDB.setIssuedFlag(result.get("issuedFlag").toString());
     				ishtMDB.setReceiptNo(result.get("receiptNo").toString());
@@ -280,6 +292,7 @@ public class IshtMDBDao extends MongoBaseDao {
 
     	}
     	catch(Exception ex) {
+    		ex.printStackTrace();
     		logger.info("Exception in getIshtTranAdmin  :"+ex);
     	}
     	
@@ -289,7 +302,7 @@ public class IshtMDBDao extends MongoBaseDao {
     public ResultObject getIshtTranAdmin(ResultObject response){
     	
     	try {
-    		logger.info("Inside getIshtTranAdmin.. ishtMDBDao");
+    		logger.info("Inside Admin.. ishtMDBDao");
     		String phoneNo= (String)response.getObject1();
     		logger.info("Phone No :"+phoneNo);
 
@@ -422,22 +435,22 @@ public class IshtMDBDao extends MongoBaseDao {
     	return resObj;
     }
 
-	public List<RootMDB> findReport(ReportDTO reportDTO) {//personalId
+	public List<IshtMDB> findReport(ReportDTO reportDTO) {//personalId
 		logger.info("Inside find report ");
-		List<RootMDB> reportRoot = new ArrayList<RootMDB>();
-		FindIterable<RootMDB> findIterable = null;
+		List<IshtMDB> reportRoot = new ArrayList<IshtMDB>();
+		FindIterable<IshtMDB> findIterable = null;
 		try {
 			if (reportDTO.getFamilyCode() == null) {
-				findIterable = fetchRootCollection().find();
+				findIterable = fetchIshtCollection().find();
 			} else {
 				  BasicDBObject whereQuery = new BasicDBObject();
 				  whereQuery.put("familyID", reportDTO.getFamilyCode());
-				  findIterable=fetchRootCollection().find(whereQuery);
+				  findIterable=fetchIshtCollection().find(whereQuery);
 			}
-			for (RootMDB rootMDB : findIterable) {
-				rootMDB.setPassword("");
-				reportRoot.add(rootMDB);
-			}
+//			for (IshtMDB rootMDB : findIterable) {
+//				rootMDB.setPassword("");
+//				reportRoot.add(rootMDB);
+//			}
 
 		} catch (RuntimeException e) {
 			logger.error("Exception occure in iterate (copy");

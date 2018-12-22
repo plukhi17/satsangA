@@ -185,6 +185,7 @@ response.setDateHeader ("Expires", 0);
 	</div>
 	<!--/.sidebar-->
 
+<!-- depositForm start -->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main depositForm">
 		<div class="row">
 			<ol class="breadcrumb">
@@ -312,7 +313,7 @@ response.setDateHeader ("Expires", 0);
 											<td> <input name = "name" value = {{ishtL.name}} disabled style="width:120px" id="name{{$index+12}}"/></td>
 											
 											<td>
-												<select style="width:45px" class="mySelectOp "  id="my_select,{{$index}}" onchange="selectedOperatoins(this.id)">	
+												<select style="width:45px" class="mySelectOp" name="action" id="my_select,{{$index}}" onchange="selectedOperatoins(this.id)">	
 													<option value="+" style="font-size:24px" class="fa">&#xf067;</option>
 													<option value="-" style="font-size:24px" class="fa">&#xf068;</option>
 													<option value="*" style="font-size:24px" class="fa">&#xf069;</option>
@@ -338,19 +339,35 @@ response.setDateHeader ("Expires", 0);
 								</table>
 								<div class="form-group">
 									<div class="col-md-14">
-										<table id="sum_table"
-											class="table table-borderless">
+										<table id="grand_sum_table"
+											class="grand_sum_table table table-borderless">
 											<thead>
-												<tr>
-												<td colspan = 13 align = "right">Grand Total : US $  <input type="text" id="GTotal" style="width:50px" disabled/></td>
-												</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Ishtabhrity Amount</td>
+													<td  align = "right" style="border-top: none;">{{ishtAmount}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Processing Fee</td>
+													<td  align = "right" style="border-top: none;">{{processIng}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+														<td  align = "right" style="">Grand Total : US $ </td>
+														<td  align = "right" style=""> <label id="GTotal" value="grandTotal">{{grandTotal}}</label></td>
+															
+													</tr>
+													
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td  align = "right" style="border-top: none;">Grand Total : US $ </td>
+														<td  align = "right" style="border-top: none;"> <label id="GTotal" value="grandTotal">{{grandTotal}}</label></td>
+															
+													</tr>
 											</thead>
 										</table>
 									</div>
 								</div>
 							</div>
 							<div class="form-group col-md-12">
-                                 <input class="btn btn-primary" id = "submit_1" rel="modal:open" type="submit" ng-click="ishtPayForm.$valid && ishtPay($event)" 
+                                 <input class="btn btn-primary" id = "submit_1" rel="modal:open" type="submit" 
                                  value="Continue"   
                                  
                                  onclick="reviewForm()"
@@ -370,8 +387,9 @@ response.setDateHeader ("Expires", 0);
 			</div>
 		</div>
 	</div>
+	<!-- depositForm end -->
 	
-	
+	<!-- payReviewForm Step 2start -->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main payReviewForm">
 	<div class="row">
 			<ol class="breadcrumb">
@@ -502,19 +520,35 @@ response.setDateHeader ("Expires", 0);
 								</table>
 								<div class="form-group">
 										<table style="border: none;"
-											class="table table-borderless">
+											class="grand_sum_table table table-borderless">
 											<thead >
-												<tr>
-												<td colspan = 13 align = "right">Grand Total : US $  <input type="text" id="GTotalPre" 
-															ng-model="grandTotalText"	style="width:50px" value='{{grandTotal}}'  disabled/></td>
-												</tr>
+													<thead>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Ishtabhrity Amount</td>
+													<td  align = "right" style="border-top: none;">{{ishtAmount}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Processing Fee</td>
+													<td  align = "right" style="border-top: none;">{{processIng}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													
+													<td  align = "right" style="">Grand Total : US $ </td>
+													<td  align = "right" style="">{{grandTotal}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+													
+													<td  align = "right" style="border-top: none;">Grand Total : US $ </td>
+													<td  align = "right" style="border-top: none;">{{grandTotal}}</td>
+													</tr>									
+											
 											</thead>
 										</table>
 								</div>
 							</div>
 							<div class="panel-footer">
 									<a href="#" onclick="editDepositForm()"><span class="glyphicon glyphicon-pencil btn btn-info btn-md btn-edit"></span></a>
-									<button class="btn btn-success btn-parmentForm"  ng-click="submitManual()" onclick="return parmentForm()"> 
+									<button class="btn btn-success btn-parmentForm"  ng-click="suibMitPayment()"> 
 									<span ng-if="selPmtMethod == 'AUTO'">Payment</span> 
         							<span ng-if="selPmtMethod == 'MANUAL'">Submit</span>  
         							<i class="fa fa-dollar"></i></button>
@@ -526,6 +560,8 @@ response.setDateHeader ("Expires", 0);
 			</div>
 		</div>
 	</div>
+	<!-- Auto payReviewForm START -->
+	
 	
 	<!-- MANUAL CONFIRMAATION START -->
 	
@@ -630,6 +666,7 @@ response.setDateHeader ("Expires", 0);
 													<td><span style="width:50px">
 													  {{grandTotal}}</span></td>
 													</tr>
+
 												</tbody>
 											</table>
 										</div>
@@ -643,9 +680,9 @@ response.setDateHeader ("Expires", 0);
 			</div>
 		</div>
 	</div>
-	
 	<!-- MANUAL CONFIRMATION END -->
 
+	<!-- paymentForm Card  Start -->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main paymentForm">
 		<div class="row">
 			<ol class="breadcrumb">
@@ -733,7 +770,7 @@ response.setDateHeader ("Expires", 0);
 			</div>
 		</div>
 	</div>
-
+<!-- paymentForm Card  END -->
 
 	<% 	  System.out.println("1  phoneNo: "+root.getPhoneNo()); %>
 	

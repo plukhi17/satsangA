@@ -175,7 +175,7 @@ public class IshtAction extends BaseAction {
 		String ishtHeaderData = getRequest().getParameter(("ishtHeaderData"));
 		String applicationFlow = getRequest().getParameter(("applicationFlow"));
 		logger.info("applicationFlow" + applicationFlow);
-
+		JSONObject responseObject = null;
 		try {
 			logger.info("ishtLineData :" + ishtLineData);
 			// get header details
@@ -199,27 +199,33 @@ public class IshtAction extends BaseAction {
 			ishtMDBObj.setName(portalUser.getFirstName() + " " + portalUser.getLastName());
 			ishtMDBObj.setFamilyID(portalUser.getFamilyID());
 
-			DateUtility dtl = new DateUtility();
-			logger.info("Extract :" + ishtMDBObj.getChecqDate().substring(0, 10));
-			String MonthYear = dtl.getMonthYear(ishtMDBObj.getChecqDate().substring(0, 10));
-			logger.info("MonthYear : " + MonthYear);
+			String MonthYear ;
+				DateUtility dtl = new DateUtility();
+				if(ishtMDBObj.getChecqDate()!=null) {
+					logger.info("Extract :" + ishtMDBObj.getChecqDate().substring(0, 10));
+					MonthYear= dtl.getMonthYear(ishtMDBObj.getChecqDate().substring(0, 10));
+				}else {
+					MonthYear= dtl.getMonthYear(dtl.getCurrentDate().substring(0, 10));
+				}
+				
 
-			ishtMDBObj.setMonthYear(MonthYear);
-			ishtMDBObj.setCollectedBy("SHYAM GIRI");
-			ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
-			ishtMDBObj.setReceiptDate("NA");
-			ishtMDBObj.setApprovedBy("NA");
-			ishtMDBObj.setApprovedOn("NA");
+				logger.info("MonthYear : " + MonthYear);
+				ishtMDBObj.setMonthYear(MonthYear);
+				ishtMDBObj.setCollectedBy("SHYAM GIRI");
+				ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
+				ishtMDBObj.setReceiptDate("NA");
+				ishtMDBObj.setApprovedBy("NA");
+				ishtMDBObj.setApprovedOn("NA");
+			
 
-			logger.info("phoneNo : " + ishtMDBObj.getPhoneNo() + "BankDetails : " + ishtMDBObj.getTrnDetails()
-					+ " ChequeIssueBank :" + ishtMDBObj.getChequeIssueBank() + " Name :" + ishtMDBObj.getName()
-					+ " Payment Method : " + ishtMDBObj.getPaymentMethod() + "" + " Tran Cheque Date :"
-					+ ishtMDBObj.getChecqDate() + " Grand Total : " + ishtMDBObj.getTotal() + "" + "   ");
+		
+			logger.info("Payment method of AUTO  "+ishtMDBObj.getPaymentMethod()+"HHHH");
+			
 
 			ResultObject result = new ResultObject();
 			result = getIshtService().saveIshtObjectJSON(ishtMDBObj);
 			getResponse().setContentType("text/json;charset=utf-8");
-			JSONObject responseObject = new JSONObject();
+			 responseObject = new JSONObject();
 
 			if (result.isSuccess()) {
 				logger.info("inside sucess");
@@ -277,6 +283,8 @@ public class IshtAction extends BaseAction {
 			responseObject.write(getResponse().getWriter());
 
 		} catch (Exception e) {
+			e.printStackTrace();
+			responseObject.put(RETURN_CODE, ERROR_FLAG);
 			logger.error("Exception occure:"+ e.getMessage());
 		}
 	}

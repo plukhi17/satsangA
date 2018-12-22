@@ -2,6 +2,7 @@ function goBack() {
 	$('.paymentForm').hide();
 	$('.payReviewForm').show();
 }
+
 function findValue(index) {
 	var collections = new Array();
 	
@@ -417,7 +418,7 @@ function cardNameChacking(num) {
 	
 }
 function parmentForm() {
-	var amount=document.getElementById("GTotalPre").value;
+	var amount=document.getElementById("GTotal").value;
 	
 	if (amount.toString()=="0.00"){
 		document.getElementById("amountError").textContent = "Fill amount in ISTARGHYA DEPOSIT FORM.";
@@ -429,11 +430,9 @@ function parmentForm() {
 	var paymenType=$("#selPmtMethod").val();
 
 	if(paymenType=='AUTO'){
+		alert('2 AUTO ');
 		$('.paymentForm').show();
 		$('.payReviewForm').hide();
-	}else{
-		
-		$('.payMANReviewForm').show();
 	}
 	
 }
@@ -442,14 +441,8 @@ function parmentForm() {
 
 (function() {
 	var courseApp = angular.module("ishtApp", [ "xeditable" ]);
-	courseApp
-			.controller(
-					'ishtCtrl',
-					[
-							'$scope',
-							'$http',
-							'$filter',
-							function($scope, $http, $filter,$compile) {
+	courseApp.controller('ishtCtrl',['$scope','$http','$filter',
+		function($scope, $http, $filter,$compile) {
 								$scope.spinerFlag=false;
 								
 								/* 
@@ -471,8 +464,80 @@ function parmentForm() {
 									 });	 
 								} */
 								$scope.selPmtMethod="AUTO";
+								$scope.ishtAmount=0.0;
+								$scope.processIng=0.0;
 								$scope.grandTotal=0.0;
+								
+								$scope.suibMitPayment= function(){
+									if($scope.selPmtMethod=='AUTO'){
+										//alert ('suibMitPayment AUTO');
+										parmentForm();
+									}else{
+										//alert ('suibMitPayment ishtPay called');
+										
+										$scope.ishtPay();
+									
+										
+									}
+								}
+								
+								 $scope.ishtPay = function() {
+									   var data=[];
+								        $("#sum_table").find("tr").each(function(){
+								            //var id=$(this).attr("id");
+								            var id="id";
+								            var row={};
+								            $(this).find("input,select,textarea").each(function(){
+								            	if($(this).attr("name")!="action" && $(this).attr("name")!="textValue" ){
+								            		row[$(this).attr("name")]=$(this).val();
+								            	}
+								                
+								            });
+								            data.push(row);
+								        });
+						    	  
+							        	 var headerDetails ={
+							        			dtIshtDate:$scope.dtChqDate,
+							        			stBankName:$scope.stBankName,
+							   	 			  	stTrnNo:$scope.stTrnNo,
+							   	 			  	stChqNo:$scope.stTrnNo,
+							   	 			  	phoneNo:$('#phoneNo').val(),
+							   	 			    pmtMethod:$scope.selPmtMethod,
+							   	 		        chqDate:$scope.dtChqDate,
+							  				};
+							   	 		
+							   	 		var applicationFlow = $('#txtApplicationFlow').val();
+							   	 		  //alert('Hi shyam 1'+headerDetails);
+							   	 		//alert(applicationFlow);
+							   	 	 	var contextPath = "saveIshtJSONData.do"+"?ishtLineData="+ JSON.stringify(data)+"&ishtHeaderData="+JSON.stringify(headerDetails)+"&applicationFlow="+applicationFlow;
+							   	 		$http({
+											 method : "POST",
+											 url : contextPath,
+											 dataType: 'json',
+											 headers : {
+								                    'Content-Type' : 'application/json'
+								                }
+										 }).then(function mySucces(data) {
+											var returnObject = eval(data); // Parse Return Data
+											//alert(returnObject.data.returnCode);
+											if(returnObject.data.returnCode=='error') {
+													 $scope.PostDataResponse = returnObject.data.returnMessage;
+												 }else{
+												 
+												 if(returnObject.data.applicationFlow=='adminFlow') {
+													 $scope.PostDataResponse = returnObject.data.returnMessage;
+													 $("#dvErrAlert").show();
+													 $("#submit_1").prop("disabled",true);
+												 }else						 
+													 window.location = 'ishtpayconfirm.jsp';
+													 //window.location = 'payisht_reveiw_confirm.jsp';
+													}
+										 },function myError(d) {
+											 alert("save failed");
+										 });
+							    	  };
 								$scope.submitManual=function(){
+									alert ('Something wrong happend');
 									removePNode();
 									var res=parmentForm();
 									if(res!=undefined && res.toString()=='false'){
@@ -526,7 +591,7 @@ function parmentForm() {
 											  		
 										  		  $scope.spinerFlag=false;
 										  		//$scope.afterTransactionSuccess(obj.trasactionId);
-										  		 
+										  		
 										  		sessionStorage.setItem("transactionId", obj.trasactionId);
 										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
 										  		//alert(sessionStorage.getItem("transactionId"));
@@ -543,7 +608,7 @@ function parmentForm() {
 								$scope.paymentFun=function(){
 									removePNode();
 									var res=paymentIstarghya();
-									if(res.toString()=='false'){
+									if(res!=undefined &&  res.toString()=='false'){
 										alert("Fill this required field.");
 									}else{
 										$scope.spinerFlag=true;
@@ -552,7 +617,7 @@ function parmentForm() {
 											 method : "POST",
 											 url : contextPath,
 											 data:{
-												 "amount":document.getElementById("GTotalPre").value,
+												 "amount":document.getElementById("GTotal").value,
 												 "familyCode":document.getElementById("familyCode").value,
 												 "contact":document.getElementById("contact").value,
 												 "cardNumber":$scope.cardNumberText,
@@ -566,7 +631,7 @@ function parmentForm() {
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
 											  
-											  	if(obj.status.toString()=="false"){
+											  	if(!obj.status.toString()=="false"){
 											  		var node = document.createElement("P");
 											  		var failedTxt = document.createTextNode("Failed transaction");
 										  			node.appendChild(failedTxt); 
@@ -590,12 +655,12 @@ function parmentForm() {
 										  			node.style.color = "green";
 										  			node.style.margin="22px";
 										  		    document.getElementById("paymentResponse").appendChild(node); */
-											  		
+											  		 $scope.ishtPay();
 										  		  $scope.spinerFlag=false;
 										  		//$scope.afterTransactionSuccess(obj.trasactionId);
 										  		 
 										  		sessionStorage.setItem("transactionId", obj.trasactionId);
-										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
+										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotal").value);
 										  		//alert(sessionStorage.getItem("transactionId"));
 										  		window.location = 'ishtpayconfirm.jsp';
 											  	}
@@ -607,6 +672,7 @@ function parmentForm() {
 										 });
 									}
 								};
+								
 								
 								
 								function removePNode(){
@@ -688,6 +754,9 @@ function parmentForm() {
 								
 								$scope.changeMe= function(){
 									// alert('hello'+ $scope.selPmtMethod);
+									$scope.grandTotal=0.0;
+									$scope.processIng=0.0;
+									$scope.ishtAmount=0.0;
 								}
 								$(document)
 										.ready(
@@ -855,52 +924,58 @@ function parmentForm() {
 									var tempValue = 0;
 									$(thisRow)
 											.find("td:not(.total) input")
-											.each(
-													function() {
-														if (!isNaN(this.value)) {
-															$(this)
-																	.closest(
-																			'tr')
-																	.find(
-																			".mytextValue")
-																	.each(
-																			function() {
+											.each(function() {
+												if (!isNaN(this.value)) {
+															$(this).closest('tr').find(".mytextValue")
+																	.each(function() {
 																				tempValue = this.value;
-																			});
-															sum += parseFloat(parseFloat(
-																	Math
-																			.round(this.value * 100) / 100)
-																	.toFixed(
-																			2));
+																	});
+															sum += parseFloat(parseFloat(Math.round(this.value * 100) / 100)
+																	.toFixed(2));
 														}
 													});
 
 									sum = formatCurrency(sum - tempValue); //added b shyam
 									$(thisRow).find(".total").html(sum);
-									$('.total')
-											.each(
-													function() {
-														GrTotal += parseFloat($(
-																this)
+									$scope.ishtAmount=0.0;
+									$scope.processIng=0.0;
+									$scope.grandTotal=0.0;
+									$('.total').each(function() {
+														GrTotal += parseFloat($(this)
 																.html());
+														
 														//alert('GrTotal :'+GrTotal);
 														//document.getElementById("GTotal").innerHTML = GrTotal;
-														$("#GTotal")
-																.val(
-																		GrTotal
-																				.toFixed(2));
-															if(GrTotal>=1){
-																$scope.ishtPayForm.$valid = true;
-																$scope.ishtPayForm.$invalid = false;
-																$("#submit_1").prop('disabled', false);
-															}else{
-																$scope.ishtPayForm.$valid = false;
-																$scope.ishtPayForm.$invalid = true;
-																$("#submit_1").prop('disabled', true);
-															}
-															$scope.grandTotal=GrTotal;
-
+												
+													
 													});
+
+									if(GrTotal>=1){
+										$scope.ishtPayForm.$valid = true;
+										$scope.ishtPayForm.$invalid = false;
+										$("#submit_1").prop('disabled', false);
+										$scope.ishtAmount=GrTotal;
+										if($scope.selPmtMethod=='AUTO'){
+											$scope.$apply(function () {
+												$scope.processIng=parseFloat(((GrTotal* 2.9/100) +0.30).toFixed(2));
+											});
+											GrTotal=$scope.ishtAmount + $scope.processIng;
+											$("#GTotal").val(GrTotal.toFixed(2));
+										}
+							
+									}else{
+										$scope.ishtPayForm.$valid = false;
+										$scope.ishtPayForm.$invalid = true;
+										$("#submit_1").prop('disabled', true);
+									}
+									
+									
+									
+									$scope.$apply(function () {
+										$scope.grandTotal=GrTotal;
+									});
+									$("#GTotal").val(GrTotal.toFixed(2));
+									
 								}
 
 								$scope.loadUser = function() {
