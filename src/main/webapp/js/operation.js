@@ -211,20 +211,7 @@ function editDepositForm() {
 	$("#tbodyPre").empty();
 	document.getElementById("amountError").textContent = "";
 }
-function parmentForm() {
-	var amount=document.getElementById("GTotalPre").value;
-	
-	if (amount.toString()=="0.00"){
-		document.getElementById("amountError").textContent = "Fill amount in ISTARGHYA DEPOSIT FORM.";
-		return false;
-	}else{
-		document.getElementById("amountError").textContent = "";
-	}
-	
 
-	$('.paymentForm').show();
-	$('.payReviewForm').hide();
-}
 
 function cardNumberFun(event) {
 	var key = window.event ? event.keyCode : event.which;
@@ -429,7 +416,27 @@ function cardNameChacking(num) {
 	}
 	
 }
+function parmentForm() {
+	var amount=document.getElementById("GTotalPre").value;
+	
+	if (amount.toString()=="0.00"){
+		document.getElementById("amountError").textContent = "Fill amount in ISTARGHYA DEPOSIT FORM.";
+		return false;
+	}else{
+		document.getElementById("amountError").textContent = "";
+	}
+	
+	var paymenType=$("#selPmtMethod").val();
 
+	if(paymenType=='AUTO'){
+		$('.paymentForm').show();
+		$('.payReviewForm').hide();
+	}else{
+		
+		$('.payMANReviewForm').show();
+	}
+	
+}
 
 
 
@@ -464,6 +471,75 @@ function cardNameChacking(num) {
 									 });	 
 								} */
 								$scope.selPmtMethod="AUTO";
+								$scope.grandTotal=0.0;
+								$scope.submitManual=function(){
+									removePNode();
+									var res=parmentForm();
+									if(res!=undefined && res.toString()=='false'){
+										alert("Fill this required field.");
+									}else{
+										$scope.spinerFlag=true;
+										var manPayObj = {
+												 "amount":document.getElementById("GTotalPre").value,
+												 "familyCode":document.getElementById("familyCode").value,
+												 "contact":document.getElementById("contact").value,
+												 "paymentMode":$scope.selPmtMethod,
+												 
+											 };
+										var contextPath = "manualTransactions.do"+"?manualPayDetails="+ JSON.stringify(manPayObj);
+					  					
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											
+											 headers: {'Content-Type': 'application/json'}
+											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+										 }).then(function mySucces(data) {
+											 $scope.spinerFlag=false;
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  
+											  	if(obj.status.toString()=="false"){
+											  		var node = document.createElement("P");
+											  		var failedTxt = document.createTextNode("Failed transaction");
+										  			node.appendChild(failedTxt); 
+											  		for(var i=0;i<obj.errorValidations.length;i++){
+											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+											  		    node.appendChild(textnode);
+											  			node.style.color = "red";
+											  			node.style.margin="22px";
+											  		    document.getElementById("paymentResponse").appendChild(node);
+											  		  $scope.spinerFlag=false;
+											  		  
+											  		}
+											  	}else{
+											  		/* var node = document.createElement("P");
+											  		var seccussTxt = document.createTextNode("Transaction ");
+										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
+										  			
+										  		    node.appendChild(seccussTxt); 
+										  		 	node.appendChild(textnode);
+										  		  
+										  			node.style.color = "green";
+										  			node.style.margin="22px";
+										  		    document.getElementById("paymentResponse").appendChild(node); */
+											  		
+										  		  $scope.spinerFlag=false;
+										  		//$scope.afterTransactionSuccess(obj.trasactionId);
+										  		 
+										  		sessionStorage.setItem("transactionId", obj.trasactionId);
+										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
+										  		//alert(sessionStorage.getItem("transactionId"));
+										  		window.location = 'ishtpayconfirm.jsp';
+											  	}
+											  $scope.spinerFlag=false;
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+											 alert("fail");
+											 $scope.spinerFlag=false;
+										 });
+									}
+								};
 								$scope.paymentFun=function(){
 									removePNode();
 									var res=paymentIstarghya();
@@ -616,7 +692,7 @@ function cardNameChacking(num) {
 								$(document)
 										.ready(
 												function() {
-													$("#submit_1").prop('disabled', true);
+												
 													var istPhone = $(
 															'#phoneNo')
 															.val();
@@ -822,7 +898,7 @@ function cardNameChacking(num) {
 																$scope.ishtPayForm.$invalid = true;
 																$("#submit_1").prop('disabled', true);
 															}
-													
+															$scope.grandTotal=GrTotal;
 
 													});
 								}
@@ -907,7 +983,8 @@ function formatCurrency(amount) {
 	return s;
 }
 $(document).ready(function() {
-	//$("dtIshtDate").focus(function(){
+	$("#submit_1").prop('disabled', true);
+	$('.payMANReviewForm').hide();
 	$("dtChqDate").focus(function() {
 		//alert('Hi');
 		var dtToday = new Date();

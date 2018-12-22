@@ -43,6 +43,7 @@
 		<action name ="getReportr" method = "reportMechanism" class="userProfileAction"></action>
 
 		<action name="transactions" method="transaction" class="checkoutAction"></action>
+		<action name="manualTransactions" method="manualTransactions" class="checkoutAction"></action>
 		<action name="addcards" method="addCard" class="checkoutAction"></action>
 		<action name="viewCards" method="viewCard" class="checkoutAction"></action>
 		<action name="transactionsuccess" method="transactionsuccess" class="checkoutAction">

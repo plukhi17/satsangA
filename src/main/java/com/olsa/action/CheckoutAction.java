@@ -10,10 +10,12 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 import com.olsa.pojo.IshtMDB;
 import com.olsa.services.PaymentService;
 import com.olsa.utility.CardDetailsDTO;
+import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.PaymentResponseUtils;
 import com.olsa.utility.PaymentUtils;
 
@@ -49,6 +51,28 @@ public class CheckoutAction extends BaseAction {
 		
 		PaymentResponseUtils paymentResponseUtils=null;
 		paymentResponseUtils=paymentServic.transaction(paymentUtils);
+		
+		
+		writer.append(mapper.writeValueAsString(paymentResponseUtils));
+	}
+	
+	public void manualTransactions() throws IOException {
+		logger.info("Enter in  transaction() CheckoutAction class");
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		String manualPayDetails = getRequest().getParameter("manualPayDetails");
+
+		JSONObject obj = new JSONObject(manualPayDetails);
+		ManualPaymentUtils manualPay =new ManualPaymentUtils();
+		manualPay.setAmount(obj.getString("amount"));
+		manualPay.setContact(obj.getString("contact"));
+		manualPay.setFamilyCode(obj.getString("familyCode"));
+		
+		
+		//PaymentUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentUtils.class);
+		
+		
+		PaymentResponseUtils paymentResponseUtils=paymentServic.transaction(manualPay);
 		
 		
 		writer.append(mapper.writeValueAsString(paymentResponseUtils));

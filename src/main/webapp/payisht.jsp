@@ -514,7 +514,10 @@ response.setDateHeader ("Expires", 0);
 							</div>
 							<div class="panel-footer">
 									<a href="#" onclick="editDepositForm()"><span class="glyphicon glyphicon-pencil btn btn-info btn-md btn-edit"></span></a>
-									<button class="btn btn-success btn-parmentForm" onclick="return parmentForm()">Payment <i class="fa fa-dollar"></i></button>
+									<button class="btn btn-success btn-parmentForm"  ng-click="submitManual()" onclick="return parmentForm()"> 
+									<span ng-if="selPmtMethod == 'AUTO'">Payment</span> 
+        							<span ng-if="selPmtMethod == 'MANUAL'">Submit</span>  
+        							<i class="fa fa-dollar"></i></button>
 									<br><small class="text-muted"  class="btn btn-primary">Satsang America,Inc  </small>
 							</div>
 						</div>
@@ -523,6 +526,125 @@ response.setDateHeader ("Expires", 0);
 			</div>
 		</div>
 	</div>
+	
+	<!-- MANUAL CONFIRMAATION START -->
+	
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main payMANReviewForm">
+	<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="index.jsp"> <svg class="glyph stroked home">
+                            <use xlink:href="#stroked-home"></use>
+                        </svg>
+				</a></li>
+				<li class="active">ISTARGHYA PREVIEW</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div id="dvErrAlert" class="alert alert-danger" style= "display:none">
+				<a class="close" href="#">�</a>
+				<p><strong>{{PostDataResponse}}</strong> 
+			</div>
+			<div class="col-md-12">
+				<input type="hidden" id="phoneNo" value = <%= root.getPhoneNo()%> name="phoneNo" placeholder="your phone no" ><br>
+				<input id="txtApplicationFlow" name="txtApplicationFlow" type="hidden" value =<%= applciationFlow %>>
+				<br>
+				<div class="panel panel-default">
+					<div class="panel-heading" id="accordion">ISTARGHYA PREVIEW FORM</div>
+						<p id="amountError" style="color: red; margin-top: 5px; font-size: medium;" align="center"></p>
+					<div class="panel-body">
+						<div>
+							<table class="table table-striped table-bordered" bgcolor = "solid #d8d8d8">
+								<tbody>
+									<tr>
+										<td colspan = "3"><strong>Member Name:</strong><br>
+						 					 <%= root.getFirstName() +"  " +root.getLastName()%>
+						 				 </td>
+						 				 <td colspan = "1"><strong>Family Code:</strong><br>
+						 					 <%= root.getFamilyID()%>
+						  				 </td>
+									</tr>
+									<tr>
+										<td><strong>Address:</strong><br>
+							  				<%= root.getAddress().getAddressLine1() +" "+root.getAddress().getAddressLine2()+"  "+root.getAddress().getAddressLine3()+" "+ root.getAddress().getCity()+", "+root.getAddress().getState()%>
+							 			 </td>
+							  			<td>
+							  				<strong>Contact:</strong><br><%= root.getPhoneNo()%></td>
+							  			<td>
+							  				<strong>EMail ID:</strong><br><%= root.getEmail()%><br>
+							  			</td>
+							  			<td>
+							  				<strong>India Family Code:</strong><br><%= root.getIndfamilyCode()%><br>
+							  			</td>
+									</tr>						
+								</tbody>
+							</table>
+						</div>
+						<form name ="ishtPayForm1" class="form-vertical">
+							<fieldset>
+								<div class="form-group ">
+									<div class="row">
+										<div class="col-md-5">
+											<table class="table table-striped table-bordered">
+												<tbody>
+													<tr>
+														<td>
+															<strong>Payment Method:</strong>
+														</td>
+														<td>
+															<!--  <select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" disabled required>
+																<option ng-selected="selPmtMethod == 'AUTO'">E-TRANSFER</option>
+																<option ng-selected="selPmtMethod == 'MANUAL'">CASH</option> 
+															</select> -->
+															
+															{{selPmtMethod}}
+														</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td>
+															<strong>Bank Name</strong></td>
+														<td>
+															<!-- <input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required> -->
+															{{stBankName}}
+														</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td>
+															<strong>Transaction Ref / Cheque No</strong>
+														</td>
+														<td>
+															<!-- <input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
+															class="form-control" ng-model = "stTrnNo" required disabled>
+															 -->{{stTrnNo}}
+														</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td><strong>E-Transaction Date / Cheque Date:</strong></td>
+														<td><!-- <input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
+															 --> {{dtChqDate| date:'medium'}}
+														</td>
+													
+														
+													</tr>
+													<tr>
+													<td ><strong>Grand Total : US $  </strong></td>
+													<td><span style="width:50px">
+													  {{grandTotal}}</span></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- MANUAL CONFIRMATION END -->
 
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main paymentForm">
 		<div class="row">

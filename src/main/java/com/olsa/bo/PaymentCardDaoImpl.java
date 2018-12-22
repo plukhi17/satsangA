@@ -4,6 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.olsa.utility.CardDetailsDTO;
+import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.MongoConstants;
 import com.olsa.utility.PaymentUtils;
 
@@ -78,6 +79,25 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 					.append("Amount", paymentUtils.getAmount())
 					.append("transactionId", transationId)
 					.append("transactionDate", new Date());
+			db.insertOne(document);
+			logger.info("successfully save trasaction details in DB "+paymentUtils);
+		} catch (Exception e) {
+			logger.error("Exception occure while saving transaction details: " + e.getMessage());
+		}
+	}
+	
+	public void transactionDetail(ManualPaymentUtils paymentUtils, String transationId) {
+		try {
+			MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+					.getCollection(MongoConstants.TRANSACTION_DETAILS);
+					//.getCollection("TransactionDetails");
+			
+			Document document = new Document().append("userId", paymentUtils.getContact())
+					.append("familyCode", paymentUtils.getFamilyCode())
+					
+					.append("Amount", paymentUtils.getAmount())
+					.append("transactionId", "PARTH-17-LUKHI")
+					.append("transactionDate", paymentUtils.getDate());
 			db.insertOne(document);
 			logger.info("successfully save trasaction details in DB "+paymentUtils);
 		} catch (Exception e) {

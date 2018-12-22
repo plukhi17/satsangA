@@ -21,6 +21,7 @@ import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.olsa.bo.PaymentCardDao;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.ErrorValidation;
+import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.PaymentResponseUtils;
 import com.olsa.utility.PaymentUtils;
 
@@ -110,6 +111,44 @@ public class PaymentServiceImpl implements PaymentService {
 			}
 			return paymentResponseUtils;
 		}
+
+	}
+	
+
+	
+/*
+ * 	(non-Javadoc)
+ * @see com.olsa.services.PaymentService#transaction(com.olsa.utility.ManualPaymentUtils)
+ * This method is used for manual payment method
+ */
+public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
+		
+		PaymentResponseUtils paymentResponseUtils=new PaymentResponseUtils();
+		
+		if (amount(paymentUtils.getAmount()) == false) {
+			paymentResponseUtils.setResMessage("Amount Not valid Try again");
+			paymentResponseUtils.setStatus(false);
+			logger.error("Payment Transaction Respponse Failed: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact());
+			logger.error("paymentResponseUtils : "+paymentResponseUtils);
+			
+			return paymentResponseUtils;
+		} else {
+		
+			
+	
+				paymentResponseUtils.setResMessage("Success");
+				paymentResponseUtils.setStatus(true);
+				paymentResponseUtils.setTrasactionId("TOBESET");
+				paymentCard.transactionDetail(paymentUtils, paymentResponseUtils.getTrasactionId());
+				
+				logger.info("Transaction Successfully went through !! paymentResponseUtils Response :  "+paymentResponseUtils);
+				logger.info("FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact()+", transaction id: "+paymentResponseUtils.getTrasactionId());
+				return paymentResponseUtils;
+				
+			
+			}
+			
+		
 
 	}
 
