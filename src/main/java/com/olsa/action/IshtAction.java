@@ -524,7 +524,7 @@ public class IshtAction extends BaseAction {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
 		ReportDTO reportDTO = mapper.readValue(getRequest().getReader().readLine(), ReportDTO.class);
-		List<RootMDB> lists = ishtService.findReport(reportDTO);
+		List<IshtMDB> lists = ishtService.findReport(reportDTO);
 		writer.append(mapper.writeValueAsString(lists));
 	}
 
