@@ -705,7 +705,7 @@ response.setDateHeader ("Expires", 0);
 					value=<%= applciationFlow %>> <br>
 				<div class="panel panel-default">
 					<div class="panel-heading" id="accordion">ISTARGHYA PAYMENT METHOD
-						<button class="backButtonPayment" class="btn" onclick="goBack()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
+						<button class="backButtonPayment" class="btn" onclick="goBackToCardDetails()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
 						<a  class="pull-right" href="#" title="Refresh">
              				<i style="font-size:30px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
        					</a>
@@ -754,6 +754,92 @@ response.setDateHeader ("Expires", 0);
 												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
 										</div>
 									</form>
+									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
+										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" >
+								<div class="col-xs-12 col-sm-12 col-md-12" id="paymentResponse" style="font-size: 16px;">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- paymentForm Card  END -->
+
+
+<!-- paymentCheckoutForm  Start -->
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main cardDdetailsPage">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="index.jsp"> <svg class="glyph stroked home">
+                            <use xlink:href="#stroked-home"></use>
+                        </svg>
+				</a></li>
+				<li class="active">ISTARGHYA Payment Selection</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div id="dvErrAlert" class="alert alert-danger" style="display: none">
+				<a class="close" href="#">�</a>
+				<p>
+			</div>
+			<div class="col-md-12">
+				<input type="hidden" id="phoneNo" value=<%= root.getPhoneNo()%>
+					name="phoneNo" placeholder="your phone no"><br> <input
+					id="txtApplicationFlow" name="txtApplicationFlow" type="hidden"
+					value=<%= applciationFlow %>> <br>
+				<div class="panel panel-default">
+					<div class="panel-heading" id="accordion">Select Payment method
+						<button class="backButtonPayment" class="btn" onclick="goBack()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
+						<a  class="pull-right" href="#" title="Refresh">
+             				<i style="font-size:30px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
+       					</a>
+					</div>
+					<div class="panel-body">
+						<div class="paymentFormBody" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
+							<div class="col-xs-12 col-sm-2 col-md-2" >
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-6" >
+								<div class="row" style="margin: 10px;">
+									<form id="cardListForm" class="scale-down">
+										
+										<table id="cardDetailsTBody" class="table table-responsive">
+										<tr>
+											
+											
+											<th>
+												Your Credit and debit cards
+											
+											</th>
+											
+											<th >
+												Expires On
+											
+											</th>
+											<th >
+												
+										
+											</th>
+											
+											<th >
+											
+											
+											</th>
+										</tr>
+										</table>
+										
+											<div style="margin-top: 10px">
+												<a  onClick="addCardForm()" class="add-card"><i class="fa fa-plus"></i>&nbsp; Add credit or debit Card</a>
+												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
+											</div>
+									</form>
+									
 									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
 										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
 									</div>

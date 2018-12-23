@@ -133,4 +133,24 @@
     float: right;
 }
 	    
+.card-img{
+	    margin-right: 5%;
+    width: 12%;
+}
+
+.add-card{
+	cursor: pointer;
+	}
+.link-text{
+	cursor: pointer;
+}
+.cursror-pointer{
+	
+	cursor: pointer;
+}
+
+.panel-heading {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    color: #30a5ff;
 }

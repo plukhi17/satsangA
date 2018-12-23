@@ -109,7 +109,7 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	public List<CardDetailsDTO> viewAllCard(String contact) {
 		List<CardDetailsDTO> cardDetailsDTOs=new ArrayList<CardDetailsDTO>();
 		
-		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.TRANSACTION_DETAILS);  
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CARD_DETAILS);  
 		//.getCollection("CardDetails");
 		Document document = new Document();
 		document.put("userId", contact);

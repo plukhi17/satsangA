@@ -1,8 +1,18 @@
 function goBack() {
 	$('.paymentForm').hide();
+	$('.cardDdetailsPage').hide();
 	$('.payReviewForm').show();
 }
 
+function addCardForm(){
+	$('.paymentForm').show();
+	$('.cardDdetailsPage').hide();
+}
+function goBackToCardDetails(){
+	$('.cardDdetailsPage').show();
+	$('.paymentForm').hide();
+	
+}
 function findValue(index) {
 	var collections = new Array();
 	
@@ -417,34 +427,16 @@ function cardNameChacking(num) {
 	}
 	
 }
-function parmentForm() {
-	var amount=document.getElementById("GTotal").value;
-	
-	if (amount.toString()=="0.00"){
-		document.getElementById("amountError").textContent = "Fill amount in ISTARGHYA DEPOSIT FORM.";
-		return false;
-	}else{
-		document.getElementById("amountError").textContent = "";
-	}
-	
-	var paymenType=$("#selPmtMethod").val();
 
-	if(paymenType=='AUTO'){
-		alert('2 AUTO ');
-		$('.paymentForm').show();
-		$('.payReviewForm').hide();
-	}
-	
-}
 
 
 
 (function() {
 	var courseApp = angular.module("ishtApp", [ "xeditable" ]);
-	courseApp.controller('ishtCtrl',['$scope','$http','$filter',
+	courseApp.controller('ishtCtrl',['$scope','$http','$filter','$compile',
 		function($scope, $http, $filter,$compile) {
 								$scope.spinerFlag=false;
-								
+								$scope.cardList;
 								/* 
 								$scope.afterTransactionSuccess=function(id){
 									var contextPath = "transactionsuccess.do";
@@ -463,15 +455,24 @@ function parmentForm() {
 										 $scope.spinerFlag=false;
 									 });	 
 								} */
-								$scope.selPmtMethod="AUTO";
-								$scope.ishtAmount=0.0;
-								$scope.processIng=0.0;
-								$scope.grandTotal=0.0;
+									$scope.selPmtMethod="AUTO";
+									$scope.ishtAmount=0.0;
+									$scope.processIng=0.0;
+									$scope.grandTotal=0.0;
+									
+									$scope.payByCardScope = function(myCard){
+									
+									$scope.cardNumberText=myCard.cardNumber;
+									$scope.expirationDateText=myCard.expirationDate,
+									$scope.cvvText=myCard.cvv;
+									$scope.paymentFun();
+										
+								}
 								
-								$scope.suibMitPayment= function(){
+								$scope.suibMitPayment = function(){
 									if($scope.selPmtMethod=='AUTO'){
 										//alert ('suibMitPayment AUTO');
-										parmentForm();
+										$scope.parmentForm();
 									}else{
 										//alert ('suibMitPayment ishtPay called');
 										
@@ -536,81 +537,85 @@ function parmentForm() {
 											 alert("save failed");
 										 });
 							    	  };
-								$scope.submitManual=function(){
-									alert ('Something wrong happend');
-									removePNode();
-									var res=parmentForm();
-									if(res!=undefined && res.toString()=='false'){
-										alert("Fill this required field.");
-									}else{
-										$scope.spinerFlag=true;
-										var manPayObj = {
-												 "amount":document.getElementById("GTotalPre").value,
-												 "familyCode":document.getElementById("familyCode").value,
-												 "contact":document.getElementById("contact").value,
-												 "paymentMode":$scope.selPmtMethod,
-												 
-											 };
-										var contextPath = "manualTransactions.do"+"?manualPayDetails="+ JSON.stringify(manPayObj);
-					  					
-										$http({
-											 method : "POST",
-											 url : contextPath,
-											
-											 headers: {'Content-Type': 'application/json'}
-											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-										 }).then(function mySucces(data) {
-											 $scope.spinerFlag=false;
-											  $scope.json = angular.toJson(data.data);
-											  var obj = JSON.parse($scope.json);
-											  
-											  	if(obj.status.toString()=="false"){
-											  		var node = document.createElement("P");
-											  		var failedTxt = document.createTextNode("Failed transaction");
-										  			node.appendChild(failedTxt); 
-											  		for(var i=0;i<obj.errorValidations.length;i++){
-											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
-											  		    node.appendChild(textnode);
-											  			node.style.color = "red";
-											  			node.style.margin="22px";
-											  		    document.getElementById("paymentResponse").appendChild(node);
-											  		  $scope.spinerFlag=false;
-											  		  
-											  		}
-											  	}else{
-											  		/* var node = document.createElement("P");
-											  		var seccussTxt = document.createTextNode("Transaction ");
-										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
-										  			
-										  		    node.appendChild(seccussTxt); 
-										  		 	node.appendChild(textnode);
-										  		  
-										  			node.style.color = "green";
-										  			node.style.margin="22px";
-										  		    document.getElementById("paymentResponse").appendChild(node); */
-											  		
-										  		  $scope.spinerFlag=false;
-										  		//$scope.afterTransactionSuccess(obj.trasactionId);
-										  		
-										  		sessionStorage.setItem("transactionId", obj.trasactionId);
-										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
-										  		//alert(sessionStorage.getItem("transactionId"));
-										  		window.location = 'ishtpayconfirm.jsp';
-											  	}
-											  $scope.spinerFlag=false;
-										 },function myError(d) {
-											 console.log("Error:    "+d);
-											 alert("fail");
-											 $scope.spinerFlag=false;
-										 });
-									}
-								};
+//								$scope.submitManual=function(){
+//									alert ('Something wrong happend');
+//									removePNode();
+//									var res=$scope.parmentForm();
+//									if(res!=undefined && res.toString()=='false'){
+//										alert("Fill this required field.");
+//									}else{
+//										$scope.spinerFlag=true;
+//										var manPayObj = {
+//												 "amount":document.getElementById("GTotalPre").value,
+//												 "familyCode":document.getElementById("familyCode").value,
+//												 "contact":document.getElementById("contact").value,
+//												 "paymentMode":$scope.selPmtMethod,
+//												 
+//											 };
+//										var contextPath = "manualTransactions.do"+"?manualPayDetails="+ JSON.stringify(manPayObj);
+//					  					
+//										$http({
+//											 method : "POST",
+//											 url : contextPath,
+//											
+//											 headers: {'Content-Type': 'application/json'}
+//											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+//										 }).then(function mySucces(data) {
+//											 $scope.spinerFlag=false;
+//											  $scope.json = angular.toJson(data.data);
+//											  var obj = JSON.parse($scope.json);
+//											  $scope.cardList=obj;
+//											  	if(obj.status.toString()=="false"){
+//											  		var node = document.createElement("P");
+//											  		var failedTxt = document.createTextNode("Failed transaction");
+//										  			node.appendChild(failedTxt); 
+//											  		for(var i=0;i<obj.errorValidations.length;i++){
+//											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+//											  		    node.appendChild(textnode);
+//											  			node.style.color = "red";
+//											  			node.style.margin="22px";
+//											  		    document.getElementById("paymentResponse").appendChild(node);
+//											  		  $scope.spinerFlag=false;
+//											  		  
+//											  		}
+//											  	}else{
+//											  		/* var node = document.createElement("P");
+//											  		var seccussTxt = document.createTextNode("Transaction ");
+//										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
+//										  			
+//										  		    node.appendChild(seccussTxt); 
+//										  		 	node.appendChild(textnode);
+//										  		  
+//										  			node.style.color = "green";
+//										  			node.style.margin="22px";
+//										  		    document.getElementById("paymentResponse").appendChild(node); */
+//											  		
+//										  		  $scope.spinerFlag=false;
+//										  		//$scope.afterTransactionSuccess(obj.trasactionId);
+//										  		
+//										  		sessionStorage.setItem("transactionId", obj.trasactionId);
+//										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
+//										  		//alert(sessionStorage.getItem("transactionId"));
+//										  		window.location = 'ishtpayconfirm.jsp';
+//											  	}
+//											  $scope.spinerFlag=false;
+//										 },function myError(d) {
+//											 console.log("Error:    "+d);
+//											 alert("fail");
+//											 $scope.spinerFlag=false;
+//										 });
+//									}
+//								};
 								$scope.paymentFun=function(){
 									removePNode();
-									var res=paymentIstarghya();
-									if(res!=undefined &&  res.toString()=='false'){
-										alert("Fill this required field.");
-									}else{
+									var res;
+									if($scope.selectedCard==null){
+										res=paymentIstarghya();
+										if(res!=undefined &&  res.toString()=='false'){
+											alert("Fill this required field.");
+											return;
+										}
+									}
 										$scope.spinerFlag=true;
 										var contextPath = "transactions.do";
 										$http({
@@ -655,14 +660,16 @@ function parmentForm() {
 										  			node.style.color = "green";
 										  			node.style.margin="22px";
 										  		    document.getElementById("paymentResponse").appendChild(node); */
-											  		 $scope.ishtPay();
+											  	  $scope.ishtPay();
 										  		  $scope.spinerFlag=false;
 										  		//$scope.afterTransactionSuccess(obj.trasactionId);
 										  		 
 										  		sessionStorage.setItem("transactionId", obj.trasactionId);
 										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotal").value);
 										  		//alert(sessionStorage.getItem("transactionId"));
-										  		window.location = 'ishtpayconfirm.jsp';
+										  
+										  		delete $scope.selectedCard;
+										  		//window.location = 'ishtpayconfirm.jsp';
 											  	}
 											  $scope.spinerFlag=false;
 										 },function myError(d) {
@@ -670,7 +677,9 @@ function parmentForm() {
 											 alert("fail");
 											 $scope.spinerFlag=false;
 										 });
-									}
+									
+									
+									
 								};
 								
 								
@@ -717,8 +726,8 @@ function parmentForm() {
 								}//addCard
 								
 								$scope.viewCard=function(){
-									var removeTBody = document.getElementById("cardDetailsTBody");
-									removeTBody.innerHTML = "";
+									var cardTBody = document.getElementById("cardDetailsTBody");
+									//removeTBody.innerHTML = "";
 										var contextPath = "viewCards.do";
 										$http({
 											 method : "POST",
@@ -731,19 +740,27 @@ function parmentForm() {
 										 }).then(function mySucces(data) {
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
+											  $scope.cardList=obj;
+											  $("#cardDetailsTBody").find("tr:gt(0)").remove();
 											  var call = null;
 											  for(var i=0;i<obj.length;i++){
+												 var cardJson= JSON.stringify(obj[i]);
+												  var cardType= creditCardTypeFromNumber(obj[i].cardNumber);
+												  var imageName='images/'+cardType.toLowerCase()+'.jpg';
+												  var cardDescription= cardType +' ending in '+obj[i].cardNumber.substr(obj[i].cardNumber.length - 4); 
 												  call=
-													"<td scope='row'>"+obj[i].cardNumber +"</td>"+
-													"<td scope='row'>"+obj[i].expirationDate +"</td>"+
-													"<td scope='row'>"+obj[i].cvv +"</td>"+
-													"<td scope='row'><a  href="+obj[i].cardNumber+" class='btn btn-success' onclick='pay()'>Pay</a></td>"+
-													"<td scope='row'><a  href="+obj[i].cardNumber+" class='btn btn-danger'  data-ng-click='removeCard()'><i class='fa fa-trash-o'></i>&nbsp;Remove</a></td>";
 													
-												  $('#cardDetailsTBody').append('<tr align="center">' + call + '</tr>');
+													'<td scope="row"><img  src="'+imageName+'" class="card-img">'+cardDescription +'</td>'+
+													'<td scope="row">'+obj[i].expirationDate +'</td>'+
+//													"<td scope='row'>"+obj[i].cvv +"</td>"+
+													'<td scope="row"><a class="link-text" id="'+obj[i].cardNumber+'" onClick="payByCard(this)">Pay</a></td>'+
+													'<td scope="row"><span class="link-text"   data-ng-click="removeCard(+obj[i].expirationDate +)><i class="fa fa-trash-o"></i>&nbsp;Remove</span></td>';
+													
+												  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
+												 
 												  call = null;
 											  }
-											  
+											  //$compile($('#cardDetailsTBody'))($scope);
 											$('.paymentForm').hide();
 											$('.cardDdetailsPage').show();
 										 },function myError(d) {
@@ -757,6 +774,29 @@ function parmentForm() {
 									$scope.grandTotal=0.0;
 									$scope.processIng=0.0;
 									$scope.ishtAmount=0.0;
+								}
+								
+
+								
+								$scope.parmentForm= function () {
+									var amount=document.getElementById("GTotal").value;
+									
+									if (amount.toString()=="0.00"){
+										document.getElementById("amountError").textContent = "Fill amount in ISTARGHYA DEPOSIT FORM.";
+										return false;
+									}else{
+										document.getElementById("amountError").textContent = "";
+									}
+									
+									var paymenType=$("#selPmtMethod").val();
+
+									if(paymenType=='AUTO'){
+										//$('.paymentForm').show();
+										$('.payReviewForm').hide();
+										$scope.viewCard();
+										
+										}
+									
 								}
 								$(document)
 										.ready(
@@ -1060,6 +1100,7 @@ function formatCurrency(amount) {
 $(document).ready(function() {
 	$("#submit_1").prop('disabled', true);
 	$('.payMANReviewForm').hide();
+	$('.cardDdetailsPage').hide();
 	$("dtChqDate").focus(function() {
 		//alert('Hi');
 		var dtToday = new Date();
@@ -1127,3 +1168,42 @@ function checkDate() {
 		document.getElementById('dtChqDate').value = null;
 	} */
 } 
+
+
+function creditCardTypeFromNumber(num) {
+	   // first, sanitize the number by removing all non-digit characters.
+	   num = num.replace(/[^\d]/g,'');
+	   // now test the number against some regexes to figure out the card type.
+	   if (num.match(/^5[1-5]\d{14}$/)) {
+	     return 'MasterCard';
+	   } else if (num.match(/^4\d{15}/) || num.match(/^4\d{12}/)) {
+	     return 'Visa';
+	   } else if (num.match(/^3[47]\d{13}/)) {
+	     return 'AmEx';
+	   } else if (num.match(/^6011\d{12}/)) {
+	     return 'Discover';
+	   }
+	   return 'UNKNOWN';
+	 }
+
+
+
+
+function payByCard(cardObj){
+		var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+	    scope.$apply(function () {
+		    var selectedCard=searchCardNumber(cardObj.id,scope.cardList);
+		    scope.selectedCard=selectedCard;
+		    scope.payByCardScope(selectedCard);
+	    });
+}
+	
+
+
+function searchCardNumber(nameKey, myArray){
+    for (var i=0; i < myArray.length; i++) {
+        if (myArray[i].cardNumber  === nameKey) {
+            return myArray[i];
+        }
+    }
+}
