@@ -635,8 +635,9 @@ function cardNameChacking(num) {
 											 $scope.spinerFlag=false;
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
+											  //TODO: PARTH : Added ! below for testing else code block
 											  
-											  	if(!obj.status.toString()=="false"){
+											  	if(obj.status.toString()=="false"){
 											  		var node = document.createElement("P");
 											  		var failedTxt = document.createTextNode("Failed transaction");
 										  			node.appendChild(failedTxt); 
@@ -762,7 +763,12 @@ function cardNameChacking(num) {
 											  }
 											  //$compile($('#cardDetailsTBody'))($scope);
 											$('.paymentForm').hide();
-											$('.cardDdetailsPage').show();
+											if(obj.length>0){
+												$('.cardDdetailsPage').show();
+											}else{
+												$('.paymentForm').show();
+											}
+											
 										 },function myError(d) {
 											 console.log("Error:    "+d);
 										 });
