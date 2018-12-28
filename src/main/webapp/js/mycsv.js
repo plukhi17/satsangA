@@ -41,34 +41,11 @@ var app = angular.module('myApp', []);
 				  for(var i=0;i<obj.length;i++){
 					  call=
 					  "<td scope='row'>"+obj[i].familyID +"</td>"+
-					  "<td scope='row'>"+obj[i].personalId +"</td>"+
-					  "<td scope='row'>"+obj[i].firstName +"</td>"+
-					  "<td scope='row'>"+obj[i].middleName +"</td>"+
-					  "<td scope='row'>"+obj[i].lastName +"</td>"+
-					  
-					  "<td scope='row'>"+obj[i].email +"</td>"+
-					  "<td scope='row'>"+obj[i].phoneNo +"</td>"+
-					  "<td scope='row'>"+
-					  			obj[i].address.addressLine1+","
-					  			+obj[i].address.addressLine2+","
-					  			+obj[i].address.addressLine3+","
-					  			+obj[i].address.zipCode+",<br>"
-					  			+obj[i].address.state+","
-					  			+obj[i].address.city+","
-					  			+obj[i].address.country+"</td>"+
-					  "<td scope='row'>"+obj[i].ritwikID +"</td>"+
-					  "<td scope='row'>"+obj[i].ritwikStatus +"</td>"+
-					  "<td scope='row'>"+obj[i].active +"</td>"+
-					  "<td scope='row'>"+obj[i].createdOn +"</td>"+
-					  "<td scope='row'>"+obj[i].lastUpdatedOn +"</td>"+
-					  "<td scope='row'>"+obj[i].userType +"</td>"+
-					  "<td scope='row'>"+obj[i].userName +"</td>"+
-					  "<td scope='row'>"+obj[i].userRole +"</td>"+
-					  "<td scope='row'>"+obj[i].rName +"</td>"+	
-					  "<td scope='row'>"+obj[i].pprFlag +"</td>"+	
-					  "<td scope='row'>"+obj[i].pseronalize +"</td>"+	
-					  "<td scope='row'>"+obj[i].indfamilyCode +"</td>"
-					  ;
+					  "<td scope='row'>"+obj[i].receiptNo +"</td>"+
+					  "<td scope='row'>"+obj[i].dtIshtDate +"</td>"+
+					  "<td scope='row'>"+obj[i].stTrnNo +"</td>"+
+					  "<td scope='row'>"+obj[i].stBankName +"</td>"+
+					  "<td scope='row'>"+obj[i].total +"</td>";
 					  $('#reportTBody').append('<tr align="center">' + call + '</tr>');
 					  call = null;
 				 

@@ -208,8 +208,8 @@ response.setDateHeader ("Expires", 0);
 				</tr>
 			</table>
 		</div>
-		
-		<div style="overflow-x:auto;">
+		<!-- Below are the old code for rootmdb chagnes -->
+		<!-- <div style="overflow-x:auto;">
 			 <table class="table table-bordered table-hover" id="reportTable">
 			    <thead>
 			      <tr>
@@ -242,10 +242,33 @@ response.setDateHeader ("Expires", 0);
 			    </tbody>
 			  </table>
 
+		</div> -->
+		
+		<div style="overflow-x:auto;">
+			 <table class="table table-bordered table-hover" id="reportTable">
+			    <thead>
+			      <tr>
+			        <th>FAMILY ID</th>
+			        <th>RECEIPT NO</th>
+			        <th>TRANSACTION DATE</th>
+			        <th>TRANSACTION/CHEQUE #</th>
+			         <th>CHEQUE ISSUE BANK</th>
+			        <th>TOTAL</th>
+			     
+			           
+			      </tr>
+			    </thead>
+			    <tbody id="reportTBody">
+			     
+			    </tbody>
+			  </table>
+
 		</div>
 	<!--/.main-->
 </div></div>
 	<script>
+	
+	
 		!function ($) {
 		    $(document).on("click","ul.nav li.parent > a > span.icon", function(){          
 		        $(this).find('em:first').toggleClass("glyphicon-minus");      

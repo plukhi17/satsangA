@@ -24,12 +24,14 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.json.JSONObject;
+import org.springframework.util.StringUtils;
 
 import sun.misc.BASE64Encoder;
 
 import com.google.gson.Gson;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -440,17 +442,40 @@ public class IshtMDBDao extends MongoBaseDao {
 		List<IshtMDB> reportRoot = new ArrayList<IshtMDB>();
 		FindIterable<IshtMDB> findIterable = null;
 		try {
-			if (reportDTO.getFamilyCode() == null) {
+			if (reportDTO.getFamilyCode() == null && reportDTO.getReceiptNo()==null && reportDTO.getToDate()==null && reportDTO.getFromDate()==null) {
 				findIterable = fetchIshtCollection().find();
+				
 			} else {
 				  BasicDBObject whereQuery = new BasicDBObject();
-				  whereQuery.put("familyID", reportDTO.getFamilyCode());
-				  findIterable=fetchIshtCollection().find(whereQuery);
+				  		if(reportDTO.getFamilyCode()!=null && !StringUtils.isEmpty(reportDTO.getFamilyCode())) {
+				  		  whereQuery.put("familyID", reportDTO.getFamilyCode());
+				  		}
+				  		if(reportDTO.getReceiptNo()!=null && !StringUtils.isEmpty(reportDTO.getReceiptNo())) {
+				  		  whereQuery.put("receiptNo", reportDTO.getReceiptNo());
+				  		}
+				  	
+				  		if(reportDTO.getToDate()!=null && !StringUtils.isEmpty(reportDTO.getToDate())) {
+				  			
+				  			 whereQuery.put("chqDate", new BasicDBObject("$lte", new Date(reportDTO.getToDate())));
+				  		}
+				  		if(reportDTO.getFromDate()!=null && !StringUtils.isEmpty(reportDTO.getFromDate())) {
+				  			
+				  			 whereQuery.put("chqDate", new BasicDBObject("$gte", reportDTO.getFromDate()));
+				  		}
+				  		if(reportDTO.getFromDate()!=null && !StringUtils.isEmpty(reportDTO.getFromDate()) && reportDTO.getFromDate()!=null && !StringUtils.isEmpty(reportDTO.getFromDate())) {
+				  			
+			  			 whereQuery.put("chqDate", BasicDBObjectBuilder.start("$gte", reportDTO.getFromDate()).add("$lte", reportDTO.getToDate()).get());
+				  		}
+					
+					
+					  findIterable=fetchIshtCollection().find(whereQuery);
+				 
+				  
 			}
-//			for (IshtMDB rootMDB : findIterable) {
-//				rootMDB.setPassword("");
-//				reportRoot.add(rootMDB);
-//			}
+			for (IshtMDB ishtMDB : findIterable) {
+			
+				reportRoot.add(ishtMDB);
+			}
 
 		} catch (RuntimeException e) {
 			logger.error("Exception occure in iterate (copy");
