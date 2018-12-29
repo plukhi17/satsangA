@@ -456,15 +456,15 @@ public class IshtMDBDao extends MongoBaseDao {
 				  	
 				  		if(reportDTO.getToDate()!=null && !StringUtils.isEmpty(reportDTO.getToDate())) {
 				  			
-				  			 whereQuery.put("chqDate", new BasicDBObject("$lte", new Date(reportDTO.getToDate())));
+				  			 whereQuery.put("checqDate", new BasicDBObject("$lte", (reportDTO.getToDate())));
 				  		}
 				  		if(reportDTO.getFromDate()!=null && !StringUtils.isEmpty(reportDTO.getFromDate())) {
 				  			
-				  			 whereQuery.put("chqDate", new BasicDBObject("$gte", reportDTO.getFromDate()));
+				  			 whereQuery.put("checqDate", new BasicDBObject("$gte", reportDTO.getFromDate()));
 				  		}
 				  		if(reportDTO.getFromDate()!=null && !StringUtils.isEmpty(reportDTO.getFromDate()) && reportDTO.getFromDate()!=null && !StringUtils.isEmpty(reportDTO.getFromDate())) {
 				  			
-			  			 whereQuery.put("chqDate", BasicDBObjectBuilder.start("$gte", reportDTO.getFromDate()).add("$lte", reportDTO.getToDate()).get());
+			  			 whereQuery.put("checqDate", BasicDBObjectBuilder.start("$gte", reportDTO.getFromDate()).add("$lte", reportDTO.getToDate()).get());
 				  		}
 					
 					
@@ -473,13 +473,24 @@ public class IshtMDBDao extends MongoBaseDao {
 				  
 			}
 			for (IshtMDB ishtMDB : findIterable) {
-			
+				if(ishtMDB.getCollectedOn()!=null) {
+					logger.info("Collected On : "+ishtMDB.getCollectedOn().toString());
+    				try {
+						ishtMDB.setCollectedOn(formatDate((ishtMDB.getCollectedOn().toString())));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    				
+				}
 				reportRoot.add(ishtMDB);
 			}
 
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			logger.error("Exception occure in iterate (copy");
 		}
 		return reportRoot;
 	}
+	
 }

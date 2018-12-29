@@ -496,7 +496,7 @@ function cardNameChacking(num) {
 								            });
 								            data.push(row);
 								        });
-						    	  
+								        
 							        	 var headerDetails ={
 							        			dtIshtDate:$scope.dtChqDate,
 							        			stBankName:$scope.stBankName,

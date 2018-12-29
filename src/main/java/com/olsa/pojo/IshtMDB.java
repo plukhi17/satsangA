@@ -5,30 +5,43 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import com.olsa.mongo.ConnectMongo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.olsa.utility.CustomDateDeSerializer;
+import com.olsa.utility.CustomDateSerializer;
 
 
 public class IshtMDB {
 
 	private BigDecimal _id;
-    private String receiptNO;
+   
     private Date transactionDate;
     private String phoneNo;
     @JsonProperty("stTrnNo")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String trnDetails;
     @JsonProperty("dtIshtDate")
+    @JsonSerialize(using= CustomDateSerializer.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String collectedOn;
     private String collectedBy;
     @JsonProperty("pmtMethod")
     private String paymentMethod;
+
     @JsonProperty("stChqNo")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String checqNo;
     @JsonProperty("stBankName")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String chequeIssueBank;
     @JsonProperty("chqDate")
-    private String checqDate;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize(using= CustomDateSerializer.class)
+    @JsonDeserialize(using= CustomDateDeSerializer.class)
+    private Date checqDate;
     private Double total;
     private String familyID;
     private String notificatonMethod;
@@ -42,13 +55,14 @@ public class IshtMDB {
 
 	private String name; 
     private String monthYear;
-    private String submittedOn;
+  
+    private Date submittedOn;
      
     
-    public String getSubmittedOn() {
+    public Date getSubmittedOn() {
 		return submittedOn;
 	}
-	public void setSubmittedOn(String submittedOn) {
+	public void setSubmittedOn(Date submittedOn) {
 		this.submittedOn = submittedOn;
 	}
 	public String getMonthYear() {
@@ -149,18 +163,23 @@ public class IshtMDB {
     }
 
     public String getChequeIssueBank() {
-        return chequeIssueBank.toUpperCase();
+    	if(chequeIssueBank!=null) {
+    		return chequeIssueBank.toUpperCase();
+    	}else {
+    		return  chequeIssueBank; 
+    	}
+        
     }
 
     public void setChequeIssueBank(String chequeIssueBank) {
         this.chequeIssueBank = chequeIssueBank.toUpperCase();
     }
 
-    public String getChecqDate() {
+    public Date getChecqDate() {
         return checqDate;
     }
 
-    public void setChecqDate(String checqDate) {
+    public void setChecqDate(Date checqDate) {
         this.checqDate = checqDate;
     }
 

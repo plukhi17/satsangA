@@ -96,7 +96,7 @@ public class CreateNSendArghyaPraswasti {
 			String str_PRIMARY_PHONE = root.getPhoneNo();
 
 			String str_COLLECTED_ON = ishtMDB.getCollectedOn();
-			String str_CHEQUE_DATE = ishtMDB.getChecqDate();
+			String str_CHEQUE_DATE = ishtMDB.getChecqDate().toString();
 
 			// Dynamic PDF creation
 			Document document = new Document();
@@ -789,8 +789,8 @@ public class CreateNSendArghyaPraswasti {
 				String CHEQUE_ISSUE_BANK = ishtMDB.getChequeIssueBank();
 				String CHEQUE_NO = ishtMDB.getChecqNo();
 
-				String CHEQUE_DATE = ishtMDB.getChecqDate();
-				cheque_Date = ishtMDB.getChecqDate();
+				String CHEQUE_DATE = ishtMDB.getChecqDate().toString();
+				cheque_Date = ishtMDB.getChecqDate().toString();
 
 				String ARGHYA_PRASWASTI_ISSUE = ishtMDB.getIssuedFlag();
 				String ARGHYA_PRASWASTI_NO = ishtMDB.getReceiptNo();

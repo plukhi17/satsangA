@@ -1,14 +1,15 @@
 package com.olsa.utility;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ReportDTO implements Serializable {
 	private static final long serialVersionUID = -40873363523262585L;
 	private String contact;
 	private String familyCode;
 	private String receiptNo;
-	private String toDate;
-	private String fromDate;
+	private Date toDate;
+	private Date fromDate;
 
 	public String getContact() {
 		return contact;
@@ -34,19 +35,32 @@ public class ReportDTO implements Serializable {
 		this.receiptNo = receiptNo;
 	}
 
-	public String getToDate() {
+	
+	/**
+	 * @return the toDate
+	 */
+	public Date getToDate() {
 		return toDate;
 	}
 
-	public void setToDate(String toDate) {
+	/**
+	 * @param toDate the toDate to set
+	 */
+	public void setToDate(Date toDate) {
 		this.toDate = toDate;
 	}
 
-	public String getFromDate() {
+	/**
+	 * @return the fromDate
+	 */
+	public Date getFromDate() {
 		return fromDate;
 	}
 
-	public void setFromDate(String fromDate) {
+	/**
+	 * @param fromDate the fromDate to set
+	 */
+	public void setFromDate(Date fromDate) {
 		this.fromDate = fromDate;
 	}
 

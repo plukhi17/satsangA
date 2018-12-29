@@ -42,9 +42,9 @@ var app = angular.module('myApp', []);
 					  call=
 					  "<td scope='row'>"+obj[i].familyID +"</td>"+
 					  "<td scope='row'>"+obj[i].receiptNo +"</td>"+
-					  "<td scope='row'>"+obj[i].dtIshtDate +"</td>"+
-					  "<td scope='row'>"+obj[i].stTrnNo +"</td>"+
-					  "<td scope='row'>"+obj[i].stBankName +"</td>"+
+					  "<td scope='row'>"+(obj[i].dtIshtDate!=undefined ? obj[i].dtIshtDate : '-') +"</td>"+
+					  "<td scope='row'>"+(obj[i].stTrnNo!=undefined ? obj[i].stTrnNo : '-') +"</td>"+
+					  "<td scope='row'>"+(obj[i].stBankName!=undefined ? obj[i].stBankName : '-') +"</td>"+
 					  "<td scope='row'>"+obj[i].total +"</td>";
 					  $('#reportTBody').append('<tr align="center">' + call + '</tr>');
 					  call = null;

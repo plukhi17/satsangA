@@ -3,14 +3,19 @@ package com.olsa.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.JsonParser.Feature;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
@@ -171,6 +176,9 @@ public class IshtAction extends BaseAction {
 	public void saveIshtJSONData() {
 		logger.info("Inside saveIshtJSONData() Action");
 		ObjectMapper mapper = new ObjectMapper();
+		
+		//mapper.getDeserializationConfig().setDateFormat(new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO));
+		//mapper.getSerializationConfig().setDateFormat(new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO));
 		String ishtLineData = getRequest().getParameter(("ishtLineData"));
 		String ishtHeaderData = getRequest().getParameter(("ishtHeaderData"));
 		String applicationFlow = getRequest().getParameter(("applicationFlow"));
@@ -180,9 +188,10 @@ public class IshtAction extends BaseAction {
 			logger.info("ishtLineData :" + ishtLineData);
 			// get header details
 			IshtMDB ishtMDBObj = mapper.readValue(ishtHeaderData, IshtMDB.class);
-
+			
 			// get line details to make line and header total
 			IshtLineMDB[] ishtLineObj = mapper.readValue(ishtLineData, IshtLineMDB[].class);
+			
 			logger.info(ishtLineObj.length);
 			List<IshtLineMDB> ishtLineMDBList = new ArrayList<IshtLineMDB>();
 			double total = 0;
@@ -202,17 +211,19 @@ public class IshtAction extends BaseAction {
 			String MonthYear ;
 				DateUtility dtl = new DateUtility();
 				if(ishtMDBObj.getChecqDate()!=null) {
-					logger.info("Extract :" + ishtMDBObj.getChecqDate().substring(0, 10));
-					MonthYear= dtl.getMonthYear(ishtMDBObj.getChecqDate().substring(0, 10));
+					
+					logger.info("Extract :" + (ishtMDBObj.getChecqDate().toString()));
+					MonthYear= dtl.getMonthYear((ishtMDBObj.getChecqDate().toString()));
 				}else {
-					MonthYear= dtl.getMonthYear(dtl.getCurrentDate().substring(0, 10));
+					MonthYear= dtl.getMonthYear(dtl.getCurrentDate1().toString());
 				}
 				
 
 				logger.info("MonthYear : " + MonthYear);
 				ishtMDBObj.setMonthYear(MonthYear);
 				ishtMDBObj.setCollectedBy("SHYAM GIRI");
-				ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
+				//ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
+				ishtMDBObj.setSubmittedOn(dtl.getCurrentDateInDate());
 				ishtMDBObj.setReceiptDate("NA");
 				ishtMDBObj.setApprovedBy("NA");
 				ishtMDBObj.setApprovedOn("NA");
@@ -523,9 +534,15 @@ public class IshtAction extends BaseAction {
 	public void report() throws IOException {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
 		ReportDTO reportDTO = mapper.readValue(getRequest().getReader().readLine(), ReportDTO.class);
 		List<IshtMDB> lists = ishtService.findReport(reportDTO);
+		try {
 		writer.append(mapper.writeValueAsString(lists));
+		}catch(IOException io) {
+			io.printStackTrace();
+			throw io;
+		}
 	}
 
 }
