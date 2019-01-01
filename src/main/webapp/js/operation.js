@@ -379,6 +379,99 @@ function cvvFun(event) {
 	}
 }
 
+
+function paymentACHValidation(){
+	
+	var accName=document.getElementById("achName").value;
+	var bankRoutingNo=document.getElementById("bankRoutingNo").value;
+	var achNo=document.getElementById("bankChACCNo").value;
+	var reAchNo=document.getElementById("reBankChACCNo").value;
+	var dlNo=document.getElementById("dlNo").value;
+	
+	
+	 
+	var accNameEle = document.getElementById("achName");
+	var bankRoutNoEle=document.getElementById("bankRoutingNo");
+	var accNoEle=document.getElementById("bankChACCNo");
+	var reAccNoEle = document.getElementById("reBankChACCNo");
+	var dlNoEle=document.getElementById("dlNo");
+	
+	
+	
+	if (accName.trim().length > 0){
+		accNameEle.classList.remove("errorText");
+	}else{
+		accNameEle.classList.add("errorText");
+		return false;
+	}
+
+	
+	if (bankRoutingNo.trim().length > 0){
+		bankRoutNoEle.classList.remove("errorText");
+	}else{
+		bankRoutNoEle.classList.add("errorText");
+		return false;
+	}
+
+	
+	if (achNo.trim().length > 0){
+		accNoEle.classList.remove("errorText");
+	}else{
+		accNoEle.classList.add("errorText");
+		return false;
+	}
+
+	
+	if (reAchNo.trim().length > 0){
+		reAccNoEle.classList.remove("errorText");
+	}else{
+		reAccNoEle.classList.add("errorText");
+		return false;
+	}
+	
+	if (dlNo.trim().length > 0){
+		dlNoEle.classList.remove("errorText");
+	}else{
+		dlNoEle.classList.add("errorText");
+		return false;
+	}
+	
+//	if (expireDate.trim().length > 0){
+//		var rex = new RegExp("[0|1][0-9]\/[1-2][0-9]{3}");
+//		if(rex.test(expireDate)){
+//			expireDateElement.classList.remove("errorText");
+//		}else{
+//			cvvElement.classList.add("errorText");
+//			return false;
+//		}
+//	}else{
+//		expireDateElement.classList.add("errorText");
+//		return false;
+//	}
+//	
+//	if (cvvNum.trim().length > 0){
+//		if(cvvNum.trim().length<3){
+//			cvvElement.classList.add("errorText")
+//			return true;
+//		}else{
+//			cvvElement.classList.remove("errorText");
+//		}
+//	}else{
+//		cvvElement.classList.add("errorText");
+//		return false;
+//	}
+	/*var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			
+			console.log(this.responseText);
+		}
+	};
+	xhttp.open("POST", "/OnlineSA/checkouts.do");
+	xhttp.send();
+	*/
+	return true;
+}
 function paymentIstarghya(){
 	
 	var cardNumber=document.getElementById("cardNumber").value;
@@ -736,6 +829,41 @@ function cardNameChacking(num) {
 										childNodeEle.removeChild(childNodeEle.childNodes[i]);
 									}
 								}
+								
+								$scope.addACH=function(){
+									removePNode();
+									var res=paymentACHValidation();
+									if(res.toString()=='false'){
+										alert("Fill this required field.");
+									}else{
+										var contextPath = "addcards.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "familyCode":document.getElementById("familyCode").value,
+												 "contact":document.getElementById("contact").value,
+												 "cardNumber":$scope.cardNumberText,
+												 "expirationDate":$scope.expirationDateText,
+												 "cvv":$scope.cvvText
+											 },
+											 headers: {'Content-Type': 'application/json'}
+										 }).then(function mySucces(data) {
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  var node = document.createElement("P");
+									  		   var textnode = document.createTextNode(obj.responseMsg);
+									  		    node.appendChild(textnode);
+									  			node.style.color = "green";
+									  			node.style.margin="20px";
+									  		    document.getElementById("paymentResponse").appendChild(node);
+											  
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+										 });
+									}//else
+								}//addCard
+								
 								$scope.addCard=function(){
 									removePNode();
 									var res=paymentIstarghya();

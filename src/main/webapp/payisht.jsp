@@ -812,7 +812,7 @@ response.setDateHeader ("Expires", 0);
 											<div class="form-group  has-feedback">
 											    <label class="cardinfo-label" for="ach-name">Name On Account
 												</label>
-											    <input type="text" id="ach-name" ng-model="achName" class="form-control" placeholder="Acc Name">
+											    <input type="text" id="achName" ng-model="achName" class="form-control" placeholder="Acc Name">
 											    
 										   </div>
 										</div>
