@@ -122,7 +122,7 @@ response.setDateHeader ("Expires", 0);
 			<%@include file="includeAdminMenu.jsp" %>
 				
 			
-			<li role="presentation" class="divider" style="margin-top: -10px ;font-size: 12px;">
+			<li role="presentation" class="divider" style="margin-top: 0px ;font-size: 12px;">
 				<a href="reportmech.jsp">
 				<svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg>
          			Report

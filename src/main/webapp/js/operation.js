@@ -260,9 +260,10 @@ function bankRoutingKeyup(event) {
 	
 	var v = event.target.value.trim();
 	var pattern= /^\d{9}$/;
-	var matches = v.match(pattern);
+	var re = new RegExp(pattern);
+	var matches = re.test(v);
 
-	return match;
+	return matches;
 }
 
 
@@ -270,9 +271,9 @@ function achNoFun(event) {
 	
 
 	var v = event.target.value.trim();
-	var pattern= /^[1-9]\d{12,16}$/;
-	var matches = v.match(pattern);
-	return match;
+	var pattern= /^\d{9}$/;
+	var re = new RegExp(pattern);
+	return re.test(v);
 	
 }
 
@@ -282,8 +283,8 @@ function reAchNoFun(event) {
 
 	var v = event.target.value.trim();
 	var pattern= /^[1-9]\d{12,16}$/;
-	var matches = v.match(pattern);
-	return match;
+	var re = new RegExp(pattern);
+	return re.test(v);
 	
 }
 
@@ -406,8 +407,17 @@ function paymentACHValidation(){
 	}
 
 	
-	if (bankRoutingNo.trim().length > 0){
-		bankRoutNoEle.classList.remove("errorText");
+	if ( bankRoutingNo.trim().length > 0){
+		var v =bankRoutingNo.trim();
+		var pattern= /^\d{9}$/;
+		var re = new RegExp(pattern);
+		if(!re.test(v)){
+			bankRoutNoEle.classList.add("errorText");
+			return false;
+		}else{
+			bankRoutNoEle.classList.remove("errorText");
+		}
+		
 	}else{
 		bankRoutNoEle.classList.add("errorText");
 		return false;
@@ -415,7 +425,15 @@ function paymentACHValidation(){
 
 	
 	if (achNo.trim().length > 0){
-		accNoEle.classList.remove("errorText");
+		var v = achNo.trim();
+		var pattern= /^\d{1,17}$/;
+		var re = new RegExp(pattern);
+		if(!re.test(v)){
+			accNoEle.classList.add("errorText");
+			return false;
+		}else{
+			accNoEle.classList.remove("errorText");
+		}
 	}else{
 		accNoEle.classList.add("errorText");
 		return false;
@@ -423,7 +441,22 @@ function paymentACHValidation(){
 
 	
 	if (reAchNo.trim().length > 0){
-		reAccNoEle.classList.remove("errorText");
+		var v = reAchNo.trim();
+		var pattern= /^\d{1,17}$/;
+		var re = new RegExp(pattern);
+		if(achNo != v){
+			reAccNoEle.classList.add("errorText");
+			return false;
+		}else{
+			if(!re.test(v)){
+				reAccNoEle.classList.add("errorText");
+				return false;
+				
+			}else{
+				reAccNoEle.classList.remove("errorText");
+			}
+		}
+		
 	}else{
 		reAccNoEle.classList.add("errorText");
 		return false;
@@ -1352,17 +1385,20 @@ function checkDate() {
 
 function creditCardTypeFromNumber(num) {
 	   // first, sanitize the number by removing all non-digit characters.
-	   num = num.replace(/[^\d]/g,'');
-	   // now test the number against some regexes to figure out the card type.
-	   if (num.match(/^5[1-5]\d{14}$/)) {
-	     return 'MasterCard';
-	   } else if (num.match(/^4\d{15}/) || num.match(/^4\d{12}/)) {
-	     return 'Visa';
-	   } else if (num.match(/^3[47]\d{13}/)) {
-	     return 'AmEx';
-	   } else if (num.match(/^6011\d{12}/)) {
-	     return 'Discover';
-	   }
+		if(num!=null){
+	
+			   num = num.replace(/[^\d]/g,'');
+			   // now test the number against some regexes to figure out the card type.
+			   if (num.match(/^5[1-5]\d{14}$/)) {
+			     return 'MasterCard';
+			   } else if (num.match(/^4\d{15}/) || num.match(/^4\d{12}/)) {
+			     return 'Visa';
+			   } else if (num.match(/^3[47]\d{13}/)) {
+			     return 'AmEx';
+			   } else if (num.match(/^6011\d{12}/)) {
+			     return 'Discover';
+			   }
+		}
 	   return 'UNKNOWN';
 	 }
 

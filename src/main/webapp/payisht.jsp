@@ -155,7 +155,8 @@ response.setDateHeader ("Expires", 0);
 		<!-- /.container-fluid -->
 	</nav>
 	<!--sidebar-->
-	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+	<jsp:include page="slidemenu.jsp" />  
+	<!-- <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<ul class="nav menu">
 			<li><a href="index.jsp"> <svg
 						class="glyph stroked dashboard-dial">
@@ -182,7 +183,7 @@ response.setDateHeader ("Expires", 0);
 			</a></li>
 		</ul>
 
-	</div>
+	</div> -->
 	<!--/.sidebar-->
 
 <!-- depositForm start -->
@@ -839,7 +840,7 @@ response.setDateHeader ("Expires", 0);
 													<div class="cardinfo-cvv" >
 														<label class="cardinfo-label" for="cvv">Re-enter Checking Account Number</label>
 														<div id="bank-re-chAccNo">
-														<input type="text" id="reBankChACCNo" ng-model="reBankChACCNo" class="form-control input" onkeypress='return reAchNoFun(event)'
+														<input type="text" id="reBankChACCNo" ng-model="reBankChACCNo" class="form-control input" onblur='return reAchNoFun(event)'
 																placeholder="Upto 17 digit" >
 														</div>
 													</div>
