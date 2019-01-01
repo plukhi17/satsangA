@@ -773,6 +773,115 @@ response.setDateHeader ("Expires", 0);
 <!-- paymentForm Card  END -->
 
 
+<!-- ACH details  Start -->
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main achForm">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="index.jsp"> <svg class="glyph stroked home">
+                            <use xlink:href="#stroked-home"></use>
+                        </svg>
+				</a></li>
+				<li class="active">ISTARGHYA PAYMENT FORM</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div id="dvErrAlert" class="alert alert-danger" style="display: none">
+				<a class="close" href="#">�</a>
+				<p>
+			</div>
+			<div class="col-md-12">
+				<input type="hidden" id="phoneNo" value=<%= root.getPhoneNo()%>
+					name="phoneNo" placeholder="your phone no"><br> <input
+					id="txtApplicationFlow" name="txtApplicationFlow" type="hidden"
+					value=<%= applciationFlow %>> <br>
+				<div class="panel panel-default">
+					<div class="panel-heading" id="accordion">Add a checking account
+						<button class="backButtonPayment" class="btn" onclick="goBackFrmACH()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
+						<a  class="pull-right" href="#" title="Refresh">
+             				<i style="font-size:30px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
+       					</a>
+					</div>
+					<div class="panel-body">
+						<div class="paymentFormBody" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
+							<div class="col-xs-12 col-sm-2 col-md-2" >
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-6" >
+								<div class="row" style="margin: 10px;">
+									<form id="paymentForm" class="scale-down">
+										<div class="cardinfo-card-number">
+											<div class="form-group  has-feedback">
+											    <label class="cardinfo-label" for="ach-name">Name On Account
+												</label>
+											    <input type="text" id="ach-name" ng-model="achName" class="form-control" placeholder="Acc Name">
+											    
+										   </div>
+										</div>
+										<div  class="">
+											<div class="row">
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-exp-date">
+															<label class="cardinfo-label" for="expiration-date">Bank Routing Number</label>
+															<div id="bank-routing-no">
+																<input type="text" ng-model="bankRoutingNo" id="bankRoutingNo" class="form-control input" onblur="return bankRoutingKeyup(event)"  placeholder="9 digit Number">
+															</div>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="cvv">Checking Account Number</label>
+														<div id="bank-chAccNo">
+														<input type="text" id="bankChACCNo" ng-model="bankChACCNo" class="form-control input" onblur='return achNoFun(event)'
+																placeholder="Upto 17 digit" >
+														</div>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="cvv">Re-enter Checking Account Number</label>
+														<div id="bank-re-chAccNo">
+														<input type="text" id="reBankChACCNo" ng-model="reBankChACCNo" class="form-control input" onkeypress='return reAchNoFun(event)'
+																placeholder="Upto 17 digit" >
+														</div>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="cvv">Driver License Number</label>
+														<div id="dl-no">
+														<input type="text" id="dlNo" ng-model="dlNo" class="form-control input" 
+																placeholder="" >
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="div-btn-paynow" style="margin-top: 18px;">
+												<input id="payNowButton"  ng-click="paymentAchFun()"  onclick="return paymentIstarghya()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
+										</div>
+										<div style="margin-top: 10px">
+												<button class="btn btn-success btn-md" ng-click="addACH()"><i class="fa fa-plus"></i>&nbsp; Add </button>
+												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
+										</div>
+									</form>
+									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
+										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4 col-md-4" >
+								<div class="col-xs-12 col-sm-12 col-md-12" id="paymentResponse" style="font-size: 16px;">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--ACH details  Start  END -->
+
+
 <!-- paymentCheckoutForm  Start -->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main cardDdetailsPage">
 		<div class="row">
@@ -850,12 +959,62 @@ response.setDateHeader ("Expires", 0);
 									
 								</div>
 							</div>
+							
+						
+							<div class="col-xs-12 col-sm-12 col-md-12 margin-top-50" >
+								
+								<div class="row" style="margin: 10px;">
+									<div class="col-xs-12 col-sm-2 col-md-2" >
+									</div>
+							<div class="col-xs-12 col-sm-6 col-md-6" >
+								
+									<form id="cardListForm" class="scale-down">
+										
+										<table id="cardDetailsTBody" class="table table-responsive">
+										<tr>
+											
+											
+											<th>
+												Your Checking accounts
+											
+											</th>
+											
+											<th >
+												Name on account
+											
+											</th>
+											<th >
+												
+										
+											</th>
+											
+											<th >
+											
+											
+											</th>
+										</tr>
+										</table>
+										
+											<div style="margin-top: 10px">
+												<a  onClick="addACHForm()" class="add-card"><i class="fa fa-plus"></i>&nbsp; Add Checking account</a>
+												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
+											</div>
+									</form>
+									
+									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
+										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
+									</div>
+								</div>
+							</div>
+								
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	</div>
+	
 <!-- paymentForm Card  END -->
 
 	<% 	  System.out.println("1  phoneNo: "+root.getPhoneNo()); %>

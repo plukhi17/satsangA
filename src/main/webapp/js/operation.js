@@ -8,6 +8,15 @@ function addCardForm(){
 	$('.paymentForm').show();
 	$('.cardDdetailsPage').hide();
 }
+
+function addACHForm(){
+	$('.achForm').show();
+	$('.cardDdetailsPage').hide();
+}
+function goBackFrmACH() {
+	$('.cardDdetailsPage').show();
+	$('.achForm').hide();
+}
 function goBackToCardDetails(){
 	$('.cardDdetailsPage').show();
 	$('.paymentForm').hide();
@@ -241,7 +250,42 @@ function cardNumberFun(event) {
 	}
 }
 
+function bankRoutingKeyup(event) {
+	var key = window.event ? event.keyCode : event.which;
+	/*
+	 * if(event.target.value.length==1){ cardNameChacking(event.target.value); }
+	 */
+	//$('').val(cardNumverFormat(event.target.value));
 
+	
+	var v = event.target.value.trim();
+	var pattern= /^\d{9}$/;
+	var matches = v.match(pattern);
+
+	return match;
+}
+
+
+function achNoFun(event) {
+	
+
+	var v = event.target.value.trim();
+	var pattern= /^[1-9]\d{12,16}$/;
+	var matches = v.match(pattern);
+	return match;
+	
+}
+
+
+function reAchNoFun(event) {
+	
+
+	var v = event.target.value.trim();
+	var pattern= /^[1-9]\d{12,16}$/;
+	var matches = v.match(pattern);
+	return match;
+	
+}
 
 function cardNumverFormat(value) {
 	var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
@@ -1107,6 +1151,8 @@ $(document).ready(function() {
 	$("#submit_1").prop('disabled', true);
 	$('.payMANReviewForm').hide();
 	$('.cardDdetailsPage').hide();
+	$('.achForm').hide();
+	
 	$("dtChqDate").focus(function() {
 		//alert('Hi');
 		var dtToday = new Date();
