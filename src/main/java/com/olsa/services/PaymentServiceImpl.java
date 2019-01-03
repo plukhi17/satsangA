@@ -20,9 +20,11 @@ import com.braintreegateway.TransactionRequest;
 import com.braintreegateway.ValidationError;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.olsa.bo.PaymentCardDao;
+import com.olsa.utility.ACHDetailsDTO;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.ErrorValidation;
 import com.olsa.utility.ManualPaymentUtils;
+import com.olsa.utility.PaymentACHUtils;
 import com.olsa.utility.PaymentResponseUtils;
 import com.olsa.utility.PaymentUtils;
 
@@ -203,9 +205,20 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	}
 	
 	@Override
+	public String addACH(PaymentACHUtils paymentUtils) {
+		return paymentCard.saveACHDetails(paymentUtils);
+	}
+	
+	@Override
 	public List<CardDetailsDTO> viewAllCard(String contact) {
 		
 		return paymentCard.viewAllCard(contact);
+	}
+	
+	@Override
+	public List<ACHDetailsDTO> viewAllACH(String contact) {
+		
+		return paymentCard.viewAllACH(contact);
 	}
 
 }

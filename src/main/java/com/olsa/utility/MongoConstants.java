@@ -12,6 +12,7 @@ public interface MongoConstants {
 	String ISHT_SEQ="IshtSequence";
 	String TRANSACTION_DETAILS="TransactionDetails";
 	String CARD_DETAILS="CardDetails";
+	String ACH_DETAILS="ACHDetails";
     String PASS_RESET_OTP ="PasswordResetOTP";
 	
 	//For lcocal 

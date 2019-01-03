@@ -969,9 +969,9 @@ response.setDateHeader ("Expires", 0);
 									</div>
 							<div class="col-xs-12 col-sm-6 col-md-6" >
 								
-									<form id="cardListForm" class="scale-down">
+									<form id="achListForm" class="scale-down">
 										
-										<table id="cardDetailsTBody" class="table table-responsive">
+										<table id="achDetailsTBody" class="table table-responsive">
 										<tr>
 											
 											

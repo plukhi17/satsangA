@@ -3,9 +3,11 @@ package com.olsa.bo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.olsa.utility.ACHDetailsDTO;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.MongoConstants;
+import com.olsa.utility.PaymentACHUtils;
 import com.olsa.utility.PaymentUtils;
 
 import java.util.ArrayList;
@@ -51,6 +53,34 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		return response;
 
 	}
+	
+	@Override
+	public String saveACHDetails(PaymentACHUtils paymentUtils) {
+		String response = null;
+		try {
+			if (ifExistCardNumber(paymentUtils.getChAccNo()) != true) {
+				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+						.getCollection(MongoConstants.ACH_DETAILS);
+						//.getCollection("CardDetails");
+				Document document = new Document().append("userId", paymentUtils.getContact())
+						.append("familyCode", paymentUtils.getFamilyCode())
+						.append("accName", paymentUtils.getAccName())
+						.append("routingNo", paymentUtils.getBankRoutingNo())
+						.append("chAccNo", paymentUtils.getChAccNo())
+						.append("dlNo", paymentUtils.getDlNo());
+				db.insertOne(document);
+				response = "Successfully saved card details";
+			} else {
+				response = "All ready exist card details";
+			}
+		} catch (Exception e) {
+			logger.error("Exception occure while saving card details: " + e.getMessage());
+			response = "Try later";
+		}
+		return response;
+
+	}
+
 
 	boolean ifExistCardNumber(String cardNumber) {
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CARD_DETAILS);
@@ -61,6 +91,21 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		FindIterable<Document> result = db.find(document);
 		for (Document doc : result) {
 			if (doc.get("cardNumber") != null) {
+				return true;
+			}
+		}
+		return flag;
+	}
+	
+	boolean ifExistACHNumber(String accNo) {
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.ACH_DETAILS);
+				//.getCollection("CardDetails");
+		boolean flag = false;
+		Document document = new Document();
+		document.put("chAccNo", accNo);
+		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			if (doc.get("chAccNo") != null) {
 				return true;
 			}
 		}
@@ -119,6 +164,26 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 			dto.setCardNumber((String)doc.get("cardNumber"));
 			dto.setExpirationDate((String)doc.get("expiDate"));
 			dto.setCvv((String)doc.get("cvv"));
+			cardDetailsDTOs.add(dto);
+		}
+		return cardDetailsDTOs;
+	}
+	
+	@Override
+	public List<ACHDetailsDTO> viewAllACH(String contact) {
+		List<ACHDetailsDTO> cardDetailsDTOs=new ArrayList<ACHDetailsDTO>();
+		
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.ACH_DETAILS);  
+		//.getCollection("CardDetails");
+		Document document = new Document();
+		document.put("userId", contact);
+		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			ACHDetailsDTO dto=new ACHDetailsDTO();
+			dto.setAccName((String)doc.get("accName"));
+			dto.setRoutingNo((String)doc.get("routingNo"));
+			dto.setChAccNo((String)doc.get("chAccNo"));
+			dto.setDlNo((String)doc.get("dlNo"));
 			cardDetailsDTOs.add(dto);
 		}
 		return cardDetailsDTOs;

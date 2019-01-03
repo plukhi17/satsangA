@@ -14,8 +14,10 @@ import org.json.JSONObject;
 
 import com.olsa.pojo.IshtMDB;
 import com.olsa.services.PaymentService;
+import com.olsa.utility.ACHDetailsDTO;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.ManualPaymentUtils;
+import com.olsa.utility.PaymentACHUtils;
 import com.olsa.utility.PaymentResponseUtils;
 import com.olsa.utility.PaymentUtils;
 
@@ -81,6 +83,15 @@ public class CheckoutAction extends BaseAction {
 		writer.append(mapper.writeValueAsString(response));
 	}
 	
+	public void addACH() throws JsonParseException, JsonMappingException, IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		PaymentACHUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentACHUtils.class);
+		Map<String,String> response=new HashMap<String,String>();
+		response.put("responseMsg", paymentServic.addACH(paymentUtils));
+		writer.append(mapper.writeValueAsString(response));
+	}
+	
 	public void viewCard() throws IOException {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
@@ -90,6 +101,16 @@ public class CheckoutAction extends BaseAction {
 		writer.append(mapper.writeValueAsString(card));
 		
 	}
+	public void viewACH() throws IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		@SuppressWarnings("rawtypes")
+		HashMap map=mapper.readValue(getRequest().getReader().readLine(),HashMap.class);
+		List<ACHDetailsDTO> card=paymentServic.viewAllACH(map.get("contact").toString());
+		writer.append(mapper.writeValueAsString(card));
+		
+	}
+	
 	
 	public void transactionsuccess() {
 		//System.out.println(getRequest().getParameter("transactionId"));

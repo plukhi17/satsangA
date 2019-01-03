@@ -876,9 +876,10 @@ function cardNameChacking(num) {
 											 data:{
 												 "familyCode":document.getElementById("familyCode").value,
 												 "contact":document.getElementById("contact").value,
-												 "cardNumber":$scope.cardNumberText,
-												 "expirationDate":$scope.expirationDateText,
-												 "cvv":$scope.cvvText
+												 "accName":$scope.achName,
+												 "bankRoutingNo":$scope.bankRoutingNo,
+												 "chAccNo":$scope.bankChACCNo,
+												 "dlNo":$scope.dlNo,
 											 },
 											 headers: {'Content-Type': 'application/json'}
 										 }).then(function mySucces(data) {
@@ -979,7 +980,52 @@ function cardNameChacking(num) {
 										 });
 								}//viewCard
 								
-								
+								//View ACH: START
+								$scope.viewACH=function(){
+									var cardTBody = document.getElementById("achDetailsTBody");
+									//removeTBody.innerHTML = "";
+										var contextPath = "viewACHs.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "contact":document.getElementById("contact").value,
+											 },
+											 headers: {'Content-Type': 'application/json'}
+											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+										 }).then(function mySucces(data) {
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  $scope.cardList=obj;
+											  $("#achDetailsTBody").find("tr:gt(0)").remove();
+											  var call = null;
+											  for(var i=0;i<obj.length;i++){
+												 var achJson= JSON.stringify(obj[i]);
+												
+												  var accDescription= 'Account ending in '+achJson.substr(obj[i].chAccNo.length - 2); 
+												  call=
+													
+													'<td scope="row"><img  src="'+accDescription+'</td>'+
+													'<td scope="row"><img  src="'+obj[i].accName+'</td>'+
+													'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'" onClick="payByCard(this)">Pay</a></td>'+
+													'<td scope="row"><span class="link-text"   data-ng-click="removeCard(+obj[i].expirationDate +)><i class="fa fa-trash-o"></i>&nbsp;Remove</span></td>';
+													
+												  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
+												 
+												  call = null;
+											  }
+											  //$compile($('#cardDetailsTBody'))($scope);
+											$('.paymentForm').hide();
+											if(obj.length>0){
+												$('.cardDdetailsPage').show();
+											}else{
+												$('.paymentForm').show();
+											}
+											
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+										 });
+								}//viewCard
 								$scope.changeMe= function(){
 									// alert('hello'+ $scope.selPmtMethod);
 									$scope.grandTotal=0.0;
