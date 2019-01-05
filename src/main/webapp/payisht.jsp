@@ -870,7 +870,7 @@ response.setDateHeader ("Expires", 0);
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4 col-md-4" >
-								<div class="col-xs-12 col-sm-12 col-md-12" id="paymentResponse" style="font-size: 16px;">
+								<div class="col-xs-12 col-sm-12 col-md-12" id="achADDResponse" style="font-size: 16px;">
 									
 								</div>
 							</div>

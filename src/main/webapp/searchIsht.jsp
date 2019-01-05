@@ -176,7 +176,7 @@ response.setDateHeader ("Expires", 0);
                                                        data-toolbar="#toolbar"
                                                        data-search="true"
                                                        data-show-refresh="false"
-                                                       data-show-toggle="false"
+                                                       data-show-torconggle="false"
                                                        data-show-columns="true"
                                                        data-show-export="false"
                                                        data-detail-view="false"

@@ -44,6 +44,7 @@
 
 		<action name="transactions" method="transaction" class="checkoutAction"></action>
 		<action name="manualTransactions" method="manualTransactions" class="checkoutAction"></action>
+		<action name="addACHs" method="addACH" class="checkoutAction"></action>
 		<action name="addcards" method="addCard" class="checkoutAction"></action>
 		<action name="viewCards" method="viewCard" class="checkoutAction"></action>
 		<action name="viewACHs" method="viewACH" class="checkoutAction"></action>

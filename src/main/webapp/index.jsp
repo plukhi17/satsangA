@@ -119,6 +119,12 @@ response.setDateHeader ("Expires", 0);
 					Ishtavrity Transcations</a>
 			</li>
 			
+				<li>
+				<a href="ledger.jsp">
+					<svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg>
+					Ishtavrity Ledger</a>
+			</li>
+			
 			<%@include file="includeAdminMenu.jsp" %>
 				
 			

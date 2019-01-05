@@ -15,10 +15,19 @@ function addACHForm(){
 }
 function goBackFrmACH() {
 	$('.cardDdetailsPage').show();
+
+//	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+//    scope.$apply(function () {
+//	    scope.viewACH();
+//	});
 	$('.achForm').hide();
 }
 function goBackToCardDetails(){
 	$('.cardDdetailsPage').show();
+//	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+//    scope.$apply(function () {
+//	    scope.viewACH();
+//	});
 	$('.paymentForm').hide();
 	
 }
@@ -869,7 +878,7 @@ function cardNameChacking(num) {
 									if(res.toString()=='false'){
 										alert("Fill this required field.");
 									}else{
-										var contextPath = "addcards.do";
+										var contextPath = "addACHs.do";
 										$http({
 											 method : "POST",
 											 url : contextPath,
@@ -890,7 +899,7 @@ function cardNameChacking(num) {
 									  		    node.appendChild(textnode);
 									  			node.style.color = "green";
 									  			node.style.margin="20px";
-									  		    document.getElementById("paymentResponse").appendChild(node);
+									  		    document.getElementById("achADDResponse").appendChild(node);
 											  
 										 },function myError(d) {
 											 console.log("Error:    "+d);
@@ -971,6 +980,7 @@ function cardNameChacking(num) {
 											$('.paymentForm').hide();
 											if(obj.length>0){
 												$('.cardDdetailsPage').show();
+												$scope.viewACH();
 											}else{
 												$('.paymentForm').show();
 											}
@@ -996,31 +1006,27 @@ function cardNameChacking(num) {
 										 }).then(function mySucces(data) {
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
-											  $scope.cardList=obj;
+											  $scope.achList=obj;
 											  $("#achDetailsTBody").find("tr:gt(0)").remove();
 											  var call = null;
 											  for(var i=0;i<obj.length;i++){
-												 var achJson= JSON.stringify(obj[i]);
 												
-												  var accDescription= 'Account ending in '+achJson.substr(obj[i].chAccNo.length - 2); 
+												
+												  var accDescription= 'Account ending in '+obj[i].chAccNo.substr(obj[i].chAccNo.length - 2); 
 												  call=
 													
-													'<td scope="row"><img  src="'+accDescription+'</td>'+
-													'<td scope="row"><img  src="'+obj[i].accName+'</td>'+
+													'<td scope="row">'+accDescription+'</td>'+
+													'<td scope="row">'+obj[i].accName+'</td>'+
 													'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'" onClick="payByCard(this)">Pay</a></td>'+
 													'<td scope="row"><span class="link-text"   data-ng-click="removeCard(+obj[i].expirationDate +)><i class="fa fa-trash-o"></i>&nbsp;Remove</span></td>';
 													
-												  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
+												  $('#achDetailsTBody').append('<tr >' + call + '</tr>');
 												 
 												  call = null;
 											  }
 											  //$compile($('#cardDetailsTBody'))($scope);
-											$('.paymentForm').hide();
-											if(obj.length>0){
-												$('.cardDdetailsPage').show();
-											}else{
-												$('.paymentForm').show();
-											}
+											
+											
 											
 										 },function myError(d) {
 											 console.log("Error:    "+d);
@@ -1051,7 +1057,6 @@ function cardNameChacking(num) {
 										//$('.paymentForm').show();
 										$('.payReviewForm').hide();
 										$scope.viewCard();
-										
 										}
 									
 								}
