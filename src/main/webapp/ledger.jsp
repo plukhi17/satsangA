@@ -19,6 +19,7 @@
     <!--Icons-->
     <script src="js/lumino.glyphs.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="js/ledger.js"></script>
 
     <!--[if lt IE 9]>
@@ -158,7 +159,16 @@ response.setDateHeader ("Expires", 0);
            
            	<input type="hidden" id="phoneNo" value = <%= root.getPhoneNo()%> name="phoneNo" placeholder="your phone no" ><br>
                 <div class="panel panel-default">
-                    <div class="panel-heading" id="accordion">Balance Sheet</div>
+                    <div class="panel-heading" id="accordion">
+                       <div class="col-md-9">
+                       		Balance Sheet
+                       	</div>
+                       	 <div class="col-md-3">
+                			<button class="btn btn-info btn-parmentForm"  onclick="showCode()"> 
+                					<i class="fa fa-plus"></i> Code 
+                			</button>
+                				                       	</div>
+                       </div>
                     <div class="panel-body">
                         <form class="form-horizontal">
                             <fieldset>
@@ -205,6 +215,23 @@ response.setDateHeader ("Expires", 0);
         <!--/.row content msg-->
     </div>
     <!--/.main-->
+    
+    <!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Modal header</h3>
+    </div>
+    <div class="modal-body">
+        <p>One fine body…</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary">Save changes</button>
+    </div>
+</div>
+
+
 
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

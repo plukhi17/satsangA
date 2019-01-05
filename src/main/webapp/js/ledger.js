@@ -1,3 +1,5 @@
+var app = angular.module('onlineSA', []);
+app.controller('onlineSAController', function($scope,$http,$rootScope) {
 $scope.loadIshtTran = function() {
   		  			 	var istPhone = $('#phoneNo').val();
   		  			 	var contextPath = "getIshtTran.do"+"?phoneNo="+ istPhone;
@@ -58,6 +60,12 @@ $scope.loadIshtTran = function() {
   	  		                    }
   	  		               ]
   	  		        });
+  	  				 	
+			 		$scope.addCode=function() {
+			 			$('#myModal').modal('show');
+		  			};	
+		  			
+		  			
   	  				$http({
 							 method : "POST",
 							 url : contextPath
@@ -75,3 +83,13 @@ $scope.loadIshtTran = function() {
 							 alert("fail");
 						 });
 		  			};
+		  		
+		  			
+		  			
+});
+
+		  			
+function showCode(){
+	$('#myModal').show();
+	
+}
