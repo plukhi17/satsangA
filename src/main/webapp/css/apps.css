@@ -27,6 +27,8 @@
 }
 
 
+
+
 .div-btn-paynow input {
 	border-radius: 4em;
 	border: none;
@@ -160,4 +162,12 @@
 .margin-top-5{
 	
 	margin-top: 5px;
+}
+
+.codeWrapper-footer{
+	text-align: right;	
+}
+
+.cAlign-right{
+	text-align: right;
 }

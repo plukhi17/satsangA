@@ -1,5 +1,8 @@
 var app = angular.module('onlineSA', []);
 app.controller('onlineSAController', function($scope,$http,$rootScope) {
+	
+	$("#myModal").hide();
+	$scope.codeBtn="Code";
 $scope.loadIshtTran = function() {
   		  			 	var istPhone = $('#phoneNo').val();
   		  			 	var contextPath = "getIshtTran.do"+"?phoneNo="+ istPhone;
@@ -62,7 +65,8 @@ $scope.loadIshtTran = function() {
   	  		        });
   	  				 	
 			 		$scope.addCode=function() {
-			 			$('#myModal').modal('show');
+			 	
+			 			$scope.codeBtn="Back";
 		  			};	
 		  			
 		  			
@@ -91,5 +95,7 @@ $scope.loadIshtTran = function() {
 		  			
 function showCode(){
 	$('#myModal').show();
+	$('.ledgerWrapper').hide();
+	return true;
 	
 }

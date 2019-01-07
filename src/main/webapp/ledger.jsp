@@ -15,6 +15,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!--<link href="css/datepicker3.css" rel="stylesheet">-->
     <link href="css/styles.css" rel="stylesheet">
+     <link href="css/apps.css" rel="stylesheet">
     <!--<link href="css/bootstrap-table.css" rel="stylesheet">-->
     <!--Icons-->
     <script src="js/lumino.glyphs.js"></script>
@@ -163,9 +164,11 @@ response.setDateHeader ("Expires", 0);
                        <div class="col-md-9">
                        		Balance Sheet
                        	</div>
-                       	 <div class="col-md-3">
-                			<button class="btn btn-info btn-parmentForm"  onclick="showCode()"> 
-                					<i class="fa fa-plus"></i> Code 
+                       	 <div class="col-md-3 cAlign-right">
+                			<button class="btn btn-info btn-parmentForm "  ng-click="addCode()" onclick="return showCode()"> 
+                					<span ng-if="codeBtn == 'Code'">
+                						<i class="fa fa-plus"></i>
+                					</span> {{codeBtn}} 
                 			</button>
                 				                       	</div>
                        </div>
@@ -174,7 +177,7 @@ response.setDateHeader ("Expires", 0);
                             <fieldset>
                                 <!-- Sample Table -->
                                 <div class="form-group">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 ledgerWrapper">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
                                                 <div id="toolbar">
@@ -199,6 +202,21 @@ response.setDateHeader ("Expires", 0);
                                             </div>
                                         </div>
                                     </div>
+                                    
+            
+								<!-- Modal -->
+								<div id="myModal" class="codeWrapper col-md-12" tabindex="-1" >
+								   
+								    <div class="codeWrapper-body">
+								        <p>One fine body…</p>
+								    </div>
+								    <div class="codeWrapper-footer">
+								        <button class="btn" aria-hidden="true">Close</button>
+								        <button class="btn btn-primary">Save changes</button>
+								    </div>
+								</div>
+								<!-- Modal -->
+            	
                                 </div>
                             </fieldset>
                         </form>
@@ -211,32 +229,21 @@ response.setDateHeader ("Expires", 0);
 
             </div>
             <!--/.col - Left-->
+            
+           
+           
         </div>
         <!--/.row content msg-->
     </div>
     <!--/.main-->
     
-    <!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Modal header</h3>
-    </div>
-    <div class="modal-body">
-        <p>One fine body…</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary">Save changes</button>
-    </div>
-</div>
 
 
 
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-table.js"></script>
-   
+  
 </body>
 
 </html>
