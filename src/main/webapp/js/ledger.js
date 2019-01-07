@@ -64,10 +64,7 @@ $scope.loadIshtTran = function() {
   	  		               ]
   	  		        });
   	  				 	
-			 		$scope.addCode=function() {
 			 	
-			 			$scope.codeBtn="Back";
-		  			};	
 		  			
 		  			
   	  				$http({
@@ -88,7 +85,18 @@ $scope.loadIshtTran = function() {
 						 });
 		  			};
 		  		
+		  			$scope.addCode=function() {
+		  				if(	$scope.codeBtn=="Back"){
+		  					$('#myModal').hide();
+			  				$('.ledgerWrapper').show();
+				 			$scope.codeBtn="Code";
+		  				}else{
+		  					$('#myModal').show();
+			  				$('.ledgerWrapper').hide();
+				 			$scope.codeBtn="Back";
+		  				}
 		  			
+		  			};	
 		  			
 });
 

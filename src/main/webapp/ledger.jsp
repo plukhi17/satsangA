@@ -165,7 +165,7 @@ response.setDateHeader ("Expires", 0);
                        		Balance Sheet
                        	</div>
                        	 <div class="col-md-3 cAlign-right">
-                			<button class="btn btn-info btn-parmentForm "  ng-click="addCode()" onclick="return showCode()"> 
+                			<button class="btn btn-info btn-parmentForm "  ng-click="addCode()" > 
                 					<span ng-if="codeBtn == 'Code'">
                 						<i class="fa fa-plus"></i>
                 					</span> {{codeBtn}} 
