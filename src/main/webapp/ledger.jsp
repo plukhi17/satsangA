@@ -173,8 +173,8 @@ response.setDateHeader ("Expires", 0);
                 				                       	</div>
                        </div>
                     <div class="panel-body">
-                        <form class="form-horizontal">
-                            <fieldset>
+                     
+                        
                                 <!-- Sample Table -->
                                 <div class="form-group">
                                     <div class="col-md-12 ledgerWrapper">
@@ -205,10 +205,51 @@ response.setDateHeader ("Expires", 0);
                                     
             
 								<!-- Modal -->
-								<div id="myModal" class="codeWrapper col-md-12" tabindex="-1" >
+								<div id="myModal" class="codeWrapper col-md-12"  >
 								   
 								    <div class="codeWrapper-body">
-								        <p>One fine body…</p>
+								    <div class="col-md-1">
+								    </div>
+								    	<div class="col-md-3">
+							    		  <form id="addCodeFrm">
+							    			 <div class="form-group">
+												<label for="code">Code</label>
+											    <input type="text" class="form-control" id="code" placeholder="Enter Code" name="code">
+											  </div>
+											  <div class="form-group">
+											    <label for="codeDesc">Description</label>
+											    <input type="text" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
+											  </div>
+											  <button type="submit" id="addCodeBtn" class="btn btn-default" ng-click="adaCodeFun()">Add</button>
+											  </form>
+								    	</div>
+								    	 <div class="col-md-3">
+								   		 </div>
+								    	<div class="col-md-3">
+								    	 <form id="addSubFrm">
+								    	 	  <div class="form-group">
+								    	 	  	<label for="cd">Select Code</label>
+												  <select name='cd' required id="cd" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedCd"  placeholder="Select Code" ng-options="code as code.CodeName for code in allCodes">
+							                			<option value="" selected>Select Code</option>
+							                    </select>
+											   
+											  </div>
+								    		  <div class="form-group">
+												<label for="subCode">SubCode</label>
+											    <input type="text" class="form-control" id="subCode" placeholder="Enter SubCode" name="subCode">
+											  </div>
+											  <div class="form-group">
+											    <label for="subCodeDesc">Description</label>
+											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" name="subCodeDesc">
+											  </div>
+											  <button type="submit" id="addSubCodeBtn" class="btn btn-default">Add</button>
+											</form>
+								    	</div>
+							      	<div class="col-md-1">
+								    </div>
+										
+											
+										</div>
 								    </div>
 								    <div class="codeWrapper-footer">
 								        <button class="btn" aria-hidden="true">Close</button>
@@ -218,8 +259,7 @@ response.setDateHeader ("Expires", 0);
 								<!-- Modal -->
             	
                                 </div>
-                            </fieldset>
-                        </form>
+                       
                     </div>
                     
                     <div class="panel-footer">
