@@ -104,14 +104,43 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			
 		  			};	
 		  			
+		  			$scope.getCodesFun = function() {
+  		  			
+  		  			 	
+  		  			 	var contextPath = "getCodes.do";
+  	  				
+  	  				 	$http({
+							 method : "POST",
+							 url : contextPath,
+							 
+						 }).then(function mySucces(data) {
+							var returnObject = eval(data); // Parse Return Data
+							if(returnObject.data.returnCode=='error') {
+								 $scope.PostDataResponse = returnObject.data.returnMessage;
+							 }else{
+								 $scope.ishtLine = returnObject.data.userJSONObject.trnList;
+							     $table.bootstrapTable('load', returnObject.data.userJSONObject.trnList);
+							     $table.bootstrapTable('hideLoading');
+							     $table.tableEditor();
+							 }
+ 						 },function myError(d) {
+							 alert("fail");
+						 });
+		  			};
+		  			
 		  			$scope.addCodeFun = function() {
   		  			 	var code = $('#code').val();
   		  			 	var codeDesc = $('#codeDesc').val();
-  		  			 	var contextPath = "addCode.do"+"?phoneNo="+ istPhone;
-  	  				 	var $table = $("#tblIshtTran");
+  		  			 	var codeDTO ={
+  		  				   codeName:$scope.code,
+  		  				   codeDesc:$scope.codeDesc,
+  		  				   };
+  		  			 	var contextPath = "addCode.do";
+  	  				
   	  				 	$http({
 							 method : "POST",
-							 url : contextPath
+							 url : contextPath,
+							 data: codeDTO
 						 }).then(function mySucces(data) {
 							var returnObject = eval(data); // Parse Return Data
 							if(returnObject.data.returnCode=='error') {

@@ -14,6 +14,9 @@ public interface MongoConstants {
 	String CARD_DETAILS="CardDetails";
 	String ACH_DETAILS="ACHDetails";
     String PASS_RESET_OTP ="PasswordResetOTP";
+    
+    String CODE_DETAILS="Codes";
+    
 	
 	//For lcocal 
 	String mongoHost="localhost";

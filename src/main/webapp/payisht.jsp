@@ -242,7 +242,7 @@ response.setDateHeader ("Expires", 0);
 						</div>
 						<form name ="ishtPayForm" id="ishtPayForm" class="form-vertical">
 							<fieldset>
-								<div class="form-group ">
+								<div class="form-group">
 									<div class="row">
 										<div class=" col-md-7">
 											<table class="table table-striped table-bordered">

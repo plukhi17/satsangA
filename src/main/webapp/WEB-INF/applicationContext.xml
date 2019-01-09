@@ -49,11 +49,18 @@
 		<property name="paymentServic" ref="paymentService"></property>
 	</bean> 
 	
+	 <bean name="ledgerAction" class="com.olsa.action.LedgerAction">
+	 	<property name="ledgerServic" ref="ledgerService"></property> 
+	</bean> 
+	
+	
 	<bean name="paymentService" class="com.olsa.services.PaymentServiceImpl">
 		<property name="gateway" ref="braintreeGateway"></property>
 		<property name="paymentCard" ref="paymentCardDao"></property>
 	</bean>
-	
+ 	<bean name="ledgerService" class="com.olsa.services.LedgerServiceImpl">
+		<property name="ledgerDao1" ref="ledgerDao"></property>
+	</bean>
 	
 	<bean name="ishtAction" class="com.olsa.action.IshtAction" scope="prototype">
 		<property name="userService">
@@ -114,6 +121,10 @@
 	<bean name="paymentCardDao" parent="mongoBaseDao" class="com.olsa.bo.PaymentCardDaoImpl">
 		<property name="mongoClient" value="#{osMongoClient.mongoClient}"/>	
 	</bean>
+	
+	<bean name="ledgerDao" parent="mongoBaseDao" class="com.olsa.bo.LedgerDaoImpl">
+		<property name="mongoClient" value="#{osMongoClient.mongoClient}"/>	
+	</bean> 
 	<bean name="userDao" parent="baseDao" class="com.olsa.bo.UserDao" scope="prototype" />
 	
 	<bean name="userProfileMDBDao" parent="mongoBaseDao" class="com.olsa.bo.UserProfileMDBDao" scope="prototype" />

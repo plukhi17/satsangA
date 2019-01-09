@@ -214,13 +214,13 @@ response.setDateHeader ("Expires", 0);
 							    		  <form id="addCodeFrm">
 							    			 <div class="form-group">
 												<label for="code">Code</label>
-											    <input type="text" class="form-control" id="code" placeholder="Enter Code" name="code">
+											    <input type="text"  ng-model="code" class="form-control" id="code" placeholder="Enter Code" name="code">
 											  </div>
 											  <div class="form-group">
 											    <label for="codeDesc">Description</label>
-											    <input type="text" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
+											    <input type="text"  ng-model="codeDesc" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
 											  </div>
-											  <button type="submit" id="addCodeBtn" class="btn btn-default" ng-click="adaCodeFun()">Add</button>
+											  <button type="button" id="addCodeBtn" class="btn btn-default" ng-click="addCodeFun()">Add</button>
 											  </form>
 								    	</div>
 								    	 <div class="col-md-3">
