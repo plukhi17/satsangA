@@ -212,6 +212,7 @@ response.setDateHeader ("Expires", 0);
 								    </div>
 								    	<div class="col-md-3">
 							    		  <form id="addCodeFrm">
+							    		  	<label class="res-info">{{addCardRes}} </label> 
 							    			 <div class="form-group">
 												<label for="code">Code</label>
 											    <input type="text"  ng-model="code" class="form-control" id="code" placeholder="Enter Code" name="code">
@@ -236,13 +237,13 @@ response.setDateHeader ("Expires", 0);
 											  </div>
 								    		  <div class="form-group">
 												<label for="subCode">SubCode</label>
-											    <input type="text" class="form-control" id="subCode" placeholder="Enter SubCode" name="subCode">
+											    <input type="text" class="form-control" id="subCode" placeholder="Enter SubCode" ng-model="subCodeName" name="subCode">
 											  </div>
 											  <div class="form-group">
 											    <label for="subCodeDesc">Description</label>
-											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" name="subCodeDesc">
+											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" ng-model="subCodeDesc" name="subCodeDesc">
 											  </div>
-											  <button type="submit" id="addSubCodeBtn" class="btn btn-default">Add</button>
+											  <button type="submit" id="addSubCodeBtn" class="btn btn-default" ng-click="addSubCodeFun()">Add</button>
 											</form>
 								    	</div>
 							      	<div class="col-md-1">

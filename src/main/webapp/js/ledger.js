@@ -146,10 +146,53 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							if(returnObject.data.returnCode=='error') {
 								 $scope.PostDataResponse = returnObject.data.returnMessage;
 							 }else{
-								 $scope.ishtLine = returnObject.data.userJSONObject.trnList;
-							     $table.bootstrapTable('load', returnObject.data.userJSONObject.trnList);
-							     $table.bootstrapTable('hideLoading');
-							     $table.tableEditor();
+								 	$scope.json = angular.toJson(data.data);
+								    var obj = JSON.parse($scope.json);
+								    $scope.addCardRes=obj.responseMsg;
+								    var node = document.createElement("P");
+						  		    var textnode = document.createTextNode(obj.responseMsg);
+						  		    node.appendChild(textnode);
+						  			node.style.color = "green";
+						  			node.style.margin="20px";
+						  		    document.getElementById("codeResponse").appendChild(node);
+								  
+							 }
+ 						 },function myError(d) {
+							 alert("fail");
+						 });
+		  			};
+		  			
+		  			$scope.addSubCodeFun = function() {
+  		  			 
+		  				var subCode=[{
+		  						subCodeName: $scope.subCodeName,
+		  						subCodeDesc: $scope.subCodeDesc
+		  				}];
+  		  			 	var codeDTO ={
+  		  			 			codeName:$scope.selectedCd,
+  		  			 			subCodes: subCode,
+  		  				   };
+  		  			 	var contextPath = "addCode.do";
+  	  				
+  	  				 	$http({
+							 method : "POST",
+							 url : contextPath,
+							 data: codeDTO
+						 }).then(function mySucces(data) {
+							var returnObject = eval(data); // Parse Return Data
+							if(returnObject.data.returnCode=='error') {
+								 $scope.PostDataResponse = returnObject.data.returnMessage;
+							 }else{
+								 	$scope.json = angular.toJson(data.data);
+								    var obj = JSON.parse($scope.json);
+								    $scope.addSubCardRes=obj.responseMsg;
+								    var node = document.createElement("P");
+						  		    var textnode = document.createTextNode(obj.responseMsg);
+						  		    node.appendChild(textnode);
+						  			node.style.color = "green";
+						  			node.style.margin="20px";
+						  	
+								  
 							 }
  						 },function myError(d) {
 							 alert("fail");
