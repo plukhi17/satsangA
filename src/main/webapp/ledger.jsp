@@ -180,10 +180,40 @@ response.setDateHeader ("Expires", 0);
                                     <div class="col-md-12 ledgerWrapper">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <div id="toolbar">
+                                                <div id="entryLedgerWrap">
                                                     <!--<button id="remove" class="btn btn-danger" disabled>
                                                         <i class="glyphicon glyphicon-remove"></i> Delete
                                                     </button>-->
+                                                     <form id="addSubFrm" class="form-inline">
+										    	 	  <div class="form-group">
+										    	 	  	<label for="cd">Select Head</label>
+														  <select name='balanceHead' required id="balanceHead" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="balanceHead"  placeholder="Select Head">
+									                			<option value="" selected>Select Head</option>
+									                			<option value="income" selected>Income</option>
+									                			<option value="expense" selected>Expense</option>
+									                    	</select>
+													   
+													  	</div>
+												  	 	<div class="form-group" >
+															<label class="ledgerHead-label" for="amount">Amount</label>
+															
+															<input type="text" id="amount" required ng-model="amount" class="form-control input" 
+																placeholder="Enter amount" >
+															
+														</div>
+														<div class="form-group" >
+															<label class="ledgerHead-label" for="amountDesc">Description</label>
+															
+															<input type="text" id="amountDesc" required ng-model="amountDesc" class="form-control input" 
+																placeholder="Enter Head Description" >
+															
+														</div>
+														<div class="form-group" >
+															<div>
+																	<button class="btn btn-success btn-md form-control" ng-click="addLedger()"> Add </button>
+															</div>
+													  	</div>
+                                                    </form>
                                                 </div>
                                                 <table id="tblLedger" 
                                                        data-toolbar="#toolbar"

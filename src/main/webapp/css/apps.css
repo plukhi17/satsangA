@@ -175,3 +175,7 @@
 	color: blue;
 	font-weight: 600;
 }
+
+.ledgerHead-label{
+	margin: 0 10px 0 15px;
+}

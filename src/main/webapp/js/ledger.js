@@ -103,7 +103,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  				}
 		  			
 		  			};	
-		  			
+		  		
 		  			$scope.getCodesFun = function() {
   		  			
   		  			 	
@@ -127,6 +127,35 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							 alert("fail");
 						 });
 		  			};
+		  	
+		  			$scope.addLedger = function() {
+						
+							var contextPath = "addLedger.do";
+							$http({
+								 method : "POST",
+								 url : contextPath,
+								 data:{
+									 "headType":$scope.balanceHead,
+									 "amount":$scope.amount,
+									 "amountDesc":$scope.amountDesc
+								 },
+								 headers: {'Content-Type': 'application/json'}
+							 }).then(function mySucces(data) {
+								  $scope.json = angular.toJson(data.data);
+								  var obj = JSON.parse($scope.json);
+								  var node = document.createElement("P");
+						  		   var textnode = document.createTextNode(obj.responseMsg);
+						  		    node.appendChild(textnode);
+						  			node.style.color = "green";
+						  			node.style.margin="20px";
+						  		    document.getElementById("paymentResponse").appendChild(node);
+								  
+							 },function myError(d) {
+								 console.log("Error:    "+d);
+							 });
+				
+					};
+		  			
 		  			
 		  			$scope.addCodeFun = function() {
   		  			 	var code = $('#code').val();
