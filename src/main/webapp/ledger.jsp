@@ -209,26 +209,30 @@ response.setDateHeader ("Expires", 0);
 															
 														</div>
 														<div class="form-group" >
-															<div>
+															<div>	
 																	<button class="btn btn-success btn-md form-control" ng-click="addLedger()"> Add </button>
+																	<label class="res-info">{{saveLedgerRes}} </label> 
+																  
 															</div>
 													  	</div>
                                                     </form>
                                                 </div>
-                                                <table id="tblLedger" 
-                                                       data-toolbar="#toolbar"
-                                                       data-search="true"
-                                                       data-show-refresh="false"
-                                                       data-show-toggle="false"
-                                                       data-show-columns="true"
-                                                       data-show-export="false"
-                                                       data-detail-view="false"
-                                                       data-minimum-count-columns="2"
-                                                       data-show-pagination-switch="false"
-                                                       data-pagination="true"
-                                                       data-id-field="id"
-                                                       data-show-footer="false">
-                                                </table>
+                                                <div id="ledgerEntryWrap"  ng-init="loadLedgerEntries()">
+	                                                <table id="tblLedger" 
+	                                                       data-toolbar="#toolbar"
+	                                                       data-search="true"
+	                                                       data-show-refresh="false"
+	                                                       data-show-toggle="false"
+	                                                       data-show-columns="true"
+	                                                       data-show-export="false"
+	                                                       data-detail-view="false"
+	                                                       data-minimum-count-columns="2"
+	                                                       data-show-pagination-switch="false"
+	                                                       data-pagination="true"
+	                                                       data-id-field="id"
+	                                                       data-show-footer="false">
+	                                                </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -282,10 +286,7 @@ response.setDateHeader ("Expires", 0);
 											
 										</div>
 								    </div>
-								    <div class="codeWrapper-footer">
-								        <button class="btn" aria-hidden="true">Close</button>
-								        <button class="btn btn-primary">Save changes</button>
-								    </div>
+								 
 								</div>
 								<!-- Modal -->
             	

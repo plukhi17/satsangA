@@ -9,64 +9,35 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		];
 	 
 	 
-		$scope.loadIshtTran = function() {
-  		  			 	var istPhone = $('#phoneNo').val();
-  		  			 	var contextPath = "getIshtTran.do"+"?phoneNo="+ istPhone;
-  	  				 	var $table = $("#tblIshtTran");
+		$scope.loadLedgerEntries = function() {
+  		  			 	
+  		  			 	var contextPath = "getLedgerEntries.do";
+  	  				 	var $table = $("#tblLedger");
   	  				 	$table.bootstrapTable({
   	  		            columns: [
   	  		                  {        
-	  		                        title: 'SA Family Id',
-	  		                        field: 'familyID',
+	  		                        title: 'Head Type',
+	  		                        field: 'headTpe',
 	  		                        align: 'center',
 	  		                        valign: 'middle',
 	  		                        sortable: true
 	  		                    },
 	  		                    
   	  		                    {
-  	  		                        title: 'Receipt No',
-  	  		                        field: 'receiptNo',
+  	  		                        title: 'Amount',
+  	  		                        field: 'amount',
   	  		                        align: 'center',
   	  		                        valign: 'middle',
   	  		                        sortable: true
   	  		                    },
   	  		                    {
-  	  		                    	title: 'Transcation Date',
-  	  		                    	field: 'collectedOn',
+  	  		                    	title: 'Description',
+  	  		                    	field: 'amountDesc',
   	  		                    	align: 'center',
   	  		                    	valign: 'middle',
   	  		                    	sortable: true
   	  		                    },
-  	  		                {
-  	  		                        title: 'Transcation #',
-  	  		                        field: 'trnDetails',
-  	  		                        align: 'center',
-  	  		                        valign: 'middle',
-  	  		                        sortable: true
-  	  		                    },
-  	  		                    {
-  	  		                    	title: 'Cheque Issue Bank',
-  	  		                    	field: 'chequeIssueBank',
-  	  		                    	align: 'center',
-  	  		                    	valign: 'middle',
-  	  		                    	sortable: true
-  	  		                    },
-  	  		                    {
-  	  		                    	title: 'Total',
-  	  		                    	field: 'total',
-  	  		                    	align: 'center',
-  	  		                    	valign: 'middle',
-  	  		                    	sortable: true,
-  	  		                       formatter:totalCurrencyFormatter
-  	  		                    },
-  	  		                    {
-  	  		                    	title: 'Approval Status',
-  	  		                    	field: 'issuedFlag',
-  	  		                    	align: 'center',
-  	  		                    	valign: 'middle',
-  	  		                    	sortable: true
-  	  		                      
-  	  		                    }
+  	  		               
   	  		               ]
   	  		        });
   	  				 	
@@ -145,13 +116,15 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 								  var obj = JSON.parse($scope.json);
 								  var node = document.createElement("P");
 						  		   var textnode = document.createTextNode(obj.responseMsg);
-						  		    node.appendChild(textnode);
-						  			node.style.color = "green";
-						  			node.style.margin="20px";
-						  		    document.getElementById("paymentResponse").appendChild(node);
+						  		  $scope.saveLedgerRes=obj.responseMsg;
+//						  		    node.appendChild(textnode);
+//						  			node.style.color = "green";
+//						  			node.style.margin="20px";
+//						  		    document.getElementById("paymentResponse").appendChild(node);
 								  
 							 },function myError(d) {
 								 console.log("Error:    "+d);
+								 alert("Please contant system admin.");
 							 });
 				
 					};

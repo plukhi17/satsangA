@@ -13,7 +13,9 @@ public interface MongoConstants {
 	String TRANSACTION_DETAILS="TransactionDetails";
 	String CARD_DETAILS="CardDetails";
 	String ACH_DETAILS="ACHDetails";
+	String SA_ARGHYA_DEPPOSIT_SUMMARY="SAArghyaDepositSummary";
     String PASS_RESET_OTP ="PasswordResetOTP";
+    
     
     String CODE_DETAILS="Codes";
     
