@@ -163,7 +163,6 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 			CardDetailsDTO dto=new CardDetailsDTO();
 			dto.setCardNumber((String)doc.get("cardNumber"));
 			dto.setExpirationDate((String)doc.get("expiDate"));
-			dto.setCvv((String)doc.get("cvv"));
 			cardDetailsDTOs.add(dto);
 		}
 		return cardDetailsDTOs;

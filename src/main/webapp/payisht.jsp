@@ -236,7 +236,8 @@ response.setDateHeader ("Expires", 0);
 							  			<td>
 							  				<strong>India Family Code:</strong><br><%= root.getIndfamilyCode()%><br>
 							  			</td>
-									</tr>						
+									</tr>	
+														
 								</tbody>
 							</table>
 						</div>
@@ -437,11 +438,39 @@ response.setDateHeader ("Expires", 0);
 							  			<td>
 							  				<strong>India Family Code:</strong><br><%= root.getIndfamilyCode()%><br>
 							  			</td>
-									</tr>						
+									</tr>	
+									<tr>
+										<td colspan = "4"><strong>Payment Method:</strong><br>
+						 					 				{{selPmtMethod}}
+						 				 </td>
+						 				
+									</tr>	
+									<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td >
+															<strong>Bank Name</strong><br>
+														
+															<!-- <input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required> -->
+															{{stBankName}}
+														</td>
+												
+														<td>
+															<strong>Transaction Ref / Cheque No</strong><br>
+														
+															<!-- <input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
+															class="form-control" ng-model = "stTrnNo" required disabled>
+															 -->{{stTrnNo}}
+														</td>
+													
+														<td colspan="2"><strong>E-Transaction Date / Cheque Date:</strong><br><!-- <input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
+															 --> {{dtChqDate| date:'medium'}}
+														</td>
+													
+														
+													</tr>				
 								</tbody>
 							</table>
 						</div>
-						<form name ="ishtPayForm1" class="form-vertical">
+						<!-- <form name ="ishtPayForm1" class="form-vertical">
 							<fieldset>
 								<div class="form-group ">
 									<div class="row">
@@ -453,10 +482,10 @@ response.setDateHeader ("Expires", 0);
 															<strong>Payment Method:</strong>
 														</td>
 														<td>
-															<!--  <select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" disabled required>
+															 <select id="selPmtMethod" name="selPmtMethod"  style="text-transform:uppercase;"  placeholder="Payment Method" class="form-control" ng-model="selPmtMethod" disabled required>
 																<option ng-selected="selPmtMethod == 'AUTO'">E-TRANSFER</option>
 																<option ng-selected="selPmtMethod == 'MANUAL'">CASH</option> 
-															</select> -->
+															</select>
 															
 															{{selPmtMethod}}
 														</td>
@@ -465,7 +494,7 @@ response.setDateHeader ("Expires", 0);
 														<td>
 															<strong>Bank Name</strong></td>
 														<td>
-															<!-- <input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required> -->
+															<input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required>
 															{{stBankName}}
 														</td>
 													</tr>
@@ -474,15 +503,15 @@ response.setDateHeader ("Expires", 0);
 															<strong>Transaction Ref / Cheque No</strong>
 														</td>
 														<td>
-															<!-- <input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
+															<input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
 															class="form-control" ng-model = "stTrnNo" required disabled>
-															 -->{{stTrnNo}}
+															{{stTrnNo}}
 														</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td><strong>E-Transaction Date / Cheque Date:</strong></td>
-														<td><!-- <input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
-															 --> {{dtChqDate| date:'medium'}}
+														<td><input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
+															 {{dtChqDate| date:'medium'}}
 														</td>
 													
 														
@@ -493,7 +522,7 @@ response.setDateHeader ("Expires", 0);
 									</div>
 								</div>
 							</fieldset>
-						</form>
+						</form> -->
 						<div class="form-group">
 							<div class="col-md-12">
 								<table class="table table-striped table-bordered" 
