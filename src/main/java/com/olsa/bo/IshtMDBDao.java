@@ -272,9 +272,13 @@ public class IshtMDBDao extends MongoBaseDao {
     				}
     				if(result.get("trnDetails")!=null) {
         				ishtMDB.setTrnDetails(result.get("trnDetails").toString());
-        				ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString().toUpperCase());
+        				
         				
     				}
+    				if(result.get("chequeIssueBank")!=null) {
+    					ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString().toUpperCase());
+    				}
+    				
     				ishtMDB.setFamilyID(result.get("familyID").toString());
 
     				//ishtMDB.setChecqNo(result.get("checqNo").toString());

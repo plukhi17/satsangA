@@ -40,7 +40,7 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 				Document document = new Document().append("userId", paymentUtils.getContact())
 						.append("familyCode", paymentUtils.getFamilyCode())
 						.append("cardNumber", paymentUtils.getCardNumber())
-						.append("expiDate", paymentUtils.getExpirationDate()).append("cvv", paymentUtils.getCvv());
+						.append("expiDate", paymentUtils.getExpirationDate());
 				db.insertOne(document);
 				response = "Successfully saved card details";
 			} else {

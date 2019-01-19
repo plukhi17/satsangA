@@ -578,10 +578,10 @@ response.setDateHeader ("Expires", 0);
 							</div>
 							<div class="panel-footer">
 									<a href="#" onclick="editDepositForm()"><span class="glyphicon glyphicon-pencil btn btn-info btn-md btn-edit"></span></a>
-									<button class="btn btn-success btn-parmentForm"  ng-click="suibMitPayment()"> 
-									<span ng-if="selPmtMethod == 'AUTO'">Payment</span> 
+									<button class="btn btn-info btn-parmentForm"  ng-click="suibMitPayment()"> 
+									<span ng-if="selPmtMethod == 'AUTO'">Continue</span> 
         							<span ng-if="selPmtMethod == 'MANUAL'">Submit</span>  
-        							<i class="fa fa-dollar"></i></button>
+        							</button>
 									<br><small class="text-muted"  class="btn btn-primary">Satsang America,Inc  </small>
 							</div>
 						</div>
@@ -734,10 +734,13 @@ response.setDateHeader ("Expires", 0);
 					id="txtApplicationFlow" name="txtApplicationFlow" type="hidden"
 					value=<%= applciationFlow %>> <br>
 				<div class="panel panel-default">
-					<div class="panel-heading" id="accordion">ISTARGHYA PAYMENT METHOD
-						<button class="backButtonPayment" class="btn" onclick="goBackToCardDetails()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
+					<div class="panel-heading" id="accordion">
+					<i class="fa fa-arrow-circle-left cursror-pointer back-wrap" onclick="goBackToCardDetails()"   title="Back"></i> 
+					ISTARGHYA PAYMENT METHOD
+					<!-- 	<button class="backButtonPayment" class="btn" onclick="goBackToCardDetails()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button> -->
+					
 						<a  class="pull-right" href="#" title="Refresh">
-             				<i style="font-size:30px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
+             				<i style="font-size:20x;" class="fa fa-refresh" onClick="window.location.reload()"></i>
        					</a>
 					</div>
 					<div class="panel-body">
@@ -780,7 +783,7 @@ response.setDateHeader ("Expires", 0);
 												<input id="payNowButton"  ng-click="paymentFun()"  onclick="return paymentIstarghya()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
 										</div>
 										<div style="margin-top: 10px">
-												<button class="btn btn-success btn-md" ng-click="addCard()"><i class="fa fa-plus"></i>&nbsp; Add Card</button>
+												<button class="btn btn-info btn-md" ng-click="addCard()"><i class="fa fa-plus"></i>&nbsp; Add Card</button>
 												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
 										</div>
 									</form>
@@ -825,10 +828,12 @@ response.setDateHeader ("Expires", 0);
 					id="txtApplicationFlow" name="txtApplicationFlow" type="hidden"
 					value=<%= applciationFlow %>> <br>
 				<div class="panel panel-default">
-					<div class="panel-heading" id="accordion">Add a checking account
-						<button class="backButtonPayment" class="btn" onclick="goBackFrmACH()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
+					<div class="panel-heading" id="accordion">
+						<i class="fa fa-arrow-circle-left cursror-pointer back-wrap" onclick="goBackFrmACH()"   title="Back"></i> 
+						Add a checking account
+						<!-- <button class="backButtonPayment" class="btn" onclick="goBackFrmACH()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button> -->
 						<a  class="pull-right" href="#" title="Refresh">
-             				<i style="font-size:30px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
+             				<i style="font-size:20px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
        					</a>
 					</div>
 					<div class="panel-body">
@@ -889,7 +894,7 @@ response.setDateHeader ("Expires", 0);
 												<input id="payNowButton"  ng-click="paymentAchFun()"  onclick="return paymentIstarghya()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
 										</div>
 										<div style="margin-top: 10px">
-												<button class="btn btn-success btn-md" ng-click="addACH()"><i class="fa fa-plus"></i>&nbsp; Add </button>
+												<button class="btn btn-info btn-md" ng-click="addACH()"><i class="fa fa-plus"></i>&nbsp; Add </button>
 												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
 										</div>
 									</form>
@@ -934,10 +939,15 @@ response.setDateHeader ("Expires", 0);
 					id="txtApplicationFlow" name="txtApplicationFlow" type="hidden"
 					value=<%= applciationFlow %>> <br>
 				<div class="panel panel-default">
-					<div class="panel-heading" id="accordion">Select Payment method
-						<button class="backButtonPayment" class="btn" onclick="goBack()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button>
+				
+					<div class="panel-heading" id="accordion">
+					<i class="fa fa-arrow-circle-left cursror-pointer back-wrap" onclick="goBack()"   title="Back"></i> 
+					Select Payment method
+					
+						<!-- <button class="backButtonPayment" class="btn" onclick="goBack()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button> -->
+						
 						<a  class="pull-right" href="#" title="Refresh">
-             				<i style="font-size:30px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
+             				<i style="font-size:20px;" class="fa fa-refresh" onClick="window.location.reload()"></i>
        					</a>
 					</div>
 					<div class="panel-body">

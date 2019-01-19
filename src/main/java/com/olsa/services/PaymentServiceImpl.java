@@ -2,6 +2,7 @@ package com.olsa.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,7 @@ public class PaymentServiceImpl implements PaymentService {
 				paymentResponseUtils.setStatus(false);
 				paymentResponseUtils.setTrasactionId(transaction.getId());
 				paymentCard.transactionDetail(paymentUtils, transaction.getId());
+				paymentResponseUtils.setTransactionDate(new Date());
 		           
 				logger.error("Payment Transaction Respponse Fail: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact()+", transaction id: "+transaction.getId());
 			} else {			

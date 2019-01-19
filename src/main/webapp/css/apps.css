@@ -150,6 +150,10 @@
 	
 	cursor: pointer;
 }
+.back-wrap{
+	color: #30a5ff;
+	font-size:20px;
+}
 
 .panel-heading {
     background: #fff;

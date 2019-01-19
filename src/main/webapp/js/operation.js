@@ -685,6 +685,8 @@ function cardNameChacking(num) {
 							   	 			    pmtMethod:$scope.selPmtMethod,
 							   	 		        chqDate:$scope.dtChqDate,
 							  				};
+							        	 
+							    
 							   	 		
 							   	 		var applicationFlow = $('#txtApplicationFlow').val();
 							   	 		  //alert('Hi shyam 1'+headerDetails);
@@ -840,6 +842,8 @@ function cardNameChacking(num) {
 										  			node.style.color = "green";
 										  			node.style.margin="22px";
 										  		    document.getElementById("paymentResponse").appendChild(node); */
+											  		$scope.stTrnNo=obj.trasactionId;
+											  		$scope.dtChqDate=obj.transactionDate;
 											  	  $scope.ishtPay();
 										  		  $scope.spinerFlag=false;
 										  		//$scope.afterTransactionSuccess(obj.trasactionId);
@@ -922,7 +926,7 @@ function cardNameChacking(num) {
 												 "contact":document.getElementById("contact").value,
 												 "cardNumber":$scope.cardNumberText,
 												 "expirationDate":$scope.expirationDateText,
-												 "cvv":$scope.cvvText
+												 
 											 },
 											 headers: {'Content-Type': 'application/json'}
 										 }).then(function mySucces(data) {

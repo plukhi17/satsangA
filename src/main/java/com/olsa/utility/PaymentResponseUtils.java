@@ -1,5 +1,6 @@
 package com.olsa.utility;
 
+import java.util.Date;
 import java.util.List;
 
 public class PaymentResponseUtils {
@@ -8,6 +9,7 @@ public class PaymentResponseUtils {
 	private String trasactionId;
 	private Boolean status;
 	private List<ErrorValidation> errorValidations;
+	private Date transactionDate;
 
 
 
@@ -41,6 +43,22 @@ public class PaymentResponseUtils {
 
 	public void setErrorValidations(List<ErrorValidation> errorValidations) {
 		this.errorValidations = errorValidations;
+	}
+	
+	
+
+	/**
+	 * @return the transactionDate
+	 */
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	/**
+	 * @param transactionDate the transactionDate to set
+	 */
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
 	}
 
 	@Override
