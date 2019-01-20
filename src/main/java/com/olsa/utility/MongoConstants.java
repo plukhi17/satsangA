@@ -16,6 +16,9 @@ public interface MongoConstants {
 	String SA_ARGHYA_DEPPOSIT_SUMMARY="SAArghyaDepositSummary";
     String PASS_RESET_OTP ="PasswordResetOTP";
     
+    String COUNTER="Counter";
+    String CNT_SEQ_NAME="seqName";
+    String CNT_SEQ_COUNTER="counter";
     
     String CODE_DETAILS="Codes";
     

@@ -86,9 +86,13 @@ public class LedgerAction extends BaseAction {
 	public void getCodes() throws IOException {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("rawtypes")
-		HashMap map=mapper.readValue(getRequest().getReader().readLine(),HashMap.class);
-		List<Code> card=ledgerServic.getAllCode();
+		List<Code> card = null;
+		try {
+			
+			card=ledgerServic.getAllCode();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		writer.append(mapper.writeValueAsString(card));
 		
 	}
@@ -119,9 +123,61 @@ public class LedgerAction extends BaseAction {
 	}
 
 	
+	
+	public void getNextIncCode() throws IOException {
 
+		
+		logger.info("Inside getNextIncCode() Action");
+		try {
+			String seqName=OnlineSAConstants.INCOME_CODE_SEQ_NAME;
+			String result = ledgerServic.getNextIncCode(seqName);
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (!result.isEmpty()) {
+				responseObject.put(RETURN_CODE, SUCCESS_FLAG);
+				logger.info("inside success");
+				logger.info(result);
+				responseObject.put(INC_CODE_SEQ, result);
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+public void getNextSubCode() throws IOException {
 
+	
+		logger.info("Inside getNextSubCode() Action");
+		try {
+		
+			PrintWriter writer = getResponse().getWriter();
+			ObjectMapper mapper = new ObjectMapper();
+			String codeName = getRequest().getParameter("codeName");
+			
 
+			String seqName=OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME;
+			String result = ledgerServic.getNextIncCode(seqName);
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (!result.isEmpty()) {
+				responseObject.put(RETURN_CODE, SUCCESS_FLAG);
+				logger.info("inside success");
+				logger.info(result);
+				responseObject.put(INC_SUB_CODE_SEQ, result);
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * @return the ledgerServic
 	 */

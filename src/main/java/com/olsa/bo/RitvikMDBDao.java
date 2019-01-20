@@ -1,18 +1,13 @@
 package com.olsa.bo;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
-import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RitvikMDB;
 import com.olsa.utility.OnlineSAConstants;

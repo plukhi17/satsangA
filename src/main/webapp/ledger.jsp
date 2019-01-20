@@ -162,7 +162,7 @@ response.setDateHeader ("Expires", 0);
                 <div class="panel panel-default">
                     <div class="panel-heading" id="accordion">
                        <div class="col-md-9">
-                       		Balance Sheet
+                       		{{balanceSheetHeader}}
                        	</div>
                        	 <div class="col-md-3 cAlign-right">
                 			<button class="btn btn-info btn-parmentForm "  ng-click="addCode()" > 
@@ -210,7 +210,7 @@ response.setDateHeader ("Expires", 0);
 														</div>
 														<div class="form-group" >
 															<div>	
-																	<button class="btn btn-success btn-md form-control" ng-click="addLedger()"> Add </button>
+																	<button class="btn btn-info btn-md form-control" ng-click="addLedger()"> Add </button>
 																	<label class="res-info">{{saveLedgerRes}} </label> 
 																  
 															</div>
@@ -246,10 +246,10 @@ response.setDateHeader ("Expires", 0);
 								    </div>
 								    	<div class="col-md-3">
 							    		  <form id="addCodeFrm">
-							    		  	<label class="res-info">{{addCardRes}} </label> 
+							    		  	<label class="res-info">{{addCodeRes}} </label> 
 							    			 <div class="form-group">
 												<label for="code">Code</label>
-											    <input type="text"  ng-model="code" class="form-control" id="code" placeholder="Enter Code" name="code">
+											    <input type="text"  ng-model="code" disabled class="form-control" id="code" placeholder="Enter Code" name="code">
 											  </div>
 											  <div class="form-group">
 											    <label for="codeDesc">Description</label>
@@ -264,18 +264,23 @@ response.setDateHeader ("Expires", 0);
 								    	 <form id="addSubFrm">
 								    	 	  <div class="form-group">
 								    	 	  	<label for="cd">Select Code</label>
-												  <select name='cd' required id="cd" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedCd"  placeholder="Select Code" ng-options="code as code.CodeName for code in allCodes">
+												  <select name='cd' required id="cd" ng-change="getNextSubCode()" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedCd"  placeholder="Select Code" ng-options="code.codeName for code in allCodes">
 							                			<option value="" selected>Select Code</option>
+							                			
 							                    </select>
+											   
+											  </div>
+										    	<div class="form-group">
+								    	 	  		<strong> Income Code : </strong> <h4> {{selectedCd.codeDesc}} </h4>
 											   
 											  </div>
 								    		  <div class="form-group">
 												<label for="subCode">SubCode</label>
-											    <input type="text" class="form-control" id="subCode" placeholder="Enter SubCode" ng-model="subCodeName" name="subCode">
+											    <input type="text" class="form-control" id="subCode" disabled placeholder="Enter SubCode" ng-model="subCodeName" name="subCode" required>
 											  </div>
 											  <div class="form-group">
 											    <label for="subCodeDesc">Description</label>
-											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" ng-model="subCodeDesc" name="subCodeDesc">
+											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" ng-model="subCodeDesc" name="subCodeDesc" required>
 											  </div>
 											  <button type="submit" id="addSubCodeBtn" class="btn btn-default" ng-click="addSubCodeFun()">Add</button>
 											</form>

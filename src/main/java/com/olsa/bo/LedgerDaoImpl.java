@@ -5,6 +5,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
+import com.mongodb.client.model.Updates;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
@@ -12,6 +15,7 @@ import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
 import com.olsa.utility.ACHDetailsDTO;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.Code;
+import com.olsa.utility.Counter;
 import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.MongoConstants;
 import com.olsa.utility.OnlineSAConstants;
@@ -62,12 +66,18 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 						.getCollection(MongoConstants.CODE_DETAILS);
 						//.getCollection("CardDetails");
 				Document document = new Document().append("codeName", code.getCodeName())
-						.append("codeDescription", code.getCodeDesc());
+						.append("codeDesc", code.getCodeDesc());
 						
 				db.insertOne(document);
-				response = "Successfully saved code details";
+				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
+				
+				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_CODE_SEQ_NAME),
+						Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+						new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+				
+				response = "Successfully saved code details.";
 			} else {
-				response = "All ready exist code details";
+				response = "All ready exist code details.";
 			}
 		} catch (Exception e) {
 			logger.error("Exception occure while saving card details: " + e.getMessage());
@@ -206,12 +216,48 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		for (Document doc : result) {
 			Code dto=new Code();
 			dto.setCodeName((String)doc.get("codeName"));
-			dto.setCodeDesc((String)doc.get("codeDescrition"));
+			dto.setCodeDesc((String)doc.get("codeDesc"));
 			dto.setSubCodes((List<SubCode>)doc.get("subCodes"));
 			cardDTOs.add(dto);
 		}
 		return cardDTOs;
 	}
 	
-
+	@Override
+	public String getNextIncCode(String sequenceName) {
+		String seqCode = null;
+		
+		
+		//MongoCollection<Counter> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
+		
+		//Counter seqObj = db.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, sequenceName),
+				//Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+				//new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER);  
+		FindIterable<Document> result = db.find(Filters.eq(MongoConstants.CNT_SEQ_NAME, sequenceName));
+		int cnt =0;
+		for (Document doc : result) {
+			cnt=(int) doc.get("counter");
+		}
+		String formattedCounter="";
+		switch(sequenceName){
+		case OnlineSAConstants.INCOME_CODE_SEQ_NAME:
+			formattedCounter = String.format("%03d",cnt+1); 
+			seqCode = "INC"+formattedCounter;
+			break;
+			
+		case OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME:
+			formattedCounter = String.format("%03d",cnt+1); 
+			seqCode = "INCSUB"+formattedCounter;
+			break;
+			
+		}
+		
+		
+		
+		
+		return seqCode;
+	}
+	
+	
 }

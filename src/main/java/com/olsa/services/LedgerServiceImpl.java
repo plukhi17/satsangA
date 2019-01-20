@@ -53,4 +53,10 @@ public class LedgerServiceImpl implements LedgerService{
 		response = ledgerDao1.getLedgerEntries(response);
 		return response;
 	}
+
+	@Override
+	public String getNextIncCode(String seqName) {
+		
+		return ledgerDao1.getNextIncCode(seqName);
+	}
 }

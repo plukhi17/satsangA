@@ -643,8 +643,11 @@ function cardNameChacking(num) {
 									
 									$scope.cardNumberText=myCard.cardNumber;
 									$scope.expirationDateText=myCard.expirationDate,
-									$scope.cvvText=myCard.cvv;
-									$scope.paymentFun();
+									$scope.cvvText="";
+									//$scope.cvvText=myCard.cvv;
+									//$scope.paymentFun(); 
+									
+									addCardForm();
 										
 								}
 								
@@ -790,13 +793,13 @@ function cardNameChacking(num) {
 								$scope.paymentFun=function(){
 									removePNode();
 									var res;
-									if($scope.selectedCard==null){
+									
 										res=paymentIstarghya();
 										if(res!=undefined &&  res.toString()=='false'){
 											alert("Fill this required field.");
 											return;
 										}
-									}
+									
 										$scope.spinerFlag=true;
 										var contextPath = "transactions.do";
 										$http({

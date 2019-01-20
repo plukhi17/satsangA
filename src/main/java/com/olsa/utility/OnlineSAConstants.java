@@ -33,6 +33,9 @@ public interface OnlineSAConstants {
 	String APPROVER_1="gs.gsgiri@gmail.com";
 	String APPROVER_2="satsangbayareausa@gmail.com";
 	String APPROVER_3="gsgiri143@yahoo";
-
+	String INC_CODE_SEQ = "INCCODE";
+	String INC_SUB_CODE_SEQ = "INCSUBCODE";
+	String INCOME_CODE_SEQ_NAME = "IncomeCode";
+	String INCOME_SUB_CODE_SEQ_NAME = "IncomeSubCode";
 	public static final HashMap<String, JSONObject> ritvikHashMapCache = new HashMap<String, JSONObject>();
 }

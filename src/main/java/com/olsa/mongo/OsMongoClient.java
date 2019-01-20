@@ -23,6 +23,7 @@ import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 import com.olsa.codec.ArrayListCodecProvider;
+import com.olsa.codec.ConterCodec;
 import com.olsa.codec.FamilyMDBCodec;
 import com.olsa.codec.IshtMDBCodec;
 import com.olsa.codec.IshtSequenceCodec;
@@ -77,7 +78,9 @@ public class OsMongoClient {
 		                CodecRegistries.fromCodecs(new FamilyIdSequenceCodec(defaultDocumentCodec)),
 		                CodecRegistries.fromCodecs(new IshtSequenceCodec(defaultDocumentCodec)),
 		                CodecRegistries.fromCodecs(new IshtMDBCodec(defaultDocumentCodec)),
+		                CodecRegistries.fromCodecs(new ConterCodec(defaultDocumentCodec)),
 		                CodecRegistries.fromProviders(new ArrayListCodecProvider()));
+		   
 		   
 		   
 		   MongoClientOptions options = MongoClientOptions.builder()

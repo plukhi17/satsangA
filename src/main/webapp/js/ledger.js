@@ -3,8 +3,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	
 	$("#myModal").hide();
 	$scope.codeBtn="Code";
+	$scope.balanceSheetHeader="Balance Sheet";
 	$scope.allCodes= [
-			{"CodeName":"US","CodeDesc":"This is the code for US" },
+			
 
 		];
 	 
@@ -62,19 +63,71 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 						 });
 		  			};
 		  		
-		  			$scope.addCode=function() {
+		  			 $scope.addCode=function() {
+		  				
+		  				
 		  				if(	$scope.codeBtn=="Back"){
+		  					$scope.balanceSheetHeader="Balance Sheet";
 		  					$('#myModal').hide();
 			  				$('.ledgerWrapper').show();
 				 			$scope.codeBtn="Code";
 		  				}else{
+		  					$scope.balanceSheetHeader="Income Head";
+		  					$scope.getNextINCCode();
 		  					$('#myModal').show();
 			  				$('.ledgerWrapper').hide();
 				 			$scope.codeBtn="Back";
+			 			   delete $scope.addCodeRes;
 		  				}
 		  			
 		  			};	
-		  		
+		  			
+		  			$scope.getNextINCCode= function(){
+
+	  					var contextPath = "getNextIncCode.do";
+  	  				
+	  				 	$http({
+						 method : "POST",
+						 url : contextPath,
+						 
+					 }).then(function mySucces(data) {
+						var returnObject = eval(data); // Parse Return Data
+						if(returnObject.data.returnCode=='error') {
+							 $scope.PostDataResponse = returnObject.data.returnMessage;
+						 }else{
+							 $scope.code = returnObject.data.INCCODE;
+							 $scope.getCodesFun();
+						 }
+						 },function myError(d) {
+						 alert("fail");
+					 });
+	  			
+		  			};
+	
+		  	
+		  			$scope.getNextSubCode= function(){
+
+	  					var contextPath = "getNextSubCode.do?codeName="+ $scope.selectedCd.codeName;
+  	  				
+	  				 	$http({
+						 method : "POST",
+						 url : contextPath,
+						
+						 
+					 }).then(function mySucces(data) {
+						var returnObject = eval(data); // Parse Return Data
+						if(returnObject.data.returnCode=='error') {
+							 $scope.PostDataResponse = returnObject.data.returnMessage;
+						 }else{
+							 $scope.subCodeName = returnObject.data.INCSUBCODE;
+						
+						 }
+						 },function myError(d) {
+						 alert("fail");
+					 });
+	  			
+		  			};
+	
 		  			$scope.getCodesFun = function() {
   		  			
   		  			 	
@@ -89,10 +142,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							if(returnObject.data.returnCode=='error') {
 								 $scope.PostDataResponse = returnObject.data.returnMessage;
 							 }else{
-								 $scope.ishtLine = returnObject.data.userJSONObject.trnList;
-							     $table.bootstrapTable('load', returnObject.data.userJSONObject.trnList);
-							     $table.bootstrapTable('hideLoading');
-							     $table.tableEditor();
+								 $scope.allCodes = returnObject.data;
+								 //$scope.getNextINCSubCode();
+							   
 							 }
  						 },function myError(d) {
 							 alert("fail");
@@ -150,7 +202,8 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							 }else{
 								 	$scope.json = angular.toJson(data.data);
 								    var obj = JSON.parse($scope.json);
-								    $scope.addCardRes=obj.responseMsg;
+								  
+								    $scope.addCodeRes=obj.responseMsg;
 								    var node = document.createElement("P");
 						  		    var textnode = document.createTextNode(obj.responseMsg);
 						  		    node.appendChild(textnode);
@@ -166,20 +219,20 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			
 		  			$scope.addSubCodeFun = function() {
   		  			 
-		  				var subCode=[{
+		  				var subCode={
 		  						subCodeName: $scope.subCodeName,
 		  						subCodeDesc: $scope.subCodeDesc
-		  				}];
-  		  			 	var codeDTO ={
+		  				};
+  		  			 	var subCodeDTO ={
   		  			 			codeName:$scope.selectedCd,
   		  			 			subCodes: subCode,
   		  				   };
-  		  			 	var contextPath = "addCode.do";
+  		  			 	var contextPath = "addSubCode.do";
   	  				
   	  				 	$http({
 							 method : "POST",
 							 url : contextPath,
-							 data: codeDTO
+							 data: subCodeDTO
 						 }).then(function mySucces(data) {
 							var returnObject = eval(data); // Parse Return Data
 							if(returnObject.data.returnCode=='error') {

@@ -19,4 +19,5 @@ public interface LedgerService {
 	List<Code> getAllCode();
 	String saveLedger(SAArghyaDpsitSmmaryMDB code);
 	ResultObject getLedgerEntries();
+	String getNextIncCode(String seqName);
 }

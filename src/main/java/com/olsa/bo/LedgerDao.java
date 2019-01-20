@@ -12,5 +12,6 @@ public interface LedgerDao {
 	public List<Code> viewAllCode();
 	public String saveLedger(SAArghyaDpsitSmmaryMDB ledger);
 	public ResultObject getLedgerEntries(ResultObject response);
+	public String getNextIncCode(String sequenceName);
 
 }
