@@ -55,6 +55,25 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	}
 	
 	@Override
+	public String removeCardDetails(PaymentUtils paymentUtils) {
+		String response = null;
+		try {
+		
+				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+						.getCollection(MongoConstants.CARD_DETAILS);
+						//.getCollection("CardDetails");
+			db.deleteOne(new Document("cardNumber",paymentUtils.getCardNumber()));
+				response = "Successfully removed card details";
+			
+		} catch (Exception e) {
+			logger.error("Exception occure while saving card details: " + e.getMessage());
+			response = "Try later";
+		}
+		return response;
+
+	}
+	
+	@Override
 	public String saveACHDetails(PaymentACHUtils paymentUtils) {
 		String response = null;
 		try {

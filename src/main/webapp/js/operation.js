@@ -641,15 +641,17 @@ function cardNameChacking(num) {
 									
 									$scope.payByCardScope = function(myCard){
 									
-									$scope.cardNumberText=myCard.cardNumber;
-									$scope.expirationDateText=myCard.expirationDate,
-									$scope.cvvText="";
-									//$scope.cvvText=myCard.cvv;
-									//$scope.paymentFun(); 
-									
-									addCardForm();
+										$scope.cardNumberText=myCard.cardNumber;
+										$scope.expirationDateText=myCard.expirationDate,
+										$scope.cvvText="";
+										//$scope.cvvText=myCard.cvv;
+										//$scope.paymentFun(); 
 										
-								}
+										addCardForm();
+										
+									}
+									
+									
 								
 								$scope.suibMitPayment = function(){
 									if($scope.selPmtMethod=='AUTO'){
@@ -948,6 +950,35 @@ function cardNameChacking(num) {
 									}//else
 								}//addCard
 								
+								$scope.removeCardScope= function(myCard){
+
+									var contextPath = "removeCard.do";
+									$http({
+										 method : "POST",
+										 url : contextPath,
+										 data:{
+											"cardNumber":myCard.cardNumber,
+										},
+										 headers: {'Content-Type': 'application/json'}
+									 }).then(function mySucces(data) {
+										  $scope.json = angular.toJson(data.data);
+										  var obj = JSON.parse($scope.json);
+										  var node = document.createElement("P");
+										  $scope.removeCardRes=obj.responseMsg;
+										  $scope.cardList
+								  		   var textnode = document.createTextNode(obj.responseMsg);
+								  		    node.appendChild(textnode);
+								  			node.style.color = "green";
+								  			node.style.margin="20px";
+								  		    document.getElementById("paymentResponse").appendChild(node);
+										  
+									 },function myError(d) {
+										 console.log("Error:    "+d);
+									 });
+								
+								}
+								
+								
 								$scope.viewCard=function(){
 									var cardTBody = document.getElementById("cardDetailsTBody");
 									//removeTBody.innerHTML = "";
@@ -977,7 +1008,7 @@ function cardNameChacking(num) {
 													'<td scope="row">'+obj[i].expirationDate +'</td>'+
 //													"<td scope='row'>"+obj[i].cvv +"</td>"+
 													'<td scope="row"><a class="link-text" id="'+obj[i].cardNumber+'" onClick="payByCard(this)">Pay</a></td>'+
-													'<td scope="row"><span class="link-text"   data-ng-click="removeCard(+obj[i].expirationDate +)><i class="fa fa-trash-o"></i>&nbsp;Remove</span></td>';
+													'<td scope="row"><a class="link-text"  id="'+obj[i].cardNumber+'-r"   onClick="removeCard(this)">Remove</a></td>';
 													
 												  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
 												 
@@ -1471,7 +1502,15 @@ function payByCard(cardObj){
 		    scope.payByCardScope(selectedCard);
 	    });
 }
-	
+function removeCard(cardObj){
+	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+    scope.$apply(function () {
+	    var selectedCard=searchCardNumber(cardObj.id.split("-")[0],scope.cardList);
+	    scope.selectedCard=selectedCard;
+	    scope.removeCardScope(selectedCard);
+    });
+}
+
 
 
 function searchCardNumber(nameKey, myArray){

@@ -82,6 +82,14 @@ public class CheckoutAction extends BaseAction {
 		response.put("responseMsg", paymentServic.addCard(paymentUtils));
 		writer.append(mapper.writeValueAsString(response));
 	}
+	public void removeCard() throws JsonParseException, JsonMappingException, IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		PaymentUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentUtils.class);
+		Map<String,String> response=new HashMap<String,String>();
+		response.put("responseMsg", paymentServic.removeCard(paymentUtils));
+		writer.append(mapper.writeValueAsString(response));
+	}
 	
 	public void addACH() throws JsonParseException, JsonMappingException, IOException {
 		PrintWriter writer = getResponse().getWriter();

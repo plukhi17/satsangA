@@ -24,4 +24,6 @@ public interface PaymentService {
 
 	List<ACHDetailsDTO> viewAllACH(String string);
 
+	String removeCard(PaymentUtils paymentUtils);
+
 }

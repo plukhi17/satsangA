@@ -205,6 +205,10 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	public String addCard(PaymentUtils paymentUtils) {
 		return paymentCard.saveCadeDetails(paymentUtils);
 	}
+	@Override
+	public String removeCard(PaymentUtils paymentUtils) {
+		return paymentCard.removeCardDetails(paymentUtils);
+	}
 	
 	@Override
 	public String addACH(PaymentACHUtils paymentUtils) {

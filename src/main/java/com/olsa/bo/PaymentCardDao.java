@@ -16,4 +16,5 @@ public interface PaymentCardDao {
 	public List<CardDetailsDTO> viewAllCard(String contact);
 	public String saveACHDetails(PaymentACHUtils paymentUtils);
 	public List<ACHDetailsDTO> viewAllACH(String contact);
+	public String removeCardDetails(PaymentUtils paymentUtils);
 }
