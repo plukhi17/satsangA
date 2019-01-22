@@ -616,6 +616,7 @@ function cardNameChacking(num) {
 		function($scope, $http, $filter,$compile) {
 								$scope.spinerFlag=false;
 								$scope.cardList;
+								$scope.achList;
 								/* 
 								$scope.afterTransactionSuccess=function(id){
 									var contextPath = "transactionsuccess.do";
@@ -650,6 +651,19 @@ function cardNameChacking(num) {
 										addCardForm();
 										
 									}
+									$scope.payByACHScope = function(myACH){
+										$scope.achName=myACH.accName;
+										$scope.bankRoutingNo=myACH.routingNo,
+										$scope.bankChACCNo=myACH.chAccNo;
+										$scope.dlNo=myACH.dlNo,
+										
+										//$scope.cvvText=myCard.cvv;
+										//$scope.paymentFun(); 
+										
+										addACHForm();
+										
+									}
+									
 									
 									
 								
@@ -1080,7 +1094,7 @@ function cardNameChacking(num) {
 													
 													'<td scope="row">'+accDescription+'</td>'+
 													'<td scope="row">'+obj[i].accName+'</td>'+
-													'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'" onClick="payByCard(this)">Pay</a></td>'+
+													'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'" onClick="payByACH(this)">Pay</a></td>'+
 													'<td scope="row"><span class="link-text"   data-ng-click="removeCard(+obj[i].expirationDate +)><i class="fa fa-trash-o"></i>&nbsp;Remove</span></td>';
 													
 												  $('#achDetailsTBody').append('<tr >' + call + '</tr>');
@@ -1527,6 +1541,17 @@ function payByCard(cardObj){
 		    scope.payByCardScope(selectedCard);
 	    });
 }
+
+function payByACH(achObj){
+		var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+	    scope.$apply(function () {
+		    var selectedACH=searchACH(achObj.id,scope.achList);
+		    scope.selectedACH=selectedACH;
+		    scope.payByACHScope(selectedACH);
+	    });
+}
+
+
 function removeCard(cardObj){
 	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
     scope.$apply(function () {
@@ -1541,6 +1566,14 @@ function removeCard(cardObj){
 function searchCardNumber(nameKey, myArray){
     for (var i=0; i < myArray.length; i++) {
         if (myArray[i].cardNumber  === nameKey) {
+            return myArray[i];
+        }
+    }
+}
+
+function searchACH(nameKey, myArray){
+    for (var i=0; i < myArray.length; i++) {
+        if (myArray[i].chAccNo  === nameKey) {
             return myArray[i];
         }
     }

@@ -871,7 +871,7 @@ response.setDateHeader ("Expires", 0);
 						<div class="paymentFormBody" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
 							<div class="col-xs-12 col-sm-2 col-md-2" >
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6" >
+							<div class="col-xs-12 col-sm-4 col-md-4" >
 								<div class="row" style="margin: 10px;">
 									<form id="paymentForm" class="scale-down">
 										<div class="cardinfo-card-number">
@@ -934,7 +934,36 @@ response.setDateHeader ("Expires", 0);
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-4 col-md-4" >
+									<div class="col-xs-12 col-sm-3 col-md-3">
+							
+								<div class="col-md-14">
+										<table id="grand_sum_table"
+											class="grand_sum_table table table-borderless">
+											<thead>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Ishtabhrity Amount</td>
+													<td  align = "right" style="border-top: none;">{{ishtAmount | number : 2}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Processing Fee</td>
+													<td  align = "right" style="border-top: none;">{{processIng | number : 2}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+														<td  align = "right" style="">Grand Total : US $ </td>
+														<td  align = "right" style=""> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2}}</label></td>
+															
+													</tr>
+													
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td  align = "right" style="border-top: none;">Grand Total : US $ </td>
+														<td  align = "right" style="border-top: none;"> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2 }}</label></td>
+															
+													</tr>
+											</thead>
+										</table>
+									</div>
+							</div>
+							<div class="col-xs-12 col-sm-2 col-md-2" >
 								<div class="col-xs-12 col-sm-12 col-md-12" id="achADDResponse" style="font-size: 16px;">
 									
 								</div>
