@@ -953,6 +953,7 @@ function cardNameChacking(num) {
 								$scope.removeCardScope= function(myCard){
 
 									var contextPath = "removeCard.do";
+									$scope.removedCard=myCard;
 									$http({
 										 method : "POST",
 										 url : contextPath,
@@ -965,7 +966,8 @@ function cardNameChacking(num) {
 										  var obj = JSON.parse($scope.json);
 										  var node = document.createElement("P");
 										  $scope.removeCardRes=obj.responseMsg;
-										  $scope.cardList
+										  $scope.removeByAttr($scope.cardList,'cardNumber', $scope.removedCard.cardNumber);
+										  $scope.populateCard($scope.cardList);
 								  		   var textnode = document.createTextNode(obj.responseMsg);
 								  		    node.appendChild(textnode);
 								  			node.style.color = "green";
@@ -977,6 +979,20 @@ function cardNameChacking(num) {
 									 });
 								
 								}
+								
+								$scope.removeByAttr = function(arr, attr, value){
+								    var i = arr.length;
+								    while(i--){
+								       if( arr[i] 
+								           && arr[i].hasOwnProperty(attr) 
+								           && (arguments.length > 2 && arr[i][attr] === value ) ){ 
+
+								           arr.splice(i,1);
+
+								       }
+								    }
+								    return arr;
+								};
 								
 								
 								$scope.viewCard=function(){
@@ -994,26 +1010,9 @@ function cardNameChacking(num) {
 										 }).then(function mySucces(data) {
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
-											  $scope.cardList=obj;
-											  $("#cardDetailsTBody").find("tr:gt(0)").remove();
-											  var call = null;
-											  for(var i=0;i<obj.length;i++){
-												 var cardJson= JSON.stringify(obj[i]);
-												  var cardType= creditCardTypeFromNumber(obj[i].cardNumber);
-												  var imageName='images/'+cardType.toLowerCase()+'.jpg';
-												  var cardDescription= cardType +' ending in '+obj[i].cardNumber.substr(obj[i].cardNumber.length - 4); 
-												  call=
-													
-													'<td scope="row"><img  src="'+imageName+'" class="card-img">'+cardDescription +'</td>'+
-													'<td scope="row">'+obj[i].expirationDate +'</td>'+
-//													"<td scope='row'>"+obj[i].cvv +"</td>"+
-													'<td scope="row"><a class="link-text" id="'+obj[i].cardNumber+'" onClick="payByCard(this)">Pay</a></td>'+
-													'<td scope="row"><a class="link-text"  id="'+obj[i].cardNumber+'-r"   onClick="removeCard(this)">Remove</a></td>';
-													
-												  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
-												 
-												  call = null;
-											  }
+											  
+											  $scope.populateCard(obj);
+											 
 											  //$compile($('#cardDetailsTBody'))($scope);
 											$('.paymentForm').hide();
 											if(obj.length>0){
@@ -1027,6 +1026,32 @@ function cardNameChacking(num) {
 											 console.log("Error:    "+d);
 										 });
 								}//viewCard
+								
+								  $scope.populateCard= function(obj){
+									  $scope.cardList=obj;
+									  $("#cardDetailsTBody").find("tr:gt(0)").remove();
+									  var call = null;
+									  for(var i=0;i<obj.length;i++){
+										 var cardJson= JSON.stringify(obj[i]);
+										  var cardType= creditCardTypeFromNumber(obj[i].cardNumber);
+										  var imageName='images/'+cardType.toLowerCase()+'.jpg';
+										  var cardDescription= cardType +' ending in '+obj[i].cardNumber.substr(obj[i].cardNumber.length - 4); 
+										  call=
+											
+											'<td scope="row"><img  src="'+imageName+'" class="card-img">'+cardDescription +'</td>'+
+											'<td scope="row">'+obj[i].expirationDate +'</td>'+
+//											"<td scope='row'>"+obj[i].cvv +"</td>"+
+											'<td scope="row"><a class="link-text" id="'+obj[i].cardNumber+'" onClick="payByCard(this)">Pay</a></td>'+
+											'<td scope="row"><a class="link-text"  id="'+obj[i].cardNumber+'-r"   onClick="removeCard(this)">Remove</a></td>';
+											
+										  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
+										 
+										  call = null;
+									  }
+									  
+									  
+								  };
+								 
 								
 								//View ACH: START
 								$scope.viewACH=function(){
