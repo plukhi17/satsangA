@@ -810,6 +810,85 @@ function cardNameChacking(num) {
 									removePNode();
 									var res;
 									
+										res=paymentACHValidation();
+										if(res!=undefined &&  res.toString()=='false'){
+											alert("Fill this required field.");
+											return;
+										}
+									
+										$scope.spinerFlag=true;
+										var contextPath = "achTransactions.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "amount":document.getElementById("GTotal").value,
+												 "familyCode":document.getElementById("familyCode").value,
+												 "contact":document.getElementById("contact").value,
+												 "cardNumber":$scope.cardNumberText,
+												 "expirationDate":$scope.expirationDateText,
+												 "cvv":$scope.cvvText
+											 },
+											 headers: {'Content-Type': 'application/json'}
+											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+										 }).then(function mySucces(data) {
+											 $scope.spinerFlag=false;
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  //TODO: PARTH : Added ! below for testing else code block
+											  
+											  	if(obj.status.toString()=="false"){
+											  		var node = document.createElement("P");
+											  		var failedTxt = document.createTextNode("Failed transaction");
+										  			node.appendChild(failedTxt); 
+											  		for(var i=0;i<obj.errorValidations.length;i++){
+											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+											  		    node.appendChild(textnode);
+											  			node.style.color = "red";
+											  			node.style.margin="22px";
+											  		    document.getElementById("paymentResponse").appendChild(node);
+											  		  $scope.spinerFlag=false;
+											  		  
+											  		}
+											  	}else{
+											  		/* var node = document.createElement("P");
+											  		var seccussTxt = document.createTextNode("Transaction ");
+										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
+										  			
+										  		    node.appendChild(seccussTxt); 
+										  		 	node.appendChild(textnode);
+										  		  
+										  			node.style.color = "green";
+										  			node.style.margin="22px";
+										  		    document.getElementById("paymentResponse").appendChild(node); */
+											  		$scope.stTrnNo=obj.trasactionId;
+											  		$scope.dtChqDate=obj.transactionDate;
+											  	  $scope.ishtPay();
+										  		  $scope.spinerFlag=false;
+										  		//$scope.afterTransactionSuccess(obj.trasactionId);
+										  		 
+										  		sessionStorage.setItem("transactionId", obj.trasactionId);
+										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotal").value);
+										  		//alert(sessionStorage.getItem("transactionId"));
+										  
+										  		delete $scope.selectedCard;
+										  		//window.location = 'ishtpayconfirm.jsp';
+											  	}
+											  $scope.spinerFlag=false;
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+											 alert("fail");
+											 $scope.spinerFlag=false;
+										 });
+									
+									
+									
+								};
+								
+								$scope.paymentAchFun=function(){
+									removePNode();
+									var res;
+									
 										res=paymentIstarghya();
 										if(res!=undefined &&  res.toString()=='false'){
 											alert("Fill this required field.");

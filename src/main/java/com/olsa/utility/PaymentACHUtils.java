@@ -8,6 +8,7 @@ public class PaymentACHUtils implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String amount;
 	private String accName;
 	private String bankRoutingNo;
 	private String chAccNo;
@@ -133,6 +134,26 @@ public class PaymentACHUtils implements Serializable{
 	 */
 	public void setFamilyCode(String familyCode) {
 		this.familyCode = familyCode;
+	}
+
+
+
+
+	/**
+	 * @return the amount
+	 */
+	public String getAmount() {
+		return amount;
+	}
+
+
+
+
+	/**
+	 * @param amount the amount to set
+	 */
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 
 

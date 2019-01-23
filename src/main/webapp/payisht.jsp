@@ -922,7 +922,7 @@ response.setDateHeader ("Expires", 0);
 											</div>
 										</div>
 										<div class="div-btn-paynow" style="margin-top: 18px;">
-												<input id="payNowButton"  ng-click="paymentAchFun()"  onclick="return paymentIstarghya()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
+												<input id="payNowButton"  ng-click="paymentAchFun()"  onclick="return paymentACHValidation()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
 										</div>
 										<div style="margin-top: 10px">
 												<button class="btn btn-info btn-md" ng-click="addACH()"><i class="fa fa-plus"></i>&nbsp; Add </button>

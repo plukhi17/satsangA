@@ -119,6 +119,72 @@ public class PaymentServiceImpl implements PaymentService {
 
 	}
 	
+	
+	public PaymentResponseUtils transaction(PaymentACHUtils paymentUtils) {
+		
+		PaymentResponseUtils paymentResponseUtils=new PaymentResponseUtils();
+		
+		if (amount(paymentUtils.getAmount()) == false) {
+			paymentResponseUtils.setResMessage("Amount Not valid Try again");
+			paymentResponseUtils.setStatus(false);
+			logger.error("Payment Transaction Respponse Failed: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact());
+			logger.error("paymentResponseUtils : "+paymentResponseUtils);
+			
+			return paymentResponseUtils;
+		} else {
+			TransactionRequest request = new TransactionRequest().creditCard().number(paymentUtils.getCardNumber())
+					//.expirationDate(paymentUtils.getExpirationDate())
+					.expirationMonth(paymentUtils.getExpirationDate().split("/")[0])
+				    .expirationYear(paymentUtils.getExpirationDate().split("/")[1])
+					.cvv(paymentUtils.getCvv()).done()
+					.amount(new BigDecimal(paymentUtils.getAmount())).paymentMethodNonce("fake-valid-nonce").options()
+					.submitForSettlement(true).done();
+		       	Result<Transaction> result = gateway.transaction().sale(request);
+			
+			if (result.isSuccess()) {
+				Transaction transaction = result.getTarget();
+				
+				paymentResponseUtils.setResMessage("Success");
+				paymentResponseUtils.setStatus(true);
+				paymentResponseUtils.setTrasactionId(transaction.getId());
+				paymentCard.transactionDetail(paymentUtils, transaction.getId());
+				
+				logger.info("Transaction Successfully went through !! paymentResponseUtils Response :  "+paymentResponseUtils);
+				logger.info("FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact()+", transaction id: "+transaction.getId());
+				return paymentResponseUtils;
+				
+			} else if (result.getTransaction() != null) {
+				Transaction transaction = result.getTransaction();
+				paymentResponseUtils.setResMessage("Fill valid details");
+				paymentResponseUtils.setStatus(false);
+				paymentResponseUtils.setTrasactionId(transaction.getId());
+				paymentCard.transactionDetail(paymentUtils, transaction.getId());
+				paymentResponseUtils.setTransactionDate(new Date());
+		           
+				logger.error("Payment Transaction Respponse Fail: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact()+", transaction id: "+transaction.getId());
+			} else {			
+				List<ErrorValidation> list=new ArrayList<ErrorValidation>();
+				int i=1;
+				String errorString = "";
+				for (ValidationError error : result.getErrors().getAllDeepValidationErrors()) {
+					ErrorValidation errorValidation=new ErrorValidation();
+					errorValidation.setCode(error.getCode().code);
+					errorValidation.setError(error.getMessage().replace('_', ' '));
+					list.add(errorValidation);
+				}
+				 for (ValidationError error : result.getErrors().getAllDeepValidationErrors()) {
+		               errorString += "Error: " + error.getCode() + ": " + error.getMessage() + "\n";
+		            }
+				paymentResponseUtils.setResMessage("Try again valid details");
+				paymentResponseUtils.setStatus(false);
+				paymentResponseUtils.setErrorValidations(list);
+				logger.error("Payment Transaction Respponse Fail: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact()+", Error: "+errorString);
+			}
+			return paymentResponseUtils;
+		}
+
+	}
+	
 
 	
 /*

@@ -26,4 +26,6 @@ public interface PaymentService {
 
 	String removeCard(PaymentUtils paymentUtils);
 
+	PaymentResponseUtils transaction(PaymentACHUtils paymentUtils);
+
 }
