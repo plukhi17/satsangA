@@ -28,6 +28,7 @@ import com.olsa.utility.OnlineSAConstants;
 import com.olsa.utility.PaymentACHUtils;
 import com.olsa.utility.PaymentResponseUtils;
 import com.olsa.utility.PaymentUtils;
+import com.olsa.utility.SubCode;
 
 public class LedgerAction extends BaseAction {
 	/**
@@ -61,6 +62,19 @@ public class LedgerAction extends BaseAction {
 			Code code = mapper.readValue(getRequest().getReader().readLine(), Code.class);
 			Map<String,String> response=new HashMap<String,String>();
 			response.put("responseMsg", ledgerServic.addCode(code));
+			writer.append(mapper.writeValueAsString(response));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void addSubCode() throws JsonParseException, JsonMappingException, IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		try{
+			SubCode code = mapper.readValue(getRequest().getReader().readLine(), SubCode.class);
+			Map<String,String> response=new HashMap<String,String>();
+			response.put("responseMsg", ledgerServic.addSubCode(code));
 			writer.append(mapper.writeValueAsString(response));
 		}catch(Exception e){
 			e.printStackTrace();

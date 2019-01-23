@@ -54,7 +54,8 @@
 			<result name="success">ishtpayconfirm.jsp</result>
 		</action>
 		
-		<action name="addCode" method="addCode" class="ledgerAction"></action>
+		<action name="addCode" method="addCode" class="ledgerAction"></action> 
+		<action name="addSubCode" method="addSubCode" class="ledgerAction"></action> 
 		<action name="addLedger" method="addLedger" class="ledgerAction"></action>
 		<action name="getCodes" method="getCodes" class="ledgerAction"></action>
 		<action name="getLedgerEntries" method="getLedgerEntries" class="ledgerAction"></action>

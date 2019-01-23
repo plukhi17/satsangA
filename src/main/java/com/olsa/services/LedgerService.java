@@ -8,6 +8,7 @@ import java.util.List;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
 import com.olsa.utility.Code;
+import com.olsa.utility.SubCode;
 
 
 /**
@@ -20,4 +21,5 @@ public interface LedgerService {
 	String saveLedger(SAArghyaDpsitSmmaryMDB code);
 	ResultObject getLedgerEntries();
 	String getNextIncCode(String seqName);
+	String addSubCode(SubCode code);
 }

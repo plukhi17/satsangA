@@ -219,13 +219,11 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			
 		  			$scope.addSubCodeFun = function() {
   		  			 
-		  				var subCode={
-		  						subCodeName: $scope.subCodeName,
-		  						subCodeDesc: $scope.subCodeDesc
-		  				};
+		  				
   		  			 	var subCodeDTO ={
-  		  			 			codeName:$scope.selectedCd,
-  		  			 			subCodes: subCode,
+  		  			 			subCodeName: $scope.subCodeName,
+  		  			 			subCodeDesc: $scope.subCodeDesc,
+  		  			 			codeName:$scope.selectedCd.codeName
   		  				   };
   		  			 	var contextPath = "addSubCode.do";
   	  				

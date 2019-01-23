@@ -16,6 +16,7 @@ public class SubCode implements Serializable{
 	private static final long serialVersionUID = -1017461588197030447L;
 	private String subCodeName;
 	private String subCodeDesc;
+	private String codeName;
 	/**
 	 * @return the subCodeName
 	 */
@@ -40,6 +41,19 @@ public class SubCode implements Serializable{
 	public void setSubCodeDesc(String subCodeDesc) {
 		this.subCodeDesc = subCodeDesc;
 	}
+	/**
+	 * @return the codeName
+	 */
+	public String getCodeName() {
+		return codeName;
+	}
+	/**
+	 * @param codeName the codeName to set
+	 */
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
+	}
 
 
 }
+

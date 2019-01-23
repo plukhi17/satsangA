@@ -9,6 +9,7 @@ import com.olsa.bo.LedgerDao;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
 import com.olsa.utility.Code;
+import com.olsa.utility.SubCode;
 
 public class LedgerServiceImpl implements LedgerService{
 	static final Logger logger = Logger.getLogger(LedgerServiceImpl.class);
@@ -35,6 +36,10 @@ public class LedgerServiceImpl implements LedgerService{
 	@Override
 	public String addCode(Code code) {
 		return ledgerDao1.saveCodeDetails(code);
+	}
+	@Override
+	public String addSubCode(SubCode code) {
+		return ledgerDao1.saveSubCodeDetails(code);
 	}
 	
 	@Override

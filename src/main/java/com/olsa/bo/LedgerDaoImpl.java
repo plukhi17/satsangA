@@ -1,5 +1,6 @@
 package com.olsa.bo;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -78,6 +79,38 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				response = "Successfully saved code details.";
 			} else {
 				response = "All ready exist code details.";
+			}
+		} catch (Exception e) {
+			logger.error("Exception occure while saving card details: " + e.getMessage());
+			response = "Try later";
+		}
+		return response;
+
+	}
+	@Override
+	public String saveSubCodeDetails(SubCode code) {
+		String response = null;
+		try {
+			if (ifExistCode(code.getCodeName()) == true) {
+				MongoCollection<Code> db = getMongoClient().getDatabase(getMongoDbName())
+						.getCollection(MongoConstants.CODE_DETAILS, Code.class);
+						//.getCollection("CardDetails");
+				
+				//do the update
+			    db.update(Filters.eq("codeName", code.getCodeName(), new BasicDBObject("$push", new BasicDBObject(code.getSubCodeName(), code.getSubCodeDesc())));
+				Document document = new Document().append("codeName", code.getCodeName())
+						.append("codeDesc", code.getSubCodeDesc());
+						
+				db.insertOne(document);
+				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
+				
+				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_CODE_SEQ_NAME),
+						Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+						new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+				
+				response = "Successfully saved code details.";
+			} else {
+				response = "Parent Code doesn't exist.";
 			}
 		} catch (Exception e) {
 			logger.error("Exception occure while saving card details: " + e.getMessage());
