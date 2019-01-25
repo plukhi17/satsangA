@@ -1148,6 +1148,36 @@ function cardNameChacking(num) {
 								
 								}
 								
+								$scope.removeACHScope= function(myACH){
+
+									var contextPath = "removeACH.do";
+									$scope.removedACH=myACH;
+									$http({
+										 method : "POST",
+										 url : contextPath,
+										 data:{
+											"chAccNo":myACH.chAccNo,
+										},
+										 headers: {'Content-Type': 'application/json'}
+									 }).then(function mySucces(data) {
+										  $scope.json = angular.toJson(data.data);
+										  var obj = JSON.parse($scope.json);
+										  var node = document.createElement("P");
+										  $scope.removeCardRes=obj.responseMsg;
+										  $scope.removeByAttr($scope.achList,'chAccNo', $scope.removedACH.chAccNo);
+										  $scope.populateACH($scope.achList);
+								  		   var textnode = document.createTextNode(obj.responseMsg);
+								  		    node.appendChild(textnode);
+								  			node.style.color = "green";
+								  			node.style.margin="20px";
+								  		    document.getElementById("paymentResponse").appendChild(node);
+										  
+									 },function myError(d) {
+										 console.log("Error:    "+d);
+									 });
+								
+								}
+								
 								$scope.removeByAttr = function(arr, attr, value){
 								    var i = arr.length;
 								    while(i--){
@@ -1220,7 +1250,27 @@ function cardNameChacking(num) {
 									  
 								  };
 								 
-								
+								  $scope.populateACH= function(obj){
+									  $scope.achList=obj;
+									  
+									  $("#achDetailsTBody").find("tr:gt(0)").remove();
+									  var call = null;
+									  for(var i=0;i<obj.length;i++){
+										
+										
+										  var accDescription= 'Account ending in '+obj[i].chAccNo.substr(obj[i].chAccNo.length - 2); 
+										  call=
+											
+											'<td scope="row">'+accDescription+'</td>'+
+											'<td scope="row">'+obj[i].accName+'</td>'+
+											'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'" onClick="payByACH(this)">Pay</a></td>'+
+											'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'-r"  onClick="removeACH(this)">Remove</a></td>';
+											
+										  $('#achDetailsTBody').append('<tr >' + call + '</tr>');
+										 
+										  call = null;
+									  }
+								  };
 								//View ACH: START
 								$scope.viewACH=function(){
 									var cardTBody = document.getElementById("achDetailsTBody");
@@ -1237,24 +1287,7 @@ function cardNameChacking(num) {
 										 }).then(function mySucces(data) {
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
-											  $scope.achList=obj;
-											  $("#achDetailsTBody").find("tr:gt(0)").remove();
-											  var call = null;
-											  for(var i=0;i<obj.length;i++){
-												
-												
-												  var accDescription= 'Account ending in '+obj[i].chAccNo.substr(obj[i].chAccNo.length - 2); 
-												  call=
-													
-													'<td scope="row">'+accDescription+'</td>'+
-													'<td scope="row">'+obj[i].accName+'</td>'+
-													'<td scope="row"><a class="link-text" id="'+obj[i].chAccNo+'" onClick="payByACH(this)">Pay</a></td>'+
-													'<td scope="row"><span class="link-text"   data-ng-click="removeCard(+obj[i].expirationDate +)><i class="fa fa-trash-o"></i>&nbsp;Remove</span></td>';
-													
-												  $('#achDetailsTBody').append('<tr >' + call + '</tr>');
-												 
-												  call = null;
-											  }
+											  $scope.populateACH(obj);
 											  //$compile($('#cardDetailsTBody'))($scope);
 											
 											
@@ -1712,6 +1745,15 @@ function removeCard(cardObj){
 	    var selectedCard=searchCardNumber(cardObj.id.split("-")[0],scope.cardList);
 	    scope.selectedCard=selectedCard;
 	    scope.removeCardScope(selectedCard);
+    });
+}
+
+function removeACH(achObj){
+	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+    scope.$apply(function () {
+	    var selectedACH=searchACH(achObj.id.split("-")[0],scope.achList);
+	    scope.selectedACH=selectedACH;
+	    scope.removeACHScope(selectedACH);
     });
 }
 

@@ -73,11 +73,12 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 
 	}
 	
+	
 	@Override
 	public String saveACHDetails(PaymentACHUtils paymentUtils) {
 		String response = null;
 		try {
-			if (ifExistCardNumber(paymentUtils.getChAccNo()) != true) {
+			if (ifExistACHNumber(paymentUtils.getChAccNo()) != true) {
 				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.ACH_DETAILS);
 						//.getCollection("CardDetails");
@@ -99,7 +100,25 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		return response;
 
 	}
+	@Override
+	public String removeACHDetails(PaymentACHUtils paymentUtils) {
+		String response = null;
+		try {
+		
+			MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+						.getCollection(MongoConstants.ACH_DETAILS);
+						//.getCollection("CardDetails");
+			db.deleteOne(new Document("chAccNo",paymentUtils.getChAccNo()));
+			response = "Successfully removed ACH details";
+			
+		} catch (Exception e) {
+			logger.error("Exception occure while removing ACH details: " + e.getMessage());
+			response = "Try later";
+		}
+		return response;
 
+	}
+	
 
 	boolean ifExistCardNumber(String cardNumber) {
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CARD_DETAILS);

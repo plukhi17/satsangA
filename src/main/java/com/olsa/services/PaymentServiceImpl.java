@@ -293,6 +293,11 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	public String removeCard(PaymentUtils paymentUtils) {
 		return paymentCard.removeCardDetails(paymentUtils);
 	}
+	@Override
+	public String removeACH(PaymentACHUtils paymentUtils) {
+		return paymentCard.removeACHDetails(paymentUtils);
+	}
+	
 	
 	@Override
 	public String addACH(PaymentACHUtils paymentUtils) {

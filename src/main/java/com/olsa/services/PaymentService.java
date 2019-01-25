@@ -30,4 +30,6 @@ public interface PaymentService {
 
 	String transactionGetToken();
 
+	String removeACH(PaymentACHUtils paymentUtils);
+
 }

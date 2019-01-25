@@ -48,6 +48,7 @@
 		
 		
 		<action name="addACHs" method="addACH" class="checkoutAction"></action>
+		<action name="removeACH" method="removeACH" class="checkoutAction"></action>
 		<action name="addcards" method="addCard" class="checkoutAction"></action>
 		<action name="removeCard" method="removeCard" class="checkoutAction"></action>
 		<action name="achTransactions" method="achTransactions" class="checkoutAction"></action>

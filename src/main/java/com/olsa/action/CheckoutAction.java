@@ -63,10 +63,7 @@ public class CheckoutAction extends BaseAction {
 		logger.info("Enter in  getACCTOken() CheckoutAction class");
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
-
 		String token = paymentServic.transactionGetToken();
-		
-		
 		writer.append(token);
 	}
 	
@@ -85,10 +82,6 @@ public class CheckoutAction extends BaseAction {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
-		
-		
 	}
 	
 	public void manualTransactions() throws IOException {
@@ -121,6 +114,15 @@ public class CheckoutAction extends BaseAction {
 		PaymentUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentUtils.class);
 		Map<String,String> response=new HashMap<String,String>();
 		response.put("responseMsg", paymentServic.removeCard(paymentUtils));
+		writer.append(mapper.writeValueAsString(response));
+	}
+	
+	public void removeACH() throws JsonParseException, JsonMappingException, IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		PaymentACHUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentACHUtils.class);
+		Map<String,String> response=new HashMap<String,String>();
+		response.put("responseMsg", paymentServic.removeACH(paymentUtils));
 		writer.append(mapper.writeValueAsString(response));
 	}
 	

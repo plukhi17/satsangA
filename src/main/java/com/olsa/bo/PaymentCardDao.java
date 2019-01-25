@@ -18,4 +18,5 @@ public interface PaymentCardDao {
 	public String saveACHDetails(PaymentACHUtils paymentUtils);
 	public List<ACHDetailsDTO> viewAllACH(String contact);
 	public String removeCardDetails(PaymentUtils paymentUtils);
+	public String removeACHDetails(PaymentACHUtils paymentUtils);
 }
