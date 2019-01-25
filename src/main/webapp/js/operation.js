@@ -664,67 +664,7 @@ function cardNameChacking(num) {
 										//$scope.paymentFun(); 
 										
 										addACHForm();
-										
-										var contextPath = "getClientToken.do";
-										$http({
-											 method : "POST",
-											 url : contextPath,
-											 headers: {'Content-Type': 'application/json'}
-										}).then(function mySucces(data) {
-										
-											$scope.token=data.data;
-											console.log('Token is '+$scope.token);
-											braintree.client.create({
-												  authorization: $scope.token
-												}, function (clientErr, clientInstance) {
-												  if (clientErr) {
-												    console.error('There was an error creating the Client.');
-												    throw clientErr;
-												  }
-
-												  braintree.usBankAccount.create({
-												    client: clientInstance
-												  }, function (usBankAccountErr, usBankAccountInstance) {
-												    if (usBankAccountErr) {
-												      console.error('There was an error creating the USBankAccount instance.');
-												      throw usBankAccountErr;
-												    }
-												    
-												    $scope.achName=myACH.accName;
-													$scope.bankRoutingNo=myACH.routingNo,
-													$scope.bankChACCNo=myACH.chAccNo;
-													$scope.dlNo=myACH.dlNo;
-												    var bankDetails = {
-												    	    accountNumber: $scope.bankChACCNo,
-												    	    routingNumber: $scope.bankRoutingNo,
-												    	    accountType: 'checking',
-												    	    ownershipType:'personal',
-												    	  
-												    	 
-												    	  };
-
-												    	  if (bankDetails.ownershipType === 'personal') {
-												    	    bankDetails.firstName = $scope.firstName;
-												    	    bankDetails.lastName = $scope.lastName;
-												    	  } else {
-												    	    bankDetails.businessName = 'PARTH L';
-												    	  }
-
-												    // Use the usBankAccountInstance here.
-												    // ...
-												  });
-												});
-											
-										},function myError(d) {
-											 console.log("Error:    "+d);
-											 alert("fail");
-											 $scope.spinerFlag=false;
-										 });	 
-										
-										
-										
-								
-										
+											 
 									}
 									
 									
@@ -759,13 +699,14 @@ function cardNameChacking(num) {
 								        });
 								        
 							        	 var headerDetails ={
-							        			dtIshtDate:$scope.dtChqDate,
+							        			
 							        			stBankName:$scope.stBankName,
 							   	 			  	stTrnNo:$scope.stTrnNo,
 							   	 			  	stChqNo:$scope.stTrnNo,
 							   	 			  	phoneNo:$('#phoneNo').val(),
 							   	 			    pmtMethod:$scope.selPmtMethod,
 							   	 		        chqDate:$scope.dtChqDate,
+							   	 		        chAccNo:$scope.bankChACCNo,
 							  				};
 							        	 
 							    
@@ -873,14 +814,14 @@ function cardNameChacking(num) {
 									removePNode();
 									var res;
 									
-										res=paymentACHValidation();
+										res=paymentIstarghya();
 										if(res!=undefined &&  res.toString()=='false'){
 											alert("Fill this required field.");
 											return;
 										}
 									
 										$scope.spinerFlag=true;
-										var contextPath = "achTransactions.do";
+										var contextPath = "transactions.do";
 										$http({
 											 method : "POST",
 											 url : contextPath,
@@ -891,6 +832,7 @@ function cardNameChacking(num) {
 												 "cardNumber":$scope.cardNumberText,
 												 "expirationDate":$scope.expirationDateText,
 												 "cvv":$scope.cvvText
+												 
 											 },
 											 headers: {'Content-Type': 'application/json'}
 											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -908,7 +850,7 @@ function cardNameChacking(num) {
 											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
 											  		    node.appendChild(textnode);
 											  			node.style.color = "red";
-											  			node.style.margin="22px";
+														node.style.margin="5px";
 											  		    document.getElementById("paymentResponse").appendChild(node);
 											  		  $scope.spinerFlag=false;
 											  		  
@@ -952,78 +894,147 @@ function cardNameChacking(num) {
 									removePNode();
 									var res;
 									
-										res=paymentIstarghya();
+										res=paymentACHValidation();
 										if(res!=undefined &&  res.toString()=='false'){
 											alert("Fill this required field.");
 											return;
 										}
 									
 										$scope.spinerFlag=true;
-										var contextPath = "transactions.do";
+
+										var contextPath = "getClientToken.do";
 										$http({
 											 method : "POST",
 											 url : contextPath,
-											 data:{
-												 "amount":document.getElementById("GTotal").value,
-												 "familyCode":document.getElementById("familyCode").value,
-												 "contact":document.getElementById("contact").value,
-												 "cardNumber":$scope.cardNumberText,
-												 "expirationDate":$scope.expirationDateText,
-												 "cvv":$scope.cvvText
-											 },
 											 headers: {'Content-Type': 'application/json'}
-											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-										 }).then(function mySucces(data) {
-											 $scope.spinerFlag=false;
-											  $scope.json = angular.toJson(data.data);
-											  var obj = JSON.parse($scope.json);
-											  //TODO: PARTH : Added ! below for testing else code block
-											  
-											  	if(obj.status.toString()=="false"){
-											  		var node = document.createElement("P");
-											  		var failedTxt = document.createTextNode("Failed transaction");
-										  			node.appendChild(failedTxt); 
-											  		for(var i=0;i<obj.errorValidations.length;i++){
-											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
-											  		    node.appendChild(textnode);
-											  			node.style.color = "red";
-											  			node.style.margin="22px";
-											  		    document.getElementById("paymentResponse").appendChild(node);
-											  		  $scope.spinerFlag=false;
-											  		  
-											  		}
-											  	}else{
-											  		/* var node = document.createElement("P");
-											  		var seccussTxt = document.createTextNode("Transaction ");
-										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
-										  			
-										  		    node.appendChild(seccussTxt); 
-										  		 	node.appendChild(textnode);
-										  		  
-										  			node.style.color = "green";
-										  			node.style.margin="22px";
-										  		    document.getElementById("paymentResponse").appendChild(node); */
-											  		$scope.stTrnNo=obj.trasactionId;
-											  		$scope.dtChqDate=obj.transactionDate;
-											  	  $scope.ishtPay();
-										  		  $scope.spinerFlag=false;
-										  		//$scope.afterTransactionSuccess(obj.trasactionId);
-										  		 
-										  		sessionStorage.setItem("transactionId", obj.trasactionId);
-										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotal").value);
-										  		//alert(sessionStorage.getItem("transactionId"));
-										  
-										  		delete $scope.selectedCard;
-										  		//window.location = 'ishtpayconfirm.jsp';
-											  	}
-											  $scope.spinerFlag=false;
-										 },function myError(d) {
+										}).then(function mySucces(data) {
+										
+											$scope.token=data.data;
+											console.log('Token is '+$scope.token);
+											braintree.client.create({
+												  authorization: $scope.token
+												}, function (clientErr, clientInstance) {
+												  if (clientErr) {
+												    console.error('There was an error creating the Client.');
+												    throw clientErr;
+												  }
+
+												  braintree.usBankAccount.create({
+												    client: clientInstance
+												  }, function (usBankAccountErr, usBankAccountInstance) {
+												    if (usBankAccountErr) {
+												      console.error('There was an error creating the USBankAccount instance.');
+												      throw usBankAccountErr;
+												    }
+											
+												    var bankDetails = {
+												    	    accountNumber: $scope.bankChACCNo,
+												    	    routingNumber: $scope.bankRoutingNo,
+												    	    accountType: 'checking',
+												    	    ownershipType:'personal',
+												    	  
+												    	 
+												    	  };
+
+												    	  if (bankDetails.ownershipType === 'personal') {
+												    	    bankDetails.firstName = $scope.firstName;
+												    	    bankDetails.lastName = $scope.lastName;
+												    	  } else {
+												    	    bankDetails.businessName = 'PARTH L';
+												    	  }
+
+												      	  usBankAccountInstance.tokenize({
+												    		    bankDetails: bankDetails, // or bankLogin: bankLogin
+												    		    mandateText: 'By clicking ["Checkout"], I authorize Braintree, a service of PayPal, on behalf of [your business name here] (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.'
+														    	}, function (tokenizeErr, tokenizedPayload) {
+														    		    if (tokenizeErr) {
+														    		      console.error('There was an error tokenizing the bank details.');
+														    		     // throw tokenizeErr;
+														    		    }
+														    		    
+														    		    var contextPath = "achTransactions.do";
+																		$http({
+																			 method : "POST",
+																			 url : contextPath,
+																			 data:{
+																				 "amount":document.getElementById("GTotal").value,
+																				 "familyCode":document.getElementById("familyCode").value,
+																				 "contact":document.getElementById("contact").value,
+																				 "chAccNo":$scope.bankChACCNo,
+																				 "nonce": 'fake-valid-nonce'
+																			 },
+																			 headers: {'Content-Type': 'application/json'}
+																			 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+																		 }).then(function mySucces(data) {
+																			 $scope.spinerFlag=false;
+																			  $scope.json = angular.toJson(data.data);
+																			  var obj = JSON.parse($scope.json);
+																			  //TODO: PARTH : Added ! below for testing else code block
+																			  
+																			  	if(obj.status.toString()=="false"){
+																			  		var node = document.createElement("P");
+																			  		var failedTxt = document.createTextNode("Failed transaction");
+																		  			node.appendChild(failedTxt); 
+																		  			if(obj.errorValidations!=null){
+																		  				for(var i=0;i<obj.errorValidations.length;i++){
+																				  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+																				  		    node.appendChild(textnode);
+																				  			node.style.color = "red";
+																				  			node.style.margin="5px";
+																				  		    document.getElementById("achADDResponse").appendChild(node);
+																				  		 
+																				  		  
+																				  		}
+																		  			}
+																		  			if(obj.resMessage!=null){
+																		  			    var textnode = document.createTextNode(", "+obj.resMessage);
+																			  		    node.appendChild(textnode);
+																			  			node.style.color = "red";
+																						node.style.margin="5px";
+																			  		    document.getElementById("achADDResponse").appendChild(node);
+																		  			}
+																		  	
+																			  	}else{
+																			  		/* var node = document.createElement("P");
+																			  		var seccussTxt = document.createTextNode("Transaction ");
+																		  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
+																		  			
+																		  		    node.appendChild(seccussTxt); 
+																		  		 	node.appendChild(textnode);
+																		  		  
+																		  			node.style.color = "green";
+																		  			node.style.margin="22px";
+																		  		    document.getElementById("paymentResponse").appendChild(node); */
+																			  		$scope.stTrnNo=obj.trasactionId;
+																			  		$scope.dtChqDate=obj.transactionDate;
+																			  	  $scope.ishtPay();
+																		  		  $scope.spinerFlag=false;
+																		  		//$scope.afterTransactionSuccess(obj.trasactionId);
+																		  		 
+																		  		sessionStorage.setItem("transactionId", obj.trasactionId);
+																		  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotal").value);
+																		  		//alert(sessionStorage.getItem("transactionId"));
+																		  
+																		  		delete $scope.selectedCard;
+																		  		//window.location = 'ishtpayconfirm.jsp';
+																			  	}
+																			  $scope.spinerFlag=false;
+																		 },function myError(d) {
+																			 console.log("Error:    "+d);
+																			 alert("fail");
+																			 $scope.spinerFlag=false;
+																		 });
+														    		    
+														    		    
+														   });
+												});
+											
+												});
+										},function myError(d) {
 											 console.log("Error:    "+d);
 											 alert("fail");
 											 $scope.spinerFlag=false;
 										 });
-									
-									
 									
 								};
 								
@@ -1068,6 +1079,7 @@ function cardNameChacking(num) {
 											  
 										 },function myError(d) {
 											 console.log("Error:    "+d);
+											 alert("ACH details save failed");
 										 });
 									}//else
 								}//addCard

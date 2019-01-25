@@ -150,6 +150,25 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		}
 	}
 	
+	public void transactionDetail(PaymentACHUtils paymentUtils, String transationId) {
+		try {
+			MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+					.getCollection(MongoConstants.TRANSACTION_DETAILS);
+					//.getCollection("TransactionDetails");
+			
+			Document document = new Document().append("userId", paymentUtils.getContact())
+					.append("familyCode", paymentUtils.getFamilyCode())
+					.append("accNumber", paymentUtils.getChAccNo())
+					.append("Amount", paymentUtils.getAmount())
+					.append("transactionId", transationId)
+					.append("transactionDate", new Date());
+			db.insertOne(document);
+			logger.info("successfully save trasaction details in DB "+paymentUtils);
+		} catch (Exception e) {
+			logger.error("Exception occure while saving transaction details: " + e.getMessage());
+		}
+	}
+	
 	public void transactionDetail(ManualPaymentUtils paymentUtils, String transationId) {
 		try {
 			MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())

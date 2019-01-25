@@ -12,6 +12,7 @@ public interface PaymentCardDao {
 
 	public String saveCadeDetails(PaymentUtils paymentUtils);
 	public void transactionDetail(PaymentUtils paymentUtils,String transationId);
+	public void transactionDetail(PaymentACHUtils paymentUtils,String transationId);
 	public void transactionDetail(ManualPaymentUtils paymentUtils,String transationId);
 	public List<CardDetailsDTO> viewAllCard(String contact);
 	public String saveACHDetails(PaymentACHUtils paymentUtils);

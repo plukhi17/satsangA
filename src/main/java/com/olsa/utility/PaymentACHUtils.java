@@ -8,14 +8,17 @@ public class PaymentACHUtils implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String amount;
+	
+
 	private String accName;
 	private String bankRoutingNo;
 	private String chAccNo;
 	private String dlNo;
 	private String contact;
 	private String familyCode;
-	
+	private String amount;
+	private String nonce;
+
 	
 	
 	
@@ -139,6 +142,11 @@ public class PaymentACHUtils implements Serializable{
 
 
 
+
+
+
+
+
 	/**
 	 * @return the amount
 	 */
@@ -154,6 +162,26 @@ public class PaymentACHUtils implements Serializable{
 	 */
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+
+
+
+
+	/**
+	 * @return the nonce
+	 */
+	public String getNonce() {
+		return nonce;
+	}
+
+
+
+
+	/**
+	 * @param nonce the nonce to set
+	 */
+	public void setNonce(String nonce) {
+		this.nonce = nonce;
 	}
 
 

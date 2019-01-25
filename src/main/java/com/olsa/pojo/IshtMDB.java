@@ -57,6 +57,12 @@ public class IshtMDB {
     private String monthYear;
   
     private Date submittedOn;
+    
+    
+    private String accName;
+	private String bankRoutingNo;
+	private String chAccNo;
+	private String dlNo;
      
     
     public Date getSubmittedOn() {
@@ -248,5 +254,54 @@ public class IshtMDB {
 	public void setApprovedOn(String approvedOn) {
 		this.approvedOn = approvedOn;
 	}
+	/**
+	 * @return the accName
+	 */
+	public String getAccName() {
+		return accName;
+	}
+	/**
+	 * @param accName the accName to set
+	 */
+	public void setAccName(String accName) {
+		this.accName = accName;
+	}
+	/**
+	 * @return the bankRoutingNo
+	 */
+	public String getBankRoutingNo() {
+		return bankRoutingNo;
+	}
+	/**
+	 * @param bankRoutingNo the bankRoutingNo to set
+	 */
+	public void setBankRoutingNo(String bankRoutingNo) {
+		this.bankRoutingNo = bankRoutingNo;
+	}
+	/**
+	 * @return the chAccNo
+	 */
+	public String getChAccNo() {
+		return chAccNo;
+	}
+	/**
+	 * @param chAccNo the chAccNo to set
+	 */
+	public void setChAccNo(String chAccNo) {
+		this.chAccNo = chAccNo;
+	}
+	/**
+	 * @return the dlNo
+	 */
+	public String getDlNo() {
+		return dlNo;
+	}
+	/**
+	 * @param dlNo the dlNo to set
+	 */
+	public void setDlNo(String dlNo) {
+		this.dlNo = dlNo;
+	}
     
+	
 }

@@ -57,6 +57,7 @@ public class CheckoutAction extends BaseAction {
 		
 		writer.append(mapper.writeValueAsString(paymentResponseUtils));
 	}
+
 	
 	public void getClientToken() throws IOException {
 		logger.info("Enter in  getACCTOken() CheckoutAction class");
@@ -71,15 +72,23 @@ public class CheckoutAction extends BaseAction {
 	
 	public void achTransactions() throws IOException {
 		logger.info("Enter in  transaction() CheckoutAction class");
-		PrintWriter writer = getResponse().getWriter();
+		PrintWriter writer ;
 		ObjectMapper mapper = new ObjectMapper();
-		PaymentACHUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentACHUtils.class);
+		String inputParam=getRequest().getReader().readLine();
+		try {
+			PaymentACHUtils paymentUtils = mapper.readValue(inputParam, PaymentACHUtils.class);
+			
+			PaymentResponseUtils paymentResponseUtils=null;
+			paymentResponseUtils=paymentServic.transaction(paymentUtils);
+			writer= getResponse().getWriter();
+			writer.append(mapper.writeValueAsString(paymentResponseUtils));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
-		PaymentResponseUtils paymentResponseUtils=null;
-		paymentResponseUtils=paymentServic.transaction(paymentUtils);
 		
 		
-		writer.append(mapper.writeValueAsString(paymentResponseUtils));
+		
 	}
 	
 	public void manualTransactions() throws IOException {
@@ -116,12 +125,18 @@ public class CheckoutAction extends BaseAction {
 	}
 	
 	public void addACH() throws JsonParseException, JsonMappingException, IOException {
-		PrintWriter writer = getResponse().getWriter();
+		PrintWriter writer ;
 		ObjectMapper mapper = new ObjectMapper();
-		PaymentACHUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentACHUtils.class);
-		Map<String,String> response=new HashMap<String,String>();
-		response.put("responseMsg", paymentServic.addACH(paymentUtils));
-		writer.append(mapper.writeValueAsString(response));
+		try {
+			PaymentACHUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentACHUtils.class);
+			Map<String,String> response=new HashMap<String,String>();
+			response.put("responseMsg", paymentServic.addACH(paymentUtils));
+			writer= getResponse().getWriter();
+			writer.append(mapper.writeValueAsString(response));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	
 	}
 	
 	public void viewCard() throws IOException {
