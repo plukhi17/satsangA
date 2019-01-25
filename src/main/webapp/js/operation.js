@@ -617,6 +617,7 @@ function cardNameChacking(num) {
 								$scope.spinerFlag=false;
 								$scope.cardList;
 								$scope.achList;
+								$scope.termcb=false;
 								/* 
 								$scope.afterTransactionSuccess=function(id){
 									var contextPath = "transactionsuccess.do";
@@ -655,12 +656,74 @@ function cardNameChacking(num) {
 										$scope.achName=myACH.accName;
 										$scope.bankRoutingNo=myACH.routingNo,
 										$scope.bankChACCNo=myACH.chAccNo;
-										$scope.dlNo=myACH.dlNo,
-										
+										$scope.dlNo=myACH.dlNo;
+										$scope.token;
+										$scope.firstName=myACH.accName.split(" ")[0];
+										$scope.lastName=myACH.accName.split(" ")[1];
 										//$scope.cvvText=myCard.cvv;
 										//$scope.paymentFun(); 
 										
 										addACHForm();
+										
+										var contextPath = "getClientToken.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 headers: {'Content-Type': 'application/json'}
+										}).then(function mySucces(data) {
+										
+											$scope.token=data.data;
+											console.log('Token is '+$scope.token);
+											braintree.client.create({
+												  authorization: $scope.token
+												}, function (clientErr, clientInstance) {
+												  if (clientErr) {
+												    console.error('There was an error creating the Client.');
+												    throw clientErr;
+												  }
+
+												  braintree.usBankAccount.create({
+												    client: clientInstance
+												  }, function (usBankAccountErr, usBankAccountInstance) {
+												    if (usBankAccountErr) {
+												      console.error('There was an error creating the USBankAccount instance.');
+												      throw usBankAccountErr;
+												    }
+												    
+												    $scope.achName=myACH.accName;
+													$scope.bankRoutingNo=myACH.routingNo,
+													$scope.bankChACCNo=myACH.chAccNo;
+													$scope.dlNo=myACH.dlNo;
+												    var bankDetails = {
+												    	    accountNumber: $scope.bankChACCNo,
+												    	    routingNumber: $scope.bankRoutingNo,
+												    	    accountType: 'checking',
+												    	    ownershipType:'personal',
+												    	  
+												    	 
+												    	  };
+
+												    	  if (bankDetails.ownershipType === 'personal') {
+												    	    bankDetails.firstName = $scope.firstName;
+												    	    bankDetails.lastName = $scope.lastName;
+												    	  } else {
+												    	    bankDetails.businessName = 'PARTH L';
+												    	  }
+
+												    // Use the usBankAccountInstance here.
+												    // ...
+												  });
+												});
+											
+										},function myError(d) {
+											 console.log("Error:    "+d);
+											 alert("fail");
+											 $scope.spinerFlag=false;
+										 });	 
+										
+										
+										
+								
 										
 									}
 									

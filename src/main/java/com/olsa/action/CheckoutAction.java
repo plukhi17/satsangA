@@ -58,6 +58,17 @@ public class CheckoutAction extends BaseAction {
 		writer.append(mapper.writeValueAsString(paymentResponseUtils));
 	}
 	
+	public void getClientToken() throws IOException {
+		logger.info("Enter in  getACCTOken() CheckoutAction class");
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+
+		String token = paymentServic.transactionGetToken();
+		
+		
+		writer.append(token);
+	}
+	
 	public void achTransactions() throws IOException {
 		logger.info("Enter in  transaction() CheckoutAction class");
 		PrintWriter writer = getResponse().getWriter();

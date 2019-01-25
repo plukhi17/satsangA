@@ -26,7 +26,21 @@
 	size: 40px;
 }
 
+.fName-ach{
+	width:50%;
+}
 
+.lName-ach{
+	width:50%;
+}
+
+.term-mandate{
+	color:#3439ae;
+}
+.term-mandate-panel{
+	
+	margin-bottom: 0px!important;
+}
 
 
 .div-btn-paynow input {

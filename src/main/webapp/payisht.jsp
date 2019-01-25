@@ -17,7 +17,8 @@
 		Enable JavaScript in your browser or use one which supports it.</p>
     </div>
 </noscript>
-
+<script src="https://js.braintreegateway.com/web/3.42.0/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.42.0/js/us-bank-account.min.js"></script>
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta charset="utf-8">
@@ -868,17 +869,34 @@ response.setDateHeader ("Expires", 0);
        					</a>
 					</div>
 					<div class="panel-body">
-						<div class="paymentFormBody" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
+					<form id="paymentForm" class="scale-down">
+						<div class="paymentFormBody row" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
 							<div class="col-xs-12 col-sm-2 col-md-2" >
 							</div>
 							<div class="col-xs-12 col-sm-4 col-md-4" >
 								<div class="row" style="margin: 10px;">
-									<form id="paymentForm" class="scale-down">
+									
 										<div class="cardinfo-card-number">
-											<div class="form-group  has-feedback">
+											
+										 <div class="form-group  has-feedback">
 											    <label class="cardinfo-label" for="ach-name">Name On Account
 												</label>
 											    <input type="text" id="achName" ng-model="achName" class="form-control" placeholder="Acc Name">
+											    
+										   </div>
+										 
+										</div>
+										<div class="row" >
+										  <div class="form-group  fName-ach col-sm-6 col-md-6 margin-top-5">
+											    <label class="cardinfo-label" for="first-name">First Name
+												</label>
+											    <input type="text" id="firstName" ng-model="firstName" class="form-control" placeholder="Fisrt Name">
+											    
+										   </div>
+										   <div class="form-group  lName-ach col-sm-6 col-md-6 margin-top-5">
+											    <label class="cardinfo-label" for="last-name">Last Name
+												</label>
+											    <input type="text" id="lastName" ng-model="lastName" class="form-control" placeholder="Last Name">
 											    
 										   </div>
 										</div>
@@ -919,16 +937,13 @@ response.setDateHeader ("Expires", 0);
 														</div>
 													</div>
 												</div>
+												
+												
+		
 											</div>
 										</div>
-										<div class="div-btn-paynow" style="margin-top: 18px;">
-												<input id="payNowButton"  ng-click="paymentAchFun()"  onclick="return paymentACHValidation()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
-										</div>
-										<div style="margin-top: 10px">
-												<button class="btn btn-info btn-md" ng-click="addACH()"><i class="fa fa-plus"></i>&nbsp; Add </button>
-												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
-										</div>
-									</form>
+										
+								
 									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
 										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
 									</div>
@@ -969,6 +984,34 @@ response.setDateHeader ("Expires", 0);
 								</div>
 							</div>
 						</div>
+						<div class="row">
+						<div class="col-xs-12 col-sm-2 col-md-2 margin-top-5">
+						</div>
+							<div class="col-xs-12 col-sm-8 col-md-8 margin-top-5">
+													<div class="panel panel-default term-mandate-panel">
+      													
+      													<div class="panel-body term-mandate">
+      													 By clicking <input type="checkbox" ng-model="termcb">, I authorize Braintree, a service of PayPal, on behalf of {{firstName}} {{lastName}} (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.</div>
+   													 </div>
+												</div>
+												
+						</div>
+						
+						<div class="row">
+						<div class="col-xs-12 col-sm-2 col-md-2 margin-top-5">
+						</div>
+						<div class="col-xs-12 col-sm-4 col-md-4 margin-top-5">
+										<div class="div-btn-paynow" style="margin-top: 18px;">
+												<input id="payNowButton"  ng-disabled="!termcb" ng-click="paymentAchFun()"  onclick="return paymentACHValidation()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
+										</div>
+										<div style="margin-top: 10px">
+												<button class="btn btn-info btn-md" ng-click="addACH()"><i class="fa fa-plus"></i>&nbsp; Add </button>
+												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
+										</div>
+								</div>
+									</div>
+								</form>	
+										
 					</div>
 				</div>
 			</div>

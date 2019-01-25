@@ -28,4 +28,6 @@ public interface PaymentService {
 
 	PaymentResponseUtils transaction(PaymentACHUtils paymentUtils);
 
+	String transactionGetToken();
+
 }
