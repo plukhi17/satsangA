@@ -891,7 +891,7 @@ function cardNameChacking(num) {
 								};
 								
 								$scope.paymentAchFun=function(){
-									removePNode();
+									removeACHNode();
 									var res;
 									
 										res=paymentACHValidation();
@@ -932,7 +932,13 @@ function cardNameChacking(num) {
 												    	    routingNumber: $scope.bankRoutingNo,
 												    	    accountType: 'checking',
 												    	    ownershipType:'personal',
-												    	  
+												    	    billingAddress: {
+												    	        streetAddress:'Test Street1',
+												    	        extendedAddress: 'Test Street2',
+												    	        locality:'Test locality',
+												    	        region: 'Test region',
+												    	        postalCode: '10001',
+												    	      }
 												    	 
 												    	  };
 
@@ -1048,8 +1054,16 @@ function cardNameChacking(num) {
 									}
 								}
 								
+								function removeACHNode(){
+									var length = document.getElementById("achADDResponse").childElementCount;
+									var childNodeEle = document.getElementById("achADDResponse");   
+									for(var i=0; i<length;i++){
+										childNodeEle.removeChild(childNodeEle.childNodes[i]);
+									}
+								}
+								
 								$scope.addACH=function(){
-									removePNode();
+									removeACHNode();
 									var res=paymentACHValidation();
 									if(res.toString()=='false'){
 										alert("Fill this required field.");
