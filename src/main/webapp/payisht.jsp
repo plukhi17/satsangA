@@ -869,7 +869,7 @@ response.setDateHeader ("Expires", 0);
        					</a>
 					</div>
 					<div class="panel-body">
-					<form id="paymentForm" class="scale-down">
+					<form id="paymentACHForm" class="scale-down">
 						<div class="paymentFormBody row" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
 							<div class="col-xs-12 col-sm-2 col-md-2" >
 							</div>
@@ -928,6 +928,57 @@ response.setDateHeader ("Expires", 0);
 														</div>
 													</div>
 												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="stAddress">Street Address</label>
+														<div id="bank-stAddress">
+														<input type="text" id="stAddress" ng-model="stAddress" class="form-control input" 
+																placeholder="Street Address" >
+														</div>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="extAddress">Extended Address</label>
+														<div id="bank-extAddress">
+														<input type="text" id="extAddress" ng-model="extAddress" class="form-control input" 
+																placeholder="Extended Address" >
+														</div>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="locality">Locality</label>
+														<div id="bank-locality">
+														<input type="text" id="locality" ng-model="locality" class="form-control input" 
+																placeholder="Locality" >
+														</div>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+												<div class="row" >
+													  <div class="form-group  fName-ach col-sm-6 col-md-6 margin-top-5">
+														    <label class="cardinfo-label" for="state">Region</label>
+															<select name='state' required id="state" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="state"  placeholder="Select Region" ng-options="state as state.StateName for state in allStates">
+									                			<option value="" selected >Select Region</option>
+									                		</select>
+													   </div>
+													   <div class="form-group  lName-ach col-sm-6 col-md-6 margin-top-5">
+														    <div class="cardinfo-cvv" >
+																<label class="cardinfo-label" for="postalCode">Postal code</label>
+																<div id="bank-posCode">
+																<input type="text" id="postalCode" ng-model="postalCode" class="form-control input" 
+																		placeholder="Postal Code" >
+																</div>
+															</div>
+													   </div>
+												</div>
+												</div>
+											
+												
+												 
+                                        
+                                      
 												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
 													<div class="cardinfo-cvv" >
 														<label class="cardinfo-label" for="cvv">Driver License Number</label>

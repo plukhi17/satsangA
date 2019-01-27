@@ -172,7 +172,7 @@ public String transactionGetToken() {
 				
 			} else if (result.getTransaction() != null) {
 				Transaction transaction = result.getTransaction();
-				paymentResponseUtils.setResMessage("Fill valid details");
+				paymentResponseUtils.setResMessage(result.getMessage());
 				paymentResponseUtils.setStatus(false);
 				paymentResponseUtils.setTrasactionId(transaction.getId());
 				paymentResponseUtils.setTransactionDate(new Date());

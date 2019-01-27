@@ -614,6 +614,72 @@ function cardNameChacking(num) {
 	var courseApp = angular.module("ishtApp", [ "xeditable" ]);
 	courseApp.controller('ishtCtrl',['$scope','$http','$filter','$compile',
 		function($scope, $http, $filter,$compile) {
+		
+		 $scope.allStates = [
+				{StateName:"Alabama",StateCode:"AL" },
+				{StateName:"Alaska",StateCode:"AK" },
+				{StateName:"Arizona",StateCode:"AZ" },
+				{StateName:"Arkansas" ,StateCode:"AR"},
+				{StateName:"California",StateCode:"CA" },
+				{StateName:"Colorado" ,StateCode:"CO"},
+				{StateName:"Connecticut",StateCode:"CT"},
+				{StateName:"District of Columbia",StateCode:"DC" },
+				{StateName:"Delaware",StateCode:"DE"},
+				{StateName:"Florida",StateCode:"FL"},
+				{StateName:"Georgia",StateCode:"GA"},
+				{StateName:"Hawaii",StateCode:"HI"},
+				{StateName:"Idaho",StateCode:"ID"},
+				{StateName:"Illinois",StateCode:"IL" },
+				{StateName:"Indiana",StateCode:"IN" },
+				{StateName:"Iowa",StateCode:"IA" },
+				{StateName:"Kansas",StateCode:"KS" },
+				{StateName:"Kentucky",StateCode:"KY" },
+				{StateName:"Louisiana",StateCode:"LA" },
+				{StateName:"Maine",StateCode:"ME" },
+				{StateName:"Maryland",StateCode:"MD" },
+				{StateName:"Massachusetts",StateCode:"MA" },
+				{StateName:"Michigan",StateCode:"MI" },
+				{StateName:"Minnesota",StateCode:"MN" },
+				{StateName:"Mississippi",StateCode:"MS" },
+				{StateName:"Missouri",StateCode:"MO" },
+				{StateName:"Montana",StateCode:"MT" },
+				{StateName:"Nebraska",StateCode:"NE" },
+				{StateName:"Nevada",StateCode:"NV" },
+				{StateName:"New Hampshire",StateCode:"NH" },
+				{StateName:"New Jersey",StateCode:"NJ" },
+				{StateName:"New Mexico",StateCode:"NM" },
+				{StateName:"New York",StateCode:"NY" },
+				{StateName:"North Carolina",StateCode:"NC" },
+				{StateName:"North Dakota",StateCode:"ND" },
+				{StateName:"Ohio",StateCode:"OH" },
+				{StateName:"Oklahoma",StateCode:"OK" },
+				{StateName:"Oregon",StateCode:"OR" },
+				{StateName:"Pennsylvania",StateCode:"PA" },
+				{StateName:"Rhode Island",StateCode:"PR" },
+				{StateName:"South Carolina",StateCode:"RI" },
+				{StateName:"South Dakota",StateCode:"SC" },
+				{StateName:"Tennessee",StateCode:"TN" },
+				{StateName:"Texas",StateCode:"TX" },
+				{StateName:"Utah",StateCode:"UT" },
+				{StateName:"Vermont",StateCode:"VT" },
+				{StateName:"Virginia",StateCode:"VA" },
+				{StateName:"Washington",StateCode:"WA" },
+				{StateName:"West Virginia",StateCode:"WV" },
+				{StateName:"Wisconsin",StateCode:"WI" },
+				{StateName:"Wyoming",StateCode:"WY" },
+				{StateName:"American Samoa" ,StateCode:"AS"},
+				{StateName:"Guam",StateCode:"GU" },
+				{StateName:"Northern Mariana Islands",StateCode:"MP" },
+				{StateName:"Puerto Rico",StateCode:"PR" },
+				{StateName:"United States Minor Outlying Islands",StateCode:"IL" },
+				{StateName:"Virgin Islands",StateCode:"VI" }
+			];
+		   
+		   $scope.cars = [
+			   {model : "Ford Mustang", color : "red"},
+			   {model : "Fiat 500", color : "white"},
+			   {model : "Volvo XC90", color : "black"}
+			 ];
 								$scope.spinerFlag=false;
 								$scope.cardList;
 								$scope.achList;
@@ -933,11 +999,11 @@ function cardNameChacking(num) {
 												    	    accountType: 'checking',
 												    	    ownershipType:'personal',
 												    	    billingAddress: {
-												    	        streetAddress:'Test Street1',
-												    	        extendedAddress: 'Test Street2',
-												    	        locality:'Test locality',
-												    	        region: 'Test region',
-												    	        postalCode: '10001',
+												    	        streetAddress: $scope.stAddress,
+												    	        extendedAddress: $scope.extAddress,
+												    	        locality:$scope.locality, 
+												    	        region: $scope.state.StateName,
+												    	        postalCode: $scope.postalCode,
 												    	      }
 												    	 
 												    	  };
