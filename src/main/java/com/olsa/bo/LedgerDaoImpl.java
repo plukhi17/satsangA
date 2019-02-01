@@ -1,5 +1,6 @@
 package com.olsa.bo;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.json.JSONObject;
 
 public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 	static final Logger logger = Logger.getLogger(LedgerDaoImpl.class);
@@ -95,25 +97,32 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				MongoCollection<Code> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.CODE_DETAILS, Code.class);
 						//.getCollection("CardDetails");
+				Document subCodeDoc=new Document("subCodes",code);
+				BasicDBObject newDocument = new BasicDBObject();
+				newDocument.append("$push",  subCodeDoc);
 				
-				//do the update
-			    db.update(Filters.eq("codeName", code.getCodeName(), new BasicDBObject("$push", new BasicDBObject(code.getSubCodeName(), code.getSubCodeDesc())));
-				Document document = new Document().append("codeName", code.getCodeName())
-						.append("codeDesc", code.getSubCodeDesc());
+
+				BasicDBObject searchQuery = new BasicDBObject().append("codeName", code.getCodeName());
+//				//do the update
+//			    db.update(Filters.eq("codeName", code.getCodeName(), new BasicDBObject("$push", new BasicDBObject(code.getSubCodeName(), code.getSubCodeDesc())));
+//				Document document = new Document().append("codeName", code.getCodeName())
+//						.append("codeDesc", code.getSubCodeDesc());
 						
-				db.insertOne(document);
+				db.updateOne(searchQuery,newDocument);
+				
 				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
 				
-				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_CODE_SEQ_NAME),
+				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME),
 						Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
 						new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
 				
-				response = "Successfully saved code details.";
+				response = "Successfully saved Subcode details.";
 			} else {
 				response = "Parent Code doesn't exist.";
 			}
 		} catch (Exception e) {
-			logger.error("Exception occure while saving card details: " + e.getMessage());
+			logger.error("Exception occure while saving Subcode details: " + e.getMessage());
+			e.printStackTrace();
 			response = "Try later";
 		}
 		return response;
@@ -270,7 +279,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		FindIterable<Document> result = db.find(Filters.eq(MongoConstants.CNT_SEQ_NAME, sequenceName));
 		int cnt =0;
 		for (Document doc : result) {
-			cnt=(int) doc.get("counter");
+			cnt=((Double) doc.get("counter")).intValue();
 		}
 		String formattedCounter="";
 		switch(sequenceName){

@@ -30,6 +30,7 @@ import com.olsa.codec.IshtSequenceCodec;
 import com.olsa.codec.RootMDBCodec;
 import com.olsa.codec.RitvikMDBCodec;
 import com.olsa.codec.RootSequenceCodec;
+import com.olsa.codec.SubCodeCodec;
 import com.olsa.codec.FamilyIdSequenceCodec;
 import com.olsa.pojo.RootSequence;
 import com.olsa.pojo.FamilyIDSequence;
@@ -79,6 +80,7 @@ public class OsMongoClient {
 		                CodecRegistries.fromCodecs(new IshtSequenceCodec(defaultDocumentCodec)),
 		                CodecRegistries.fromCodecs(new IshtMDBCodec(defaultDocumentCodec)),
 		                CodecRegistries.fromCodecs(new ConterCodec(defaultDocumentCodec)),
+		               
 		                CodecRegistries.fromProviders(new ArrayListCodecProvider()));
 		   
 		   

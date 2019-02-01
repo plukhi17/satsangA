@@ -5,6 +5,8 @@ package com.olsa.utility;
 
 import java.io.Serializable;
 
+import javax.persistence.Transient;
+
 /**
  * @author parthl
  *
@@ -16,6 +18,8 @@ public class SubCode implements Serializable{
 	private static final long serialVersionUID = -1017461588197030447L;
 	private String subCodeName;
 	private String subCodeDesc;
+	 
+	@Transient
 	private String codeName;
 	/**
 	 * @return the subCodeName

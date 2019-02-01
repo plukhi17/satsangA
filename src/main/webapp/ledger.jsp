@@ -253,7 +253,7 @@ response.setDateHeader ("Expires", 0);
 											  </div>
 											  <div class="form-group">
 											    <label for="codeDesc">Description</label>
-											    <input type="text"  ng-model="codeDesc" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
+											    <input type="text"  required ng-model="codeDesc" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
 											  </div>
 											  <button type="button" id="addCodeBtn" class="btn btn-default" ng-click="addCodeFun()">Add</button>
 											  </form>
