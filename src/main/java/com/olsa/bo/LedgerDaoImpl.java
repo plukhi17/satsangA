@@ -1,6 +1,7 @@
 package com.olsa.bo;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -97,10 +98,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				MongoCollection<Code> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.CODE_DETAILS, Code.class);
 						//.getCollection("CardDetails");
-				Document subCodeDoc=new Document("subCodes",code);
-				BasicDBObject newDocument = new BasicDBObject();
-				newDocument.append("$push",  subCodeDoc);
-				
+			
 
 				BasicDBObject searchQuery = new BasicDBObject().append("codeName", code.getCodeName());
 //				//do the update
@@ -108,7 +106,18 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 //				Document document = new Document().append("codeName", code.getCodeName())
 //						.append("codeDesc", code.getSubCodeDesc());
 						
-				db.updateOne(searchQuery,newDocument);
+				
+				
+				BasicDBObject subCodeDoc = new BasicDBObject();
+				subCodeDoc.put("subCodeName", code.getSubCodeName());
+				subCodeDoc.put("subCodeDesc", code.getSubCodeDesc());
+				
+				BasicDBObject update = new BasicDBObject();
+				update.put("$push", new BasicDBObject("subCodes",subCodeDoc));
+				
+				
+				
+				db.updateOne(searchQuery,update);
 				
 				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
 				
