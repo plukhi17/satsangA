@@ -1626,8 +1626,10 @@ function cardNameChacking(num) {
 													});
 
 									if(GrTotal>=1){
-								
-										$("#submit_1").prop('disabled', false);
+										if($scope.stBankName!= undefined && $scope.stTrnNo != undefined &&  $scope.dtChqDate != undefined ){
+											$("#submit_1").prop('disabled', false);
+										}
+										
 										$scope.ishtAmount=GrTotal;
 										if($scope.selPmtMethod=='AUTO'){
 											$scope.$apply(function () {
