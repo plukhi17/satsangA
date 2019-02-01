@@ -361,7 +361,7 @@ response.setDateHeader ("Expires", 0);
 													
 													<tr ng-show="selPmtMethod == 'MANUAL'">
 														<td  align = "right" style="border-top: none;">Grand Total : US $ </td>
-														<td  align = "right" style="border-top: none;"> <label id="GTotal" value="grandTotal">{{grandTotal}}</label></td>
+														<td  align = "right" style="border-top: none;"> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2}}</label></td>
 															
 													</tr>
 											</thead>
@@ -451,7 +451,7 @@ response.setDateHeader ("Expires", 0);
 															<strong>Bank Name</strong><br>
 														
 															<!-- <input id="stBankName" name="stBankName" placeholder="Bank Name" type="text" style="text-transform:uppercase;"  class="form-control" ng-model = "stBankName" disabled required> -->
-															{{stBankName}}
+															 <span  style="text-transform:uppercase;"> {{stBankName}} </span>
 														</td>
 												
 														<td>
@@ -459,7 +459,10 @@ response.setDateHeader ("Expires", 0);
 														
 															<!-- <input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
 															class="form-control" ng-model = "stTrnNo" required disabled>
-															 -->{{stTrnNo}}
+															 -->
+															 <span  style="text-transform:uppercase;">
+															 	{{stTrnNo}}
+															 </span>
 														</td>
 													
 														<td colspan="2"><strong>E-Transaction Date / Cheque Date:</strong><br><!-- <input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
@@ -695,7 +698,7 @@ response.setDateHeader ("Expires", 0);
 													<tr>
 													<td ><strong>Grand Total : US $  </strong></td>
 													<td><span style="width:50px">
-													  {{grandTotal}}</span></td>
+													  {{grandTotal | number : 2}}</span></td>
 													</tr>
 
 												</tbody>
