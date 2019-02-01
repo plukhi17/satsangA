@@ -1,6 +1,7 @@
 package com.olsa.utility;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class PaymentACHUtils implements Serializable{
 
@@ -18,6 +19,7 @@ public class PaymentACHUtils implements Serializable{
 	private String familyCode;
 	private String amount;
 	private String nonce;
+	private Date transDate;
 
 	
 	
@@ -182,6 +184,26 @@ public class PaymentACHUtils implements Serializable{
 	 */
 	public void setNonce(String nonce) {
 		this.nonce = nonce;
+	}
+
+
+	
+	
+	/**
+	 * @return the transDate
+	 */
+	public Date getTransDate() {
+		return transDate;
+	}
+
+
+
+
+	/**
+	 * @param transDate the transDate to set
+	 */
+	public void setTransDate(Date transDate) {
+		this.transDate = transDate;
 	}
 
 

@@ -95,11 +95,12 @@ public String transactionGetToken() {
 			
 			if (result.isSuccess()) {
 				Transaction transaction = result.getTarget();
-				
+				Date trasnDate=new Date();
 				paymentResponseUtils.setResMessage("Success");
 				paymentResponseUtils.setStatus(true);
 				paymentResponseUtils.setTrasactionId(transaction.getId());
-				paymentResponseUtils.setTransactionDate(new Date());
+				paymentResponseUtils.setTransactionDate(trasnDate);
+				paymentUtils.setTransDate(trasnDate);
 				paymentCard.transactionDetail(paymentUtils, transaction.getId());
 			
 				logger.info("Transaction Successfully went through !! paymentResponseUtils Response :  "+paymentResponseUtils);
@@ -108,10 +109,12 @@ public String transactionGetToken() {
 				
 			} else if (result.getTransaction() != null) {
 				Transaction transaction = result.getTransaction();
-				paymentResponseUtils.setResMessage("Fill valid details");
+				Date trasnDate=new Date();
+				paymentResponseUtils.setResMessage(result.getMessage());
 				paymentResponseUtils.setStatus(false);
 				paymentResponseUtils.setTrasactionId(transaction.getId());
-				paymentResponseUtils.setTransactionDate(new Date());
+				paymentResponseUtils.setTransactionDate(trasnDate);
+				paymentUtils.setTransDate(trasnDate);
 				paymentCard.transactionDetail(paymentUtils, transaction.getId());
 	
 		           
@@ -159,11 +162,12 @@ public String transactionGetToken() {
 			
 			if (result.isSuccess()) {
 				Transaction transaction = result.getTarget();
-				
+				Date transDate= new Date();
 				paymentResponseUtils.setResMessage("Success");
 				paymentResponseUtils.setStatus(true);
 				paymentResponseUtils.setTrasactionId(transaction.getId());
-				paymentResponseUtils.setTransactionDate(new Date());
+				paymentResponseUtils.setTransactionDate(transDate);
+				paymentUtils.setTransDate(transDate);
 				paymentCard.transactionDetail(paymentUtils, transaction.getId());
 				
 				logger.info("Transaction Successfully went through !! paymentResponseUtils Response :  "+paymentResponseUtils);
@@ -172,10 +176,12 @@ public String transactionGetToken() {
 				
 			} else if (result.getTransaction() != null) {
 				Transaction transaction = result.getTransaction();
+				Date transDate= new Date();
 				paymentResponseUtils.setResMessage(result.getMessage());
 				paymentResponseUtils.setStatus(false);
 				paymentResponseUtils.setTrasactionId(transaction.getId());
-				paymentResponseUtils.setTransactionDate(new Date());
+				paymentResponseUtils.setTransactionDate(transDate);
+				paymentUtils.setTransDate(transDate);
 				paymentCard.transactionDetail(paymentUtils, transaction.getId());
 				
 		           

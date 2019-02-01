@@ -1,6 +1,7 @@
 package com.olsa.utility;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class PaymentUtils implements Serializable{
 
@@ -14,6 +15,7 @@ public class PaymentUtils implements Serializable{
 	private String cvv;
 	private String contact;
 	private String familyCode;
+	private Date transDate;
 	
 	
 	
@@ -52,6 +54,20 @@ public class PaymentUtils implements Serializable{
 	}
 	public void setCvv(String cvv) {
 		this.cvv = cvv;
+	}
+	
+	
+	/**
+	 * @return the transDate
+	 */
+	public Date getTransDate() {
+		return transDate;
+	}
+	/**
+	 * @param transDate the transDate to set
+	 */
+	public void setTransDate(Date transDate) {
+		this.transDate = transDate;
 	}
 	@Override
 	public String toString() {

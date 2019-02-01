@@ -765,7 +765,7 @@ function cardNameChacking(num) {
 								        });
 								        
 							        	 var headerDetails ={
-							        			
+						        			    dtIshtDate:$scope.dtChqDate,
 							        			stBankName:$scope.stBankName,
 							   	 			  	stTrnNo:$scope.stTrnNo,
 							   	 			  	stChqNo:$scope.stTrnNo,
@@ -912,15 +912,25 @@ function cardNameChacking(num) {
 											  		var node = document.createElement("P");
 											  		var failedTxt = document.createTextNode("Failed transaction");
 										  			node.appendChild(failedTxt); 
-											  		for(var i=0;i<obj.errorValidations.length;i++){
-											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+											 
+											  		if(obj.errorValidations!=null){
+										  				for(var i=0;i<obj.errorValidations.length;i++){
+												  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+												  		    node.appendChild(textnode);
+												  			node.style.color = "red";
+												  			node.style.margin="5px";
+												  		    document.getElementById("paymentResponse").appendChild(node);
+												  		 
+												  		  
+												  		}
+										  			}
+											  		if(obj.resMessage!=null){
+										  			    var textnode = document.createTextNode(", "+obj.resMessage);
 											  		    node.appendChild(textnode);
 											  			node.style.color = "red";
 														node.style.margin="5px";
 											  		    document.getElementById("paymentResponse").appendChild(node);
-											  		  $scope.spinerFlag=false;
-											  		  
-											  		}
+										  			}
 											  	}else{
 											  		/* var node = document.createElement("P");
 											  		var seccussTxt = document.createTextNode("Transaction ");
@@ -933,7 +943,7 @@ function cardNameChacking(num) {
 										  			node.style.margin="22px";
 										  		    document.getElementById("paymentResponse").appendChild(node); */
 											  		$scope.stTrnNo=obj.trasactionId;
-											  		$scope.dtChqDate=obj.transactionDate;
+											  		$scope.dtChqDate=new Date(obj.transactionDate);
 											  	  $scope.ishtPay();
 										  		  $scope.spinerFlag=false;
 										  		//$scope.afterTransactionSuccess(obj.trasactionId);
@@ -1078,7 +1088,7 @@ function cardNameChacking(num) {
 																		  			node.style.margin="22px";
 																		  		    document.getElementById("paymentResponse").appendChild(node); */
 																			  		$scope.stTrnNo=obj.trasactionId;
-																			  		$scope.dtChqDate=obj.transactionDate;
+																			  		$scope.dtChqDate=new Date(obj.transactionDate);
 																			  	  $scope.ishtPay();
 																		  		  $scope.spinerFlag=false;
 																		  		//$scope.afterTransactionSuccess(obj.trasactionId);
@@ -1406,6 +1416,7 @@ function cardNameChacking(num) {
 								}
 								$(document)
 										.ready(
+												
 												function() {
 												
 													var istPhone = $(
@@ -1432,10 +1443,20 @@ function cardNameChacking(num) {
 																			$scope.PostDataResponse = returnObject.data.returnMessage;
 																		} else {
 																			$scope.ishtLine = returnObject.data.userJSONObject.line;
+																			$scope.ishtAmount=0.0;
 																			var $table=$("#sum_table");
 																			//$table.bootstrapTable('load', returnObject.data.userJSONObject.line);
 																			$table.bootstrapTable('hideLoading');
 																			// $table.tableEditor();
+																			
+																			$scope.ishtLine.forEach(function (ishtLineObj) {
+																			   $scope.ishtAmount += ishtLineObj.total;
+																			   
+																			});
+																			
+																			$scope.processIng=parseFloat((($scope.ishtAmount* 2.9/100) +0.30).toFixed(2));
+																			$scope.grandTotal=$scope.processIng+$scope.ishtAmount;
+																			
 																		}
 																	},
 																	function myError(
@@ -1448,118 +1469,126 @@ function cardNameChacking(num) {
 										.on(
 												'change',
 												'#sum_table tr:not(.totalCol) input:text',
-												function() {
-													var $table = $(this).closest('table');
-													var total = 0;
-													var thisNumber = $(this)
-															.attr('class')
-															.match(/(\d+)/)[1];
-													
-													var count = 1;
-													var mySelectOp = 0.00;
-													var mytextValue = 0.00;
-													var outVal = 0.00;
-													var queryArr = [];
+												calculateSummary);
+								
+								function calculateSummary(){
 
-													$(this)
-															.closest('tr')
-															.find(
-																	".mySelectOp")
-															.each(
-																	function() {
-																		mySelectOp = this.value;
-																	});
-													$(this)
-															.closest('tr')
-															.find(
-																	".mytextValue")
-															.each(
-																	function() {
-																		mytextValue = this.value;
-																	});
+									var $table = $(this).closest('table');
+									var total = 0;
+									var thisNumber = $(this)
+											.attr('class')
+											.match(/(\d+)/)[1];
+									
+									var count = 1;
+									var mySelectOp = 0.00;
+									var mytextValue = 0.00;
+									var outVal = 0.00;
+									var queryArr = [];
 
-													$(this)
-															.closest('tr')
-															.find("input")
-															.each(
-																	function() {
-																		if (count > 3
-																				&& count < 13) {
-																			//queryArr.push(this.value);
-																			if (mySelectOp == "+") {
-																				outVal = parseFloat(this.value)
-																						+ parseFloat(mytextValue);
-																				$(
-																						this)
-																						.val(
-																								formatCurrency(outVal));
-																				outVal = 0.00;
-																			} else if (mySelectOp == "-") {
-																				outVal = parseFloat(this.value)
-																						- parseFloat(mytextValue);
-																				if (outVal < 0) {
-																					//alert(outVal);
-																					$(
-																							this)
-																							.val(
-																									formatCurrency(0.00));
-																				} else {
-																					$(
-																							this)
-																							.val(
-																									formatCurrency(outVal));
-																				}
-																				outVal = 0.00;
-																			} else if (mySelectOp == "*") {
-																				outVal = parseFloat(mytextValue)
-																						* parseFloat(this.value);
-																				$(
-																						this)
-																						.val(
-																								formatCurrency(outVal));
-																				outVal = 0.00;
-																			} else if (mySelectOp == "/") {
-																				outVal = parseFloat(this.value)
-																						/ parseFloat(mytextValue);
-																				$(
-																						this)
-																						.val(
-																								formatCurrency(outVal));
-																				outVal = 0.00;
-																			}
-																			count++;
-																		} else {
-																			count++;
-																		}
-																	});
+									$(this)
+											.closest('tr')
+											.find(
+													".mySelectOp")
+											.each(
+													function() {
+														mySelectOp = this.value;
+													});
+									$(this)
+											.closest('tr')
+											.find(
+													".mytextValue")
+											.each(
+													function() {
+														mytextValue = this.value;
+													});
 
-													/* var v= myOnFunction(queryArr);
-													alert(v); */
+									$(this)
+											.closest('tr')
+											.find("input")
+											.each(
+													function() {
+														if (count > 3
+																&& count < 13) {
+															//queryArr.push(this.value);
+															if (mySelectOp == "+") {
+																outVal = parseFloat(this.value)
+																		+ parseFloat(mytextValue);
+																$(
+																		this)
+																		.val(
+																				formatCurrency(outVal));
+																outVal = 0.00;
+															} else if (mySelectOp == "-") {
+																outVal = parseFloat(this.value)
+																		- parseFloat(mytextValue);
+																if (outVal < 0) {
+																	//alert(outVal);
+																	$(
+																			this)
+																			.val(
+																					formatCurrency(0.00));
+																} else {
+																	$(
+																			this)
+																			.val(
+																					formatCurrency(outVal));
+																}
+																outVal = 0.00;
+															} else if (mySelectOp == "*") {
+																outVal = parseFloat(mytextValue)
+																		* parseFloat(this.value);
+																$(
+																		this)
+																		.val(
+																				formatCurrency(outVal));
+																outVal = 0.00;
+															} else if (mySelectOp == "/") {
+																outVal = parseFloat(this.value)
+																		/ parseFloat(mytextValue);
+																$(
+																		this)
+																		.val(
+																				formatCurrency(outVal));
+																outVal = 0.00;
+															}
+															count++;
+														} else {
+															count++;
+														}
+													});
 
-													//alert('RowVal :'+$(this).attr('class').match(/(\d+)/)[1]);
-													$table
-															.find(
-																	'tr:not(.totalCol) .sum'
-																			+ thisNumber)
-															.each(
-																	function() {
-																		total += parseFloat(
-																				this.value)
-																				.toFixed(
-																						2);
-																	});
-													total = formatCurrency(total); //added b shyam
+									/* var v= myOnFunction(queryArr);
+									alert(v); */
 
-													$table
-															.find(
-																	'.totalCol td:nth-child('
-																			+ thisNumber
-																			+ ')')
-															.html(total);
+									//alert('RowVal :'+$(this).attr('class').match(/(\d+)/)[1]);
+									$table
+											.find(
+													'tr:not(.totalCol) .sum'
+															+ thisNumber)
+											.each(
+													function() {
+														total += parseFloat(
+																this.value)
+																.toFixed(
+																		2);
+													});
+									total = formatCurrency(total); //added b shyam
 
-												});
+									$table
+											.find(
+													'.totalCol td:nth-child('
+															+ thisNumber
+															+ ')')
+											.html(total);
+
+								
+								}
 
 								$(document).on('change', 'input', newSum);
+					
+								$(".sum1").trigger("change");
+								
+							
 								function newSum() {
 									
 									var sum = 0;
@@ -1597,8 +1626,7 @@ function cardNameChacking(num) {
 													});
 
 									if(GrTotal>=1){
-										$scope.ishtPayForm.$valid = true;
-										$scope.ishtPayForm.$invalid = false;
+								
 										$("#submit_1").prop('disabled', false);
 										$scope.ishtAmount=GrTotal;
 										if($scope.selPmtMethod=='AUTO'){
@@ -1610,8 +1638,7 @@ function cardNameChacking(num) {
 										}
 							
 									}else{
-										$scope.ishtPayForm.$valid = false;
-										$scope.ishtPayForm.$invalid = true;
+										
 										$("#submit_1").prop('disabled', true);
 									}
 									

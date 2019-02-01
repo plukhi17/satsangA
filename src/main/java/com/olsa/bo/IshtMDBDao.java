@@ -236,7 +236,7 @@ public class IshtMDBDao extends MongoBaseDao {
     	response.setSuccess(true);
     	IshtMDB ishtMDB = (IshtMDB)response.getObject1();
     	ishtMDB.setReceiptNo(getIshtSeqID());
-    	if(ishtMDB.getPaymentMethod()=="MANUAL") {
+    	if(ishtMDB.getPaymentMethod().equals("MANUAL")) {
     		ishtMDB.setIssuedFlag("N");
     	}else {
     		ishtMDB.setIssuedFlag("Y");
@@ -269,6 +269,8 @@ public class IshtMDBDao extends MongoBaseDao {
     					logger.info("Collected On : "+result.get("collectedOn").toString());
         				ishtMDB.setCollectedOn(formatDate((result.get("collectedOn").toString())));
         				
+    				}else {
+    					//ishtMDB.setCollectedOn(formatDate((result.get("submittedOn").toString())));
     				}
     				if(result.get("trnDetails")!=null) {
         				ishtMDB.setTrnDetails(result.get("trnDetails").toString());

@@ -140,7 +140,7 @@ public class IshtMDB {
         return collectedOn;
     }
 
-    public void setCollectedOn(String collectedOn) {
+	public void setCollectedOn(String collectedOn) {
         this.collectedOn = collectedOn;
     }
 

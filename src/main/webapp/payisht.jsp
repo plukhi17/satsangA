@@ -327,7 +327,7 @@ response.setDateHeader ("Expires", 0);
 											<!-- <td><input name="textValue" id="value{{$index}}" onblur="CurrencyFormatted(this.value,this.id)"  value="0.00" style="width:45px" onkeypress="getIdVal();" class="selecttextValue" /></td> -->
 											
 											<td><input name="textValue" id="value{{$index}}" onblur="CurrencyFormatted(this.value,this.id)"  value="0.00" style="width:45px"  class="selecttextValue" /></td>	
-											<td><input name="swastyayani" id="S{{$index+1}}" onblur="CurrencyFormatted(this.value,this.id)"  value="{{ishtL.swastyayani | number:2}}"style="width:45px" class="sum1" /></td>
+											<td><input name="swastyayani" id="S{{$index+1}}" onblur="CurrencyFormatted(this.value,this.id)"  value="{{ishtL.swastyayani | number:2}}"style="width:45px" class="sum1 triggerSource" /></td>
 											<td><input name = "istavrity" id="I{{$index+2}}" onblur="CurrencyFormatted(this.value,this.id)"  value= "{{ishtL.istavrity | number:2}}" style="width:45px" class="sum2" /></td>
 											<td><input name = "acharyavrity" id="A{{$index+3}}" onblur="CurrencyFormatted(this.value,this.id)" value= "{{ishtL.acharyavrity | number:2}}" style="width:45px" class="sum3" /></td>
 											<td><input name = "dakshina" id="D{{$index+4}}" onblur="CurrencyFormatted(this.value,this.id)" value=" {{ishtL.dakshina | number:2}}" style="width:45px" class="sum4" /></td>
