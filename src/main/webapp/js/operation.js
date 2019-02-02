@@ -1824,6 +1824,12 @@ function creditCardTypeFromNumber(num) {
 			     return 'AmEx';
 			   } else if (num.match(/^6011\d{12}/)) {
 			     return 'Discover';
+			   }else if (num.match(/^3[47][0-9]{13}/))  {
+				     return 'American';
+			   }else if (num.match(/^3(?:0[0-5]|[68][0-9])[0-9]{11}/)){
+				     return 'Diners';
+			   }else if (num.match(/^(?:2131|1800|35\d{3})\d{11}/))  {
+				     return 'JCB';
 			   }
 		}
 	   return 'UNKNOWN';
