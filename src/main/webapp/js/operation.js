@@ -1626,12 +1626,15 @@ function cardNameChacking(num) {
 													});
 
 									if(GrTotal>=1){
-										if($scope.stBankName!= undefined && $scope.stTrnNo != undefined &&  $scope.dtChqDate != undefined ){
+										if($scope.selPmtMethod=='MANUAL' &&  $scope.stBankName!= undefined && $scope.stTrnNo != undefined &&  $scope.dtChqDate != undefined ){
 											$("#submit_1").prop('disabled', false);
 										}
 										
+										
+										
 										$scope.ishtAmount=GrTotal;
 										if($scope.selPmtMethod=='AUTO'){
+											$("#submit_1").prop('disabled', false);
 											$scope.$apply(function () {
 												$scope.processIng=parseFloat(((GrTotal* 2.9/100) +0.30).toFixed(2));
 											});
