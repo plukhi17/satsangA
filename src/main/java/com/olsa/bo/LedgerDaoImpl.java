@@ -94,7 +94,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 	public String saveSubCodeDetails(SubCode code) {
 		String response = null;
 		try {
-			if (ifExistCode(code.getCodeName()) == true) {
+			if (ifExistSubCode(code.getSubCodeName()) == false) {
 				MongoCollection<Code> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.CODE_DETAILS, Code.class);
 						//.getCollection("CardDetails");
@@ -127,7 +127,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				
 				response = "Successfully saved Subcode details.";
 			} else {
-				response = "Parent Code doesn't exist.";
+				response = "SubCode already existed.";
 			}
 		} catch (Exception e) {
 			logger.error("Exception occure while saving Subcode details: " + e.getMessage());
@@ -213,14 +213,31 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     	}
     	catch(Exception ex) {
     		ex.printStackTrace();
-    		logger.info("Exception in getIshtTranAdmin  :"+ex);
+    		logger.info("Exception in getIshtTranAdmin   :"+ex);
     	}
     	
     	return response;
     
 	}
 
+	
+	boolean ifExistSubCode(String subCode) {
 
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CODE_DETAILS);
+				//.getCollection("CardDetails");
+		boolean flag = false;
+		Document document = new Document();
+		document.put("subCodes.subCodeName", subCode);
+		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			//if (doc.get("subCodes.subCodeName") != null) {
+				return true;
+			//}
+		}
+		return flag;
+	
+	}
+	
 	boolean ifExistCode(String code) {
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CODE_DETAILS);
 				//.getCollection("CardDetails");

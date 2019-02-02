@@ -185,15 +185,39 @@ response.setDateHeader ("Expires", 0);
                                                         <i class="glyphicon glyphicon-remove"></i> Delete
                                                     </button>-->
                                                      <form id="addSubFrm" class="form-inline">
+                                                     <div class="row ledger-row">
 										    	 	  <div class="form-group">
 										    	 	  	<label for="cd">Select Head</label>
-														  <select name='balanceHead' required id="balanceHead" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="balanceHead"  placeholder="Select Head">
-									                			<option value="" selected>Select Head</option>
+														  <select name='balanceHead' required id="balanceHead" style="text-transform:uppercase;" ng-change="onChangeHead()" class="form-control input-sm"  ng-model="balanceHead"  placeholder="Select Head">
+									                		
 									                			<option value="income" selected>Income</option>
-									                			<option value="expense" selected>Expense</option>
+									                			<option value="expense" >Expense</option>
 									                    	</select>
 													   
 													  	</div>
+													  	<div class="form-group"  ng-show="balanceHead == 'income'">
+												    	 	  	<label for="headCode">Select Code</label>
+																  <select name='headCode' required id="headCode" ng-change="getSubCodes('income')" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Income Code" ng-options="code.codeName for code in allCodes">
+											                			<option value="" selected>Select Income Code</option>
+											                		</select>
+											  			</div>
+										  			 	<div class="form-group"  ng-show="balanceHead == 'expense'">
+												    	 	  	<label for="headCode">Select Code</label>
+																  <select name='headCode' required id="headCode" ng-change="getSubCodes('expense')" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Expense Code" ng-options="code.codeName for code in allCodes">
+											                			<option value="" selected>Select Income Code</option>
+											                			 <option ng-repeat="code in allCodes" value="{{code.CodeName}}">{{x.CodeName}} -- {{code.codeDesc}}</option>
+											                	  </select>
+											  			</div>
+														
+										  			 	<div class="form-group"  ng-show="selectedHeadCd != ''">
+												    	 	  	<label for="headCode">Select Sub Code</label>
+																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" ng-options="code.codeName for code in allCodes">
+											                			<option value="" selected>Select Sub Code</option>
+											                		</select>
+											  			</div>
+											  			</div>
+											  			<div class="row ledger-row">
+											  			
 												  	 	<div class="form-group" >
 															<label class="ledgerHead-label" for="amount">Amount</label>
 															
@@ -207,6 +231,7 @@ response.setDateHeader ("Expires", 0);
 															<input type="text" id="amountDesc" required ng-model="amountDesc" class="form-control input" 
 																placeholder="Enter Head Description" >
 															
+														</div>
 														</div>
 														<div class="form-group" >
 															<div>	
@@ -245,14 +270,14 @@ response.setDateHeader ("Expires", 0);
 								    <div class="col-md-1">
 								    </div>
 								    	<div class="col-md-3">
-							    		  <form id="addCodeFrm">
+							    		  <form id="addCodeFrm">  	
 							    		  	<label class="res-info">{{addCodeRes}} </label> 
 							    			 <div class="form-group">
 												<label for="code">Code</label>
 											    <input type="text"  ng-model="code" disabled class="form-control" id="code" placeholder="Enter Code" name="code">
 											  </div>
 											  <div class="form-group">
-											    <label for="codeDesc">Description</label>
+											    <label for="codeDesc">Description<span class="required-text">*</span></label>
 											    <input type="text"  required ng-model="codeDesc" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
 											  </div>
 											  <button type="button" id="addCodeBtn" class="btn btn-default" ng-click="addCodeFun()">Add</button>
@@ -261,25 +286,22 @@ response.setDateHeader ("Expires", 0);
 								    	 <div class="col-md-3">
 								   		 </div>
 								    	<div class="col-md-3">
-								    	 <form id="addSubFrm">
+								    	 <form id="addSubFrm"> <label class="res-info">{{addSubCardRes}} </label> 
 								    	 	  <div class="form-group">
+								    	 	 
 								    	 	  	<label for="cd">Select Code</label>
 												  <select name='cd' required id="cd" ng-change="getNextSubCode()" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedCd"  placeholder="Select Code" ng-options="code.codeName for code in allCodes">
 							                			<option value="" selected>Select Code</option>
 							                			
 							                    </select>
-											   
 											  </div>
-										    	<div class="form-group">
-								    	 	  		<strong> Income Code : </strong> <h4> {{selectedCd.codeDesc}} </h4>
-											   
-											  </div>
+											
 								    		  <div class="form-group">
-												<label for="subCode">SubCode</label>
+												<label for="subCode">SubCode {{selectedCd.codeDesc}} </label>
 											    <input type="text" class="form-control" id="subCode" disabled placeholder="Enter SubCode" ng-model="subCodeName" name="subCode" required>
 											  </div>
 											  <div class="form-group">
-											    <label for="subCodeDesc">Description</label>
+											    <label for="subCodeDesc">Description<span class="required-text">*</span></label>
 											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" ng-model="subCodeDesc" name="subCodeDesc" required>
 											  </div>
 											  <button type="submit" id="addSubCodeBtn" class="btn btn-default" ng-click="addSubCodeFun()">Add</button>

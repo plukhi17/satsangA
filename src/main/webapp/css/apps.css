@@ -201,3 +201,12 @@
 #ledgerEntryWrap{
 	margin:50px 0px;
 }
+
+.required-text{
+	color:red;
+}
+
+.ledger-row{
+	
+	margin:20px;
+}

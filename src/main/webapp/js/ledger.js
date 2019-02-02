@@ -4,6 +4,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	$("#myModal").hide();
 	$scope.codeBtn="Code";
 	$scope.balanceSheetHeader="Balance Sheet";
+	$scope.selectedHeadCd={};
 	$scope.allCodes= [
 			
 
@@ -81,6 +82,12 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  				}
 		  			
 		  			};	
+		  			$scope.onChangeHead= function(){
+						alert('hello'+ $scope.balanceHead);
+						$scope.getCodesFun();
+						//$scope.grandTotal=0.0;
+						
+					};
 		  			
 		  			$scope.getNextINCCode= function(){
 
@@ -152,6 +159,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			};
 		  	
 		  			$scope.addLedger = function() {
+		  			
 						
 							var contextPath = "addLedger.do";
 							$http({
@@ -185,6 +193,10 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			$scope.addCodeFun = function() {
   		  			 	var code = $('#code').val();
   		  			 	var codeDesc = $('#codeDesc').val();
+  		  			 	if(codeDesc==""){
+  		  			 		alert("Please fill the Code description");
+  		  			 		return false;
+  		  			 	}
   		  			 	var codeDTO ={
   		  				   codeName:$scope.code,
   		  				   codeDesc:$scope.codeDesc,
@@ -218,8 +230,12 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			};
 		  			
 		  			$scope.addSubCodeFun = function() {
-  		  			 
-		  				
+		  				var subCode = $('#subCode').val();
+  		  			 	var subCodeDesc = $('#subCodeDesc').val();
+		  				if(subCodeDesc==""){
+  		  			 		alert("Please fill the SubCode description");
+  		  			 		return false;
+  		  			 	}
   		  			 	var subCodeDTO ={
   		  			 			subCodeName: $scope.subCodeName,
   		  			 			subCodeDesc: $scope.subCodeDesc,

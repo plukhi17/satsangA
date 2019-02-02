@@ -1031,10 +1031,15 @@ function cardNameChacking(num) {
 														    	}, function (tokenizeErr, tokenizedPayload) {
 														    		    if (tokenizeErr) {
 														    		      console.error('There was an error tokenizing the bank details.');
-														    		     // throw tokenizeErr;
+														    		      throw tokenizeErr;
 														    		    }
+														    		    var nonce="fake-valid-nonce";
 														    		    
+														    		   if(tokenizedPayload.nonce!="" && tokenizedPayload.nonce != undefined ){
+														    			   nonce=tokenizedPayload.nonce;
+														    		   }
 														    		    var contextPath = "achTransactions.do";
+														    		    nonce="fake-valid-nonce";
 																		$http({
 																			 method : "POST",
 																			 url : contextPath,
@@ -1043,7 +1048,7 @@ function cardNameChacking(num) {
 																				 "familyCode":document.getElementById("familyCode").value,
 																				 "contact":document.getElementById("contact").value,
 																				 "chAccNo":$scope.bankChACCNo,
-																				 "nonce": 'fake-valid-nonce'
+																				 "nonce": nonce
 																			 },
 																			 headers: {'Content-Type': 'application/json'}
 																			 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
