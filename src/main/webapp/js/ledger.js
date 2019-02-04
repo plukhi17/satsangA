@@ -166,7 +166,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  	
 		  			$scope.getSubCodebyCodeFun = function() {
   		  			
-  		  			 	var codeSelected= $scope.selectedHeadSubCd;
+  		  			 	var codeSelected= $scope.selectedHeadCd.codeName;
   		  			 var contextPath = "getSubCodeByCode.do"+"?codeName="+ codeSelected;
   	  				 	$http({
 							 method : "POST",

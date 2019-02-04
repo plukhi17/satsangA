@@ -196,7 +196,7 @@ response.setDateHeader ("Expires", 0);
 													  	</div>
 													  	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
 													   	  	<label for="headCode">Select {{balanceHead | uppercase}} Code</label>
-																  <select name='headCode' required id="headCode" ng-change="getSubCodes('income')" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Income Code" ng-options="code.codeName for code in allCodes">
+																  <select name='headCode' required id="headCode" ng-change="getSubCodebyCodeFun()" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Income Code" ng-options="code.codeName for code in allCodes">
 											                			<option value="" selected>Select  Code</option>
 											                		</select>
 											  			</div>
