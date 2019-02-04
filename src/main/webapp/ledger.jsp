@@ -189,29 +189,22 @@ response.setDateHeader ("Expires", 0);
 										    	 	  <div class="form-group">
 										    	 	  	<label for="cd">Select Head</label>
 														  <select name='balanceHead' required id="balanceHead" style="text-transform:uppercase;" ng-change="onChangeHead()" class="form-control input-sm"  ng-model="balanceHead"  placeholder="Select Head">
-									                		
+									                		<option value="-1" selected>Select Head</option>
 									                			<option value="income" selected>Income</option>
 									                			<option value="expense" >Expense</option>
 									                    	</select>
-													   
 													  	</div>
-													  	<div class="form-group"  ng-show="balanceHead == 'income'">
-												    	 	  	<label for="headCode">Select Code</label>
+													  	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
+													   	  	<label for="headCode">Select {{balanceHead | uppercase}} Code</label>
 																  <select name='headCode' required id="headCode" ng-change="getSubCodes('income')" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Income Code" ng-options="code.codeName for code in allCodes">
-											                			<option value="" selected>Select Income Code</option>
+											                			<option value="" selected>Select  Code</option>
 											                		</select>
 											  			</div>
-										  			 	<div class="form-group"  ng-show="balanceHead == 'expense'">
-												    	 	  	<label for="headCode">Select Code</label>
-																  <select name='headCode' required id="headCode" ng-change="getSubCodes('expense')" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Expense Code" ng-options="code.codeName for code in allCodes">
-											                			<option value="" selected>Select Income Code</option>
-											                			 <option ng-repeat="code in allCodes" value="{{code.CodeName}}">{{x.CodeName}} -- {{code.codeDesc}}</option>
-											                	  </select>
-											  			</div>
+										  			 
 														
-										  			 	<div class="form-group"  ng-show="selectedHeadCd != ''">
+										  			 	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
 												    	 	  	<label for="headCode">Select Sub Code</label>
-																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" ng-options="code.codeName for code in allCodes">
+																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" ng-options="code.codeName for code in allSubCodes">
 											                			<option value="" selected>Select Sub Code</option>
 											                		</select>
 											  			</div>

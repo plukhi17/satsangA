@@ -5,8 +5,14 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	$scope.codeBtn="Code";
 	$scope.balanceSheetHeader="Balance Sheet";
 	$scope.selectedHeadCd={};
+	$scope.balanceHead='-1';
 	$scope.allCodes= [
 			
+
+		];
+	
+	$scope.allSubCodes= [
+		
 
 		];
 	 
@@ -158,6 +164,27 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 						 });
 		  			};
 		  	
+		  			$scope.getSubCodebyCodeFun = function() {
+  		  			
+  		  			 	var codeSelected= $scope.selectedHeadSubCd;
+  		  			 var contextPath = "getSubCodeByCode.do"+"?codeName="+ codeSelected;
+  	  				 	$http({
+							 method : "POST",
+							 url : contextPath,
+							 
+						 }).then(function mySucces(data) {
+							var returnObject = eval(data); // Parse Return Data
+							if(returnObject.data.returnCode=='error') {
+								 $scope.PostDataResponse = returnObject.data.returnMessage;
+							 }else{
+								 $scope.allCodes = returnObject.data;
+								 //$scope.getNextINCSubCode();
+							   
+							 }
+ 						 },function myError(d) {
+							 alert("fail");
+						 });
+		  			};
 		  			$scope.addLedger = function() {
 		  			
 						

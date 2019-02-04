@@ -15,5 +15,6 @@ public interface LedgerDao {
 	public ResultObject getLedgerEntries(ResultObject response);
 	public String getNextIncCode(String sequenceName);
 	public String saveSubCodeDetails(SubCode code);
+	public List<Code> getAllSubCodesByCode(String codeName);
 
 }

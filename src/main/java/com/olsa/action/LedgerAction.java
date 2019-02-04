@@ -162,6 +162,33 @@ public class LedgerAction extends BaseAction {
 		}
 	}
 	
+	
+	public void getSubCodeByCode() throws IOException {
+
+		
+		logger.info("Inside getSubCodeByCode() Action");
+		List<Code> subCodes = null;
+		try {
+			String codeName = getRequest().getParameter(("codeName"));
+			String seqName=OnlineSAConstants.INCOME_CODE_SEQ_NAME;
+				subCodes = ledgerServic.getAllSubCodesByCode(codeName);
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (!subCodes.isEmpty()) {
+				responseObject.put(RETURN_CODE, SUCCESS_FLAG);
+				logger.info("inside success");
+				logger.info(subCodes);
+				responseObject.put("subCodes", subCodes);
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 public void getNextSubCode() throws IOException {
 
 	

@@ -290,6 +290,24 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		}
 		return cardDTOs;
 	}
+	@Override
+	public List<Code> getAllSubCodesByCode(String code) {
+		List<Code> cardDTOs=new ArrayList<Code>();
+		
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CODE_DETAILS);  
+		Document document = new Document();
+		document.put("codeName", code);
+	
+		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			Code dto=new Code();
+			dto.setCodeName((String)doc.get("codeName"));
+			dto.setCodeDesc((String)doc.get("codeDesc"));
+			dto.setSubCodes((List<SubCode>)doc.get("subCodes"));
+			cardDTOs.add(dto);
+		}
+		return cardDTOs;
+	}
 	
 	@Override
 	public String getNextIncCode(String sequenceName) {

@@ -66,6 +66,7 @@
 		<action name="getLedgerEntries" method="getLedgerEntries" class="ledgerAction"></action>
 		<action name="getNextIncCode" method="getNextIncCode" class="ledgerAction"></action>
 		<action name="getNextSubCode" method="getNextSubCode" class="ledgerAction"></action>
+		<action name="getSubCodeByCode" method="getSubCodeByCode" class="ledgerAction"></action>
 		
 
     </package>

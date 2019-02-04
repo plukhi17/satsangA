@@ -52,6 +52,11 @@ public class LedgerServiceImpl implements LedgerService{
 		return ledgerDao1.viewAllCode();
 	}
 	
+	@Override
+	public List<Code> getAllSubCodesByCode(String codeName) {
+		return ledgerDao1.getAllSubCodesByCode(codeName);
+	}
+	
 	public ResultObject getLedgerEntries() {
 		ResultObject response = new ResultObject();
 	

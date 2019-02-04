@@ -22,4 +22,5 @@ public interface LedgerService {
 	ResultObject getLedgerEntries();
 	String getNextIncCode(String seqName);
 	String addSubCode(SubCode code);
+	List<Code> getAllSubCodesByCode(String codeName);
 }
