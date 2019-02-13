@@ -23,6 +23,19 @@ public class SAArghyaDpsitSmmaryMDB {
     @JsonProperty("headType")
     private String headType;
     
+    @JsonProperty("headCode")
+    private String headCode;
+    
+    @JsonProperty("headCodeDesc")
+    private String headCodeDesc;
+    
+    @JsonProperty("headSubCode")
+    private String headSubCode;
+    
+    
+    @JsonProperty("headSubCodeDesc")
+    private String headSubCodeDesc;
+    
     
     private Date createdDt;
     
@@ -156,6 +169,62 @@ public class SAArghyaDpsitSmmaryMDB {
 	 */
 	public void setId(BigDecimal id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the headCode
+	 */
+	public String getHeadCode() {
+		return headCode;
+	}
+
+	/**
+	 * @param headCode the headCode to set
+	 */
+	public void setHeadCode(String headCode) {
+		this.headCode = headCode;
+	}
+
+	/**
+	 * @return the headCodeDesc
+	 */
+	public String getHeadCodeDesc() {
+		return headCodeDesc;
+	}
+
+	/**
+	 * @param headCodeDesc the headCodeDesc to set
+	 */
+	public void setHeadCodeDesc(String headCodeDesc) {
+		this.headCodeDesc = headCodeDesc;
+	}
+
+	/**
+	 * @return the headSubCode
+	 */
+	public String getHeadSubCode() {
+		return headSubCode;
+	}
+
+	/**
+	 * @param headSubCode the headSubCode to set
+	 */
+	public void setHeadSubCode(String headSubCode) {
+		this.headSubCode = headSubCode;
+	}
+
+	/**
+	 * @return the headSubCodeDesc
+	 */
+	public String getHeadSubCodeDesc() {
+		return headSubCodeDesc;
+	}
+
+	/**
+	 * @param headSubCodeDesc the headSubCodeDesc to set
+	 */
+	public void setHeadSubCodeDesc(String headSubCodeDesc) {
+		this.headSubCodeDesc = headSubCodeDesc;
 	}
     
     

@@ -177,7 +177,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							if(returnObject.data.returnCode=='error') {
 								 $scope.PostDataResponse = returnObject.data.returnMessage;
 							 }else{
-								 $scope.allCodes = returnObject.data;
+								 $scope.allSubCodes = returnObject.data.subCodes[0].subCodes;
 								 //$scope.getNextINCSubCode();
 							   
 							 }
@@ -186,7 +186,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 						 });
 		  			};
 		  			$scope.addLedger = function() {
-		  			
+		  			alert($scope.selectedHeadSubCd.split('-')[0].trim());
 						
 							var contextPath = "addLedger.do";
 							$http({
@@ -194,6 +194,10 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 								 url : contextPath,
 								 data:{
 									 "headType":$scope.balanceHead,
+									 "headCode":$scope.selectedHeadCd.codeName,
+									 "headCodeDesc":$scope.selectedHeadCd.codeDesc,
+									 "headSubCode":$scope.selectedHeadSubCd.split('-')[0].trim(),
+									 "headSubCodeDesc":$scope.selectedHeadSubCd.split('-')[1].trim(),
 									 "amount":$scope.amount,
 									 "amountDesc":$scope.amountDesc
 								 },

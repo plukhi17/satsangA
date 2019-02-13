@@ -150,6 +150,10 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 						//.getCollection("CardDetails");
 				Document document = new Document().append("amount", ledger.getAmount())
 						.append("headType", ledger.getHeadType())
+						.append("headCodeName", ledger.getHeadCode())
+						.append("headCodeDesc", ledger.getHeadCodeDesc())
+						.append("headSubCodeName", ledger.getHeadSubCode())
+						.append("headSubCodeDesc", ledger.getHeadSubCodeDesc())
 						.append("createdDt",createdDate)
 						.append("updatedDt",createdDate)
 						.append("createdBy",createdDate)

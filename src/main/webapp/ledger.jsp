@@ -204,8 +204,9 @@ response.setDateHeader ("Expires", 0);
 														
 										  			 	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
 												    	 	  	<label for="headCode">Select Sub Code</label>
-																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" ng-options="code.codeName for code in allSubCodes">
+																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" >
 											                			<option value="" selected>Select Sub Code</option>
+											                			<option ng-repeat="x in allSubCodes">{{x.subCodeName}} - {{x.subCodeDesc}}</option>
 											                		</select>
 											  			</div>
 											  			</div>
