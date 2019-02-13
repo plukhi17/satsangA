@@ -48,8 +48,8 @@ public class LedgerServiceImpl implements LedgerService{
 	}
 	
 	@Override
-	public List<Code> getAllCode() {
-		return ledgerDao1.viewAllCode();
+	public List<Code> getAllCode(String headType) {
+		return ledgerDao1.viewAllCode(headType);
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ public interface OnlineSAConstants {
 	String RETURN_CODE = "returnCode";
 	String USER_JSON = "userJSON";
 	String USER_JSON_OBJECT = "userJSONObject";
+	String DPST_SMRY_OBJECT = "depositSmryJSONObject";
 	String RITVIK_JSON_OBJECT = "ritvikJSONObject";
 	String USER_NAME = "userName";
 	String ISHT_TRAN_OBJECT = "ishtTranObject";

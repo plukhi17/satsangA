@@ -100,10 +100,11 @@ public class LedgerAction extends BaseAction {
 	public void getCodes() throws IOException {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
+		String headType = getRequest().getParameter("headType");
 		List<Code> card = null;
 		try {
 			
-			card=ledgerServic.getAllCode();
+			card=ledgerServic.getAllCode(headType);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -122,10 +123,8 @@ public class LedgerAction extends BaseAction {
 			if (result.isSuccess()) {
 				logger.info("inside sucess");
 				responseObject.put("returnCode", "success");
-				IshtMDB i = (IshtMDB) result.getObject1();
-				JSONObject userJSONObject = new JSONObject(i);
-				logger.info(userJSONObject);
-				responseObject.put(USER_JSON_OBJECT, userJSONObject);
+			
+				responseObject.put(DPST_SMRY_OBJECT,  result.getObject1());
 			} else {
 				logger.info("inside failuer");
 				responseObject.put(RETURN_CODE, ERROR_FLAG);

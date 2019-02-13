@@ -23,13 +23,42 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   	  				 	var $table = $("#tblLedger");
   	  				 	$table.bootstrapTable({
   	  		            columns: [
-  	  		                  {        
-	  		                        title: 'Head Type',
-	  		                        field: 'headTpe',
-	  		                        align: 'center',
-	  		                        valign: 'middle',
-	  		                        sortable: true
-	  		                    },
+  	  		              
+	  		                    {
+  	  		                        title: 'Balance Head',
+  	  		                        field: 'headType',
+  	  		                        align: 'center',
+  	  		                        valign: 'middle',
+  	  		                        sortable: true
+  	  		                    },
+  	  		                    {
+  	  		                        title: 'Code',
+  	  		                        field: 'headCode',
+  	  		                        align: 'center',
+  	  		                        valign: 'middle',
+  	  		                        sortable: true
+  	  		                    },
+  	  		                    {
+  	  		                        title: 'Code Description',
+  	  		                        field: 'headCodeDesc',
+  	  		                        align: 'center',
+  	  		                        valign: 'middle',
+  	  		                        sortable: true
+  	  		                    },
+  	  		                    {
+  	  		                        title: 'Sub Code',
+  	  		                        field: 'headSubCode',
+  	  		                        align: 'center',
+  	  		                        valign: 'middle',
+  	  		                        sortable: true
+  	  		                    },
+  	  		                    {
+  	  		                        title: 'SubCode Description',
+  	  		                        field: 'headSubCodeDesc',
+  	  		                        align: 'center',
+  	  		                        valign: 'middle',
+  	  		                        sortable: true
+  	  		                    },
 	  		                    
   	  		                    {
   	  		                        title: 'Amount',
@@ -60,8 +89,8 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							if(returnObject.data.returnCode=='error') {
 								 $scope.PostDataResponse = returnObject.data.returnMessage;
 							 }else{
-								 $scope.ishtLine = returnObject.data.userJSONObject.trnList;
-							     $table.bootstrapTable('load', returnObject.data.userJSONObject.trnList);
+								 $scope.ishtLine = returnObject.data.depositSmryJSONObject;
+							     $table.bootstrapTable('load', returnObject.data.depositSmryJSONObject);
 							     $table.bootstrapTable('hideLoading');
 							     $table.tableEditor();
 							 }
@@ -144,7 +173,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			$scope.getCodesFun = function() {
   		  			
   		  			 	
-  		  			 	var contextPath = "getCodes.do";
+  		  			 	var contextPath = "getCodes.do?headType="+ $scope.balanceHead;
   	  				
   	  				 	$http({
 							 method : "POST",

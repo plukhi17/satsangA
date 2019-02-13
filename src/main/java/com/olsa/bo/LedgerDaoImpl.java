@@ -180,37 +180,34 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     	
 
     		MongoCursor<Document> cursor= null;
-    		List<SAArghyaDpsitSmmaryMDB> listIshtMDB = new ArrayList<SAArghyaDpsitSmmaryMDB>();
+    		List<SAArghyaDpsitSmmaryMDB> listDpstSmry = new ArrayList<SAArghyaDpsitSmmaryMDB>();
 
     		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.SA_ARGHYA_DEPPOSIT_SUMMARY).find().iterator();
     		if(cursor!=null){
     			while(cursor.hasNext()){
     				Document result = cursor.next();
-    				IshtMDB ishtMDB = new IshtMDB();
-    				if(result.get("collectedOn")!=null) {
-    					logger.info("Collected On : "+result.get("collectedOn").toString());
-        				//ishtMDB.setCollectedOn(formatDate((result.get("collectedOn").toString())));
+    				SAArghyaDpsitSmmaryMDB dpstSmry = new SAArghyaDpsitSmmaryMDB();
+    				if(result.get("amount")!=null) {
+    					logger.info("Collected On : "+result.get("amount").toString());
+        				dpstSmry.setAmount((Double) result.get("amount"));
         				
     				}
-    				if(result.get("trnDetails")!=null) {
-        				ishtMDB.setTrnDetails(result.get("trnDetails").toString());
-        				ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString().toUpperCase());
-        				
-    				}
-    				ishtMDB.setFamilyID(result.get("familyID").toString());
+    			
+    				dpstSmry.setAmountDesc(result.get("amountDesc").toString());
 
     				//ishtMDB.setChecqNo(result.get("checqNo").toString());
-    				ishtMDB.setTotal((Double) result.get("total"));
-    				ishtMDB.setIssuedFlag(result.get("issuedFlag").toString());
-    				ishtMDB.setReceiptNo(result.get("receiptNo").toString());
-    				//listIshtMDB.add(ishtMDB);
+    				dpstSmry.setHeadType((String) result.get("headType"));
+    				dpstSmry.setHeadCode(result.get("headCodeName").toString());
+    				dpstSmry.setHeadCodeDesc(result.get("headCodeDesc").toString());
+    				dpstSmry.setHeadSubCode(result.get("headSubCodeName").toString());
+    				dpstSmry.setHeadSubCodeDesc(result.get("headSubCodeDesc").toString());
+    				listDpstSmry.add(dpstSmry);
     			}
 
     		}	
-    		IshtMDB i = new IshtMDB();
-    		//i.setTrnList(listIshtMDB);
-    		logger.info("list size " + listIshtMDB.size());
-    		response.setObject1(i);
+    		
+    		
+    		response.setObject1(listDpstSmry);
 
     		response.setSuccess(true);
 
@@ -285,6 +282,25 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		//.getCollection("CardDetails");
 		Document document = new Document();
 		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			Code dto=new Code();
+			dto.setCodeName((String)doc.get("codeName"));
+			dto.setCodeDesc((String)doc.get("codeDesc"));
+			dto.setSubCodes((List<SubCode>)doc.get("subCodes"));
+			cardDTOs.add(dto);
+		}
+		return cardDTOs;
+	}
+	
+	@Override
+	public List<Code> viewAllCode(String headType) {
+		List<Code> cardDTOs=new ArrayList<Code>();
+		
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CODE_DETAILS);  
+		//.getCollection("CardDetails");
+		Document document = new Document();
+		FindIterable<Document> result = db.find(document);
+
 		for (Document doc : result) {
 			Code dto=new Code();
 			dto.setCodeName((String)doc.get("codeName"));

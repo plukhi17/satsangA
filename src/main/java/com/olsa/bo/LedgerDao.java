@@ -10,6 +10,7 @@ import com.olsa.utility.SubCode;
 public interface LedgerDao {
 
 	public String saveCodeDetails(Code code);
+	public List<Code> viewAllCode(String headType);
 	public List<Code> viewAllCode();
 	public String saveLedger(SAArghyaDpsitSmmaryMDB ledger);
 	public ResultObject getLedgerEntries(ResultObject response);

@@ -17,7 +17,7 @@ import com.olsa.utility.SubCode;
  */
 public interface LedgerService {
 	String addCode(Code code);
-	List<Code> getAllCode();
+	List<Code> getAllCode(String headType);
 	String saveLedger(SAArghyaDpsitSmmaryMDB code);
 	ResultObject getLedgerEntries();
 	String getNextIncCode(String seqName);
