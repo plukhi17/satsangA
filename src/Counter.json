@@ -1,0 +1,20 @@
+{
+	"_id" : ObjectId("5c485f26291f07b090e9bdcc"),
+	"counter" : 1.0,
+	"seqName" : "IncomeCode"
+},
+{
+	"_id" : ObjectId("5c5451c4534f600b9416aacd"),
+	"counter" : 1.0,
+	"seqName" : "IncomeSubCode"
+},
+{
+	"_id" : ObjectId("5c6569cfceb71b650cdd099e"),
+	"counter" : 1.0,
+	"seqName" : "ExpenseCode"
+},
+{
+	"_id" : ObjectId("5c6569efceb71b650cdd09a0"),
+	"counter" : 1.0,
+	"seqName" : "ExpenseSubCode"
+},

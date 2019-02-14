@@ -2,7 +2,9 @@ var app = angular.module('onlineSA', []);
 app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	
 	$("#myModal").hide();
-	$scope.codeBtn="Code";
+	$("#myExpModal").hide();
+	$scope.codeBtn="Income Code";
+	$scope.expCodeBtn="Expens Code"
 	$scope.balanceSheetHeader="Balance Sheet";
 	$scope.selectedHeadCd={};
 	$scope.balanceHead='-1';
@@ -106,17 +108,40 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  					$scope.balanceSheetHeader="Balance Sheet";
 		  					$('#myModal').hide();
 			  				$('.ledgerWrapper').show();
-				 			$scope.codeBtn="Code";
+			  				$scope.codeHeadType="-1";
+				 			$scope.codeBtn="Income Code";
 		  				}else{
 		  					$scope.balanceSheetHeader="Income Head";
 		  					$scope.getNextINCCode();
 		  					$('#myModal').show();
 			  				$('.ledgerWrapper').hide();
+			  				$scope.codeHeadType="income";
 				 			$scope.codeBtn="Back";
 			 			   delete $scope.addCodeRes;
 		  				}
 		  			
 		  			};	
+		  			
+		  			 $scope.addExpCode=function() {
+			  				
+			  				
+			  				if(	$scope.codeBtn=="Back"){
+			  					$scope.balanceSheetHeader="Balance Sheet";
+			  					$('#myExpModal').hide();
+				  				$('.ledgerWrapper').show();
+				  				$scope.codeHeadType="-1";
+					 			$scope.codeBtn="Income Code";
+			  				}else{
+			  					$scope.balanceSheetHeader="Expense Head";
+			  					$scope.codeHeadType="expense";
+			  					$scope.getNextExpCode();
+			  					$('#myExpModal').show();
+				  				$('.ledgerWrapper').hide();
+					 			$scope.codeBtn="Back";
+				 			   delete $scope.addCodeRes;
+			  				}
+			  			
+			  			};	
 		  			$scope.onChangeHead= function(){
 						alert('hello'+ $scope.balanceHead);
 						$scope.getCodesFun();
@@ -138,6 +163,28 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							 $scope.PostDataResponse = returnObject.data.returnMessage;
 						 }else{
 							 $scope.code = returnObject.data.INCCODE;
+							 $scope.getCodesFun();
+						 }
+						 },function myError(d) {
+						 alert("fail");
+					 });
+	  			
+		  			};
+		  			
+		  			$scope.getNextExpCode= function(){
+
+	  					var contextPath = "getNextExpCode.do";
+  	  				
+	  				 	$http({
+						 method : "POST",
+						 url : contextPath,
+						 
+					 }).then(function mySucces(data) {
+						var returnObject = eval(data); // Parse Return Data
+						if(returnObject.data.returnCode=='error') {
+							 $scope.PostDataResponse = returnObject.data.returnMessage;
+						 }else{
+							 $scope.code = returnObject.data.EXPNCODE;
 							 $scope.getCodesFun();
 						 }
 						 },function myError(d) {
@@ -253,6 +300,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			$scope.addCodeFun = function() {
   		  			 	var code = $('#code').val();
   		  			 	var codeDesc = $('#codeDesc').val();
+  		  			 	var codeHeadType= $scope.codeHeadType;
   		  			 	if(codeDesc==""){
   		  			 		alert("Please fill the Code description");
   		  			 		return false;
@@ -260,6 +308,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   		  			 	var codeDTO ={
   		  				   codeName:$scope.code,
   		  				   codeDesc:$scope.codeDesc,
+  		  				   codeType:codeHeadType,
   		  				   };
   		  			 	var contextPath = "addCode.do";
   	  				

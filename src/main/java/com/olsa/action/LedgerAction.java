@@ -161,6 +161,30 @@ public class LedgerAction extends BaseAction {
 		}
 	}
 	
+public void getNextExpCode() throws IOException {
+
+		
+		logger.info("Inside getNextIncCode() Action");
+		try {
+			String seqName=OnlineSAConstants.EXPN_CODE_SEQ_NAME;
+			String result = ledgerServic.getNextIncCode(seqName);
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (!result.isEmpty()) {
+				responseObject.put(RETURN_CODE, SUCCESS_FLAG);
+				logger.info("inside success");
+				logger.info(result);
+				responseObject.put(EXPN_CODE_SEQ, result);
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public void getSubCodeByCode() throws IOException {
 

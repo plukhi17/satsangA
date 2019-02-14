@@ -70,12 +70,19 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 						.getCollection(MongoConstants.CODE_DETAILS);
 						//.getCollection("CardDetails");
 				Document document = new Document().append("codeName", code.getCodeName())
+						.append("codeType", code.getCodeType())
 						.append("codeDesc", code.getCodeDesc());
 						
 				db.insertOne(document);
-				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
 				
-				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_CODE_SEQ_NAME),
+				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
+				String codeSeqType="";
+				if(code.getCodeType().equalsIgnoreCase("income")) {
+					codeSeqType=OnlineSAConstants.INCOME_CODE_SEQ_NAME;
+				}else {
+					codeSeqType=OnlineSAConstants.EXPN_CODE_SEQ_NAME;
+				}
+				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME,codeSeqType),
 						Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
 						new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
 				
@@ -355,6 +362,16 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		case OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME:
 			formattedCounter = String.format("%03d",cnt+1); 
 			seqCode = "INCSUB"+formattedCounter;
+			break;
+			
+		case OnlineSAConstants.EXPN_CODE_SEQ_NAME:
+			formattedCounter = String.format("%03d",cnt+1); 
+			seqCode = "EXPN"+formattedCounter;
+			break;
+			
+		case OnlineSAConstants.EXPN_SUB_CODE_SEQ_NAME:
+			formattedCounter = String.format("%03d",cnt+1); 
+			seqCode = "EXPNSUB"+formattedCounter;
 			break;
 			
 		}

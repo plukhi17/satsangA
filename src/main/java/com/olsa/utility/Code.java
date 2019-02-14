@@ -20,6 +20,8 @@ public class Code implements Serializable{
 	private String codeName;
 	private String codeDesc;
 	private List<SubCode> subCodes;
+	
+	private String codeType;
 	/**
 	 * @return the codeName
 	 */
@@ -55,6 +57,18 @@ public class Code implements Serializable{
 	 */
 	public void setSubCodes(List<SubCode> subCodes) {
 		this.subCodes = subCodes;
+	}
+	/**
+	 * @return the codeType
+	 */
+	public String getCodeType() {
+		return codeType;
+	}
+	/**
+	 * @param codeType the codeType to set
+	 */
+	public void setCodeType(String codeType) {
+		this.codeType = codeType;
 	}
 	
 	

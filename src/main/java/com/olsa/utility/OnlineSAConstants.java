@@ -38,5 +38,12 @@ public interface OnlineSAConstants {
 	String INC_SUB_CODE_SEQ = "INCSUBCODE";
 	String INCOME_CODE_SEQ_NAME = "IncomeCode";
 	String INCOME_SUB_CODE_SEQ_NAME = "IncomeSubCode";
+	
+	String EXPN_CODE_SEQ = "EXPNCODE";
+	String EXPN_SUB_CODE_SEQ = "EXPNSUBCODE";
+	String EXPN_CODE_SEQ_NAME = "ExpenseCode";
+	String EXPN_SUB_CODE_SEQ_NAME = "ExpenseSubCode";
+	
+	
 	public static final HashMap<String, JSONObject> ritvikHashMapCache = new HashMap<String, JSONObject>();
 }

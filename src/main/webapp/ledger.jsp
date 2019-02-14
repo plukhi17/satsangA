@@ -161,16 +161,21 @@ response.setDateHeader ("Expires", 0);
            	<input type="hidden" id="phoneNo" value = <%= root.getPhoneNo()%> name="phoneNo" placeholder="your phone no" ><br>
                 <div class="panel panel-default">
                     <div class="panel-heading" id="accordion">
-                       <div class="col-md-9">
+                       <div class="col-md-6">
                        		{{balanceSheetHeader}}
                        	</div>
-                       	 <div class="col-md-3 cAlign-right">
+                       	 <div class="col-md-6 cAlign-right">
                 			<button class="btn btn-info btn-parmentForm "  ng-click="addCode()" > 
-                					<span ng-if="codeBtn == 'Code'">
+                					<span ng-if="codeBtn == 'Income Code'">
                 						<i class="fa fa-plus"></i>
                 					</span> {{codeBtn}} 
                 			</button>
-                				                       	</div>
+                			<button ng-show="codeBtn == 'Income Code' " class="btn btn-info btn-parmentForm "  ng-click="addExpCode()" > 
+                					<span ng-if="codeBtn == 'Income Code'">
+                						<i class="fa fa-plus"></i>
+                					</span> {{expCodeBtn}} 
+                			</button>
+            			 </div>
                        </div>
                     <div class="panel-body">
                      
@@ -257,7 +262,7 @@ response.setDateHeader ("Expires", 0);
                                     </div>
                                     
             
-								<!-- Modal -->
+								<!-- Income Modal -->
 								<div id="myModal" class="codeWrapper col-md-12"  >
 								   
 								    <div class="codeWrapper-body">
@@ -307,9 +312,63 @@ response.setDateHeader ("Expires", 0);
 											
 										</div>
 								    </div>
+								 <!--  Income Modal  -->
+								 
+								<!-- Expese Modal -->
+								<div id="myExpModal" class="codeWrapper col-md-12"  >
+								   
+								    <div class="codeWrapper-body">
+								    <div class="col-md-1">
+								    </div>
+								    	<div class="col-md-3">
+							    		  <form id="addCodeFrm">  	
+							    		  	<label class="res-info">{{addCodeRes}} </label> 
+							    			 <div class="form-group">
+												<label for="code">Code</label>
+											    <input type="text"  ng-model="code" disabled class="form-control" id="code" placeholder="Enter Code" name="code">
+											  </div>
+											  <div class="form-group">
+											    <label for="codeDesc">Description<span class="required-text">*</span></label>
+											    <input type="text"  required ng-model="codeDesc" class="form-control" id="codeDesc" placeholder="Enter Code Description" name="codeDesc">
+											  </div>
+											  <button type="button" id="addCodeBtn" class="btn btn-default" ng-click="addCodeFun()">Add</button>
+											  </form>
+								    	</div>
+								    	 <div class="col-md-3">
+								   		 </div>
+								    	<div class="col-md-3">
+								    	 <form id="addSubFrm"> <label class="res-info">{{addSubCardRes}} </label> 
+								    	 	  <div class="form-group">
+								    	 	 
+								    	 	  	<label for="cd">Select Code</label>
+												  <select name='cd' required id="cd" ng-change="getNextSubCode()" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedCd"  placeholder="Select Code" ng-options="code.codeName for code in allCodes">
+							                			<option value="" selected>Select Code</option>
+							                			
+							                    </select>
+											  </div>
+											
+								    		  <div class="form-group">
+												<label for="subCode">SubCode {{selectedCd.codeDesc}} </label>
+											    <input type="text" class="form-control" id="subCode" disabled placeholder="Enter SubCode" ng-model="subCodeName" name="subCode" required>
+											  </div>
+											  <div class="form-group">
+											    <label for="subCodeDesc">Description<span class="required-text">*</span></label>
+											    <input type="text" class="form-control" id="subCodeDesc" placeholder="Enter SubCode Description" ng-model="subCodeDesc" name="subCodeDesc" required>
+											  </div>
+											  <button type="submit" id="addSubCodeBtn" class="btn btn-default" ng-click="addSubCodeFun()">Add</button>
+											</form>
+								    	</div>
+							      	<div class="col-md-1">
+								    </div>
+										
+											
+										</div>
+								    </div>
+								 <!--  Income Modal  -->
+								 
 								 
 								</div>
-								<!-- Modal -->
+							
             	
                                 </div>
                        
