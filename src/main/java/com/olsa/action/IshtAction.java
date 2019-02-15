@@ -224,9 +224,9 @@ public class IshtAction extends BaseAction {
 				ishtMDBObj.setCollectedBy("SHYAM GIRI");
 				//ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
 				ishtMDBObj.setSubmittedOn(dtl.getCurrentDateInDate());
-				ishtMDBObj.setReceiptDate("NA");
-				ishtMDBObj.setApprovedBy("NA");
-				ishtMDBObj.setApprovedOn("NA");
+				ishtMDBObj.setReceiptDate(dtl.getCurrentDate4().toString());
+				ishtMDBObj.setApprovedBy("SYSTEM");
+				ishtMDBObj.setApprovedOn(dtl.getCurrentDate4().toString());
 			
 
 		

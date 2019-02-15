@@ -65,6 +65,21 @@ public class DateUtility {
 		return strDate.toUpperCase();
 	}
 	
+	
+	public String getCurrentDate4()
+	{
+		try {
+			//Date date = formatter.parse("2018-06-04");
+			Date currentDate = new Date();
+			strDate = formatter4.format(currentDate);
+		}
+		catch(Exception ex) {
+			logger.error("Exception occure while get current date :"+ex.getMessage());	
+		}
+		return strDate.toUpperCase();
+	}
+	
+	
 	public Date getCurrentDateInDate() throws ParseException
 	{
 		try {
