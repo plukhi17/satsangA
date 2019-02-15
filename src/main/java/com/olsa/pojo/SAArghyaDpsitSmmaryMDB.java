@@ -36,6 +36,9 @@ public class SAArghyaDpsitSmmaryMDB {
     @JsonProperty("headSubCodeDesc")
     private String headSubCodeDesc;
     
+    @JsonProperty("submittedOn")
+    private String submittedOn;
+    
     
     private Date createdDt;
     
@@ -226,6 +229,22 @@ public class SAArghyaDpsitSmmaryMDB {
 	public void setHeadSubCodeDesc(String headSubCodeDesc) {
 		this.headSubCodeDesc = headSubCodeDesc;
 	}
+
+	/**
+	 * @return the submittedOn
+	 */
+	public String getSubmittedOn() {
+		return submittedOn;
+	}
+
+	/**
+	 * @param submittedOn the submittedOn to set
+	 */
+	public void setSubmittedOn(String submittedOn) {
+		this.submittedOn = submittedOn;
+	}
+
+
     
     
     

@@ -3,6 +3,7 @@ package com.olsa.utility;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -101,5 +102,30 @@ public class DateUtility {
 		System.out.println(" strDate : "+strDate);
 	}
 */
-	
+
+	   public static String formatDate(String dateValue) throws ParseException{
+	    	
+	    	SimpleDateFormat dateTimeFormat = new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO);
+			SimpleDateFormat dateFormat = new SimpleDateFormat(OnlineSAConstants.DATE_FORMAT_MONGO);
+			SimpleDateFormat writeFormat = new SimpleDateFormat(OnlineSAConstants.DATE_FORMAT_MONGO);
+			
+			Date curDt = new Date();
+			Date currentDate = dateTimeFormat.parse(dateValue);
+			String formattedCurDate = writeFormat.format(currentDate);
+			Date currentFormatDate = dateFormat.parse(formattedCurDate.toString());
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(currentFormatDate);
+			String formatedDate = (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DATE) + "/" + cal.get(Calendar.YEAR);
+			return formatedDate;
+	    }
+
+
+
+	public static String formateDate1(Date date) throws ParseException {
+		SimpleDateFormat writeFormat = new SimpleDateFormat(OnlineSAConstants.DATE_FORMAT_MONGO);
+		String dateStr = writeFormat.format(date);
+		
+		return dateStr;
+	}
 }

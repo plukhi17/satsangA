@@ -78,6 +78,13 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   	  		                    	valign: 'middle',
   	  		                    	sortable: true
   	  		                    },
+  	  		                    {
+  	  		                        title: 'Date',
+  	  		                        field: 'submittedOn',
+  	  		                        align: 'center',
+  	  		                        valign: 'middle',
+  	  		                        sortable: true
+  	  		                    },
   	  		               
   	  		               ]
   	  		        });

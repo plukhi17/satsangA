@@ -19,6 +19,7 @@ import com.olsa.utility.ACHDetailsDTO;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.Code;
 import com.olsa.utility.Counter;
+import com.olsa.utility.DateUtility;
 import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.MongoConstants;
 import com.olsa.utility.OnlineSAConstants;
@@ -26,7 +27,10 @@ import com.olsa.utility.PaymentACHUtils;
 import com.olsa.utility.PaymentUtils;
 import com.olsa.utility.SubCode;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -195,7 +199,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     				Document result = cursor.next();
     				SAArghyaDpsitSmmaryMDB dpstSmry = new SAArghyaDpsitSmmaryMDB();
     				if(result.get("amount")!=null) {
-    					logger.info("Collected On : "+result.get("amount").toString());
+    					logger.info("Amount : "+result.get("amount").toString());
         				dpstSmry.setAmount((Double) result.get("amount"));
         				
     				}
@@ -208,6 +212,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     				dpstSmry.setHeadCodeDesc(result.get("headCodeDesc").toString());
     				dpstSmry.setHeadSubCode(result.get("headSubCodeName").toString());
     				dpstSmry.setHeadSubCodeDesc(result.get("headSubCodeDesc").toString());
+    				dpstSmry.setSubmittedOn(DateUtility.formateDate1((Date)result.get("createdDt")));
     				listDpstSmry.add(dpstSmry);
     			}
 
@@ -386,3 +391,4 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 	
 	
 }
+
