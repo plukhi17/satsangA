@@ -3,11 +3,13 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	
 	$("#myModal").hide();
 	$("#myExpModal").hide();
+	$('#ledgerModal').hide();
 	$scope.codeBtn="Income Code";
 	$scope.expCodeBtn="Expens Code"
 	$scope.balanceSheetHeader="Balance Sheet";
 	$scope.selectedHeadCd={};
 	$scope.balanceHead='-1';
+	$scope.ledGerBtn="Ledger";
 	$scope.allCodes= [
 			
 
@@ -95,6 +97,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							     $table.bootstrapTable('load', returnObject.data.depositSmryJSONObject);
 							     $table.bootstrapTable('hideLoading');
 							     $table.tableEditor();
+							 
 							 }
  						 },function myError(d) {
 							 alert("fail");
@@ -104,46 +107,50 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			 $scope.addCode=function() {
 		  				
 		  				
-		  				if(	$scope.codeBtn=="Back"){
-		  					$scope.balanceSheetHeader="Balance Sheet";
-		  					$('#myModal').hide();
-			  				$('.ledgerWrapper').show();
-			  				$scope.codeHeadType="-1";
-				 			$scope.codeBtn="Income Code";
-		  				}else{
-		  					$scope.balanceSheetHeader="Income Head";
-		  					$scope.getNextINCCode();
-		  					$('#myModal').show();
-			  				$('.ledgerWrapper').hide();
-			  				$scope.codeHeadType="income";
-				 			$scope.codeBtn="Back";
-			 			   delete $scope.addCodeRes;
-		  				}
+		  				$scope.balanceSheetHeader="Income Head";
+	  					$scope.getNextINCCode();
+	  					$('#myModal').show();
+		  				$('.ledgerWrapper').hide();
+		  				$scope.codeHeadType="income";
+			 		   delete $scope.addCodeRes;
+		 			   delete $scope.addSubCardRes;
 		  			
 		  			};	
 		  			
 		  			 $scope.addExpCode=function() {
-			  				
-			  				
-			  				if(	$scope.codeBtn=="Back"){
-			  					$scope.balanceSheetHeader="Balance Sheet";
-			  					$('#myExpModal').hide();
-				  				$('.ledgerWrapper').show();
-				  				$scope.codeHeadType="-1";
-					 			$scope.codeBtn="Income Code";
-			  				}else{
 			  					$scope.balanceSheetHeader="Expense Head";
 			  					$scope.codeHeadType="expense";
 			  					$scope.getNextExpCode();
 			  					$('#myExpModal').show();
 				  				$('.ledgerWrapper').hide();
-					 			$scope.codeBtn="Back";
-				 			   delete $scope.addCodeRes;
-			  				}
+					 			delete $scope.addCodeRes;
+				 			   delete $scope.addSubCardRes;
+			  				
 			  			
 			  			};	
+			  			
+			  			 $scope.showEntryLedger=function() {
+				  				
+			  				 		$scope.balanceSheetHeader="Add Ledger";
+				  					$('#ledgerModal').show();
+					  				$('.ledgerWrapper').hide();
+						 		   delete $scope.addCodeRes;
+					 			   delete $scope.addSubCardRes;
+				  				
+				  			
+				  			};	
+				  			
+				  			$scope.backToLedger = function(){
+				  				$scope.balanceSheetHeader="Balance Sheet";
+			  					$('#ledgerModal').hide();
+			  					$('#myExpModal').hide();
+			  					$('#myModal').hide();
+				  				$('.ledgerWrapper').show();
+				  				$scope.codeHeadType="-1";
+					 			
+				  			};
 		  			$scope.onChangeHead= function(){
-						alert('hello'+ $scope.balanceHead);
+						
 						$scope.getCodesFun();
 						//$scope.grandTotal=0.0;
 						
@@ -195,8 +202,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	
 		  	
 		  			$scope.getNextSubCode= function(){
-
-	  					var contextPath = "getNextSubCode.do?codeName="+ $scope.selectedCd.codeName;
+		  				var codeHeadType= $scope.codeHeadType;
+	  		  		
+	  					var contextPath = "getNextSubCode.do?codeType="+codeHeadType;
   	  				
 	  				 	$http({
 						 method : "POST",
@@ -219,8 +227,12 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	
 		  			$scope.getCodesFun = function() {
   		  			
+		  				var headType=$scope.balanceHead;
+		  				if(headType=="-1"){
+		  					headType=$scope.codeHeadType;
+		  				}
   		  			 	
-  		  			 	var contextPath = "getCodes.do?headType="+ $scope.balanceHead;
+  		  			 	var contextPath = "getCodes.do?headType="+ headType;
   	  				
   	  				 	$http({
 							 method : "POST",
@@ -242,8 +254,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  	
 		  			$scope.getSubCodebyCodeFun = function() {
   		  			
-  		  			 	var codeSelected= $scope.selectedHeadCd.codeName;
-  		  			 var contextPath = "getSubCodeByCode.do"+"?codeName="+ codeSelected;
+	  			 	 var codeSelected= $scope.selectedHeadCd.codeName;
+	  			 	var codeHeadType= $scope.codeHeadType;
+  		  			 var contextPath = "getSubCodeByCode.do"+"?codeName="+ codeSelected + "&codeType="+codeHeadType;
   	  				 	$http({
 							 method : "POST",
 							 url : contextPath,
@@ -262,7 +275,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 						 });
 		  			};
 		  			$scope.addLedger = function() {
-		  			alert($scope.selectedHeadSubCd.split('-')[0].trim());
+		  			//alert($scope.selectedHeadSubCd.split('-')[0].trim());
 						
 							var contextPath = "addLedger.do";
 							$http({
@@ -284,10 +297,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 								  var node = document.createElement("P");
 						  		   var textnode = document.createTextNode(obj.responseMsg);
 						  		  $scope.saveLedgerRes=obj.responseMsg;
-//						  		    node.appendChild(textnode);
-//						  			node.style.color = "green";
-//						  			node.style.margin="20px";
-//						  		    document.getElementById("paymentResponse").appendChild(node);
+						  		$scope.loadLedgerEntries();
 								  
 							 },function myError(d) {
 								 console.log("Error:    "+d);
@@ -325,12 +335,8 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 								    var obj = JSON.parse($scope.json);
 								  
 								    $scope.addCodeRes=obj.responseMsg;
-								    var node = document.createElement("P");
-						  		    var textnode = document.createTextNode(obj.responseMsg);
-						  		    node.appendChild(textnode);
-						  			node.style.color = "green";
-						  			node.style.margin="20px";
-						  		    document.getElementById("codeResponse").appendChild(node);
+								    
+						  		    $scope.getCodesFun();
 								  
 							 }
  						 },function myError(d) {

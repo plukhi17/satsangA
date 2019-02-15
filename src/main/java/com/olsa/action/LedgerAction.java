@@ -6,28 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.soap.SAAJMetaFactory;
-
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
-import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
 import com.olsa.services.LedgerService;
-import com.olsa.services.PaymentService;
-import com.olsa.utility.ACHDetailsDTO;
-import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.Code;
-import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.OnlineSAConstants;
-import com.olsa.utility.PaymentACHUtils;
-import com.olsa.utility.PaymentResponseUtils;
-import com.olsa.utility.PaymentUtils;
 import com.olsa.utility.SubCode;
 
 public class LedgerAction extends BaseAction {
@@ -100,10 +90,11 @@ public class LedgerAction extends BaseAction {
 	public void getCodes() throws IOException {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();
-		String headType = getRequest().getParameter("headType");
+	
+		
 		List<Code> card = null;
 		try {
-			
+			String headType = getRequest().getParameter("headType");
 			card=ledgerServic.getAllCode(headType);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -193,8 +184,15 @@ public void getNextExpCode() throws IOException {
 		List<Code> subCodes = null;
 		try {
 			String codeName = getRequest().getParameter(("codeName"));
+			String codeType = getRequest().getParameter("codeType");
 			String seqName=OnlineSAConstants.INCOME_CODE_SEQ_NAME;
-				subCodes = ledgerServic.getAllSubCodesByCode(codeName);
+			if(codeType.equalsIgnoreCase("income")){
+				seqName=OnlineSAConstants.INCOME_CODE_SEQ_NAME;
+			}else if(codeType.equalsIgnoreCase("expense")) {
+				seqName=OnlineSAConstants.EXPN_CODE_SEQ_NAME;
+			}
+			
+			subCodes = ledgerServic.getAllSubCodesByCode(codeName);
 			getResponse().setContentType("text/json;charset=utf-8");
 			JSONObject responseObject = new JSONObject();
 			if (!subCodes.isEmpty()) {
@@ -220,10 +218,16 @@ public void getNextSubCode() throws IOException {
 		
 			PrintWriter writer = getResponse().getWriter();
 			ObjectMapper mapper = new ObjectMapper();
-			String codeName = getRequest().getParameter("codeName");
+			String codeType = getRequest().getParameter("codeType");
 			
 
 			String seqName=OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME;
+			
+			if(codeType.equalsIgnoreCase("income")) {
+				seqName=OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME;
+			}else if(codeType.equalsIgnoreCase("expense")) {
+				seqName=OnlineSAConstants.EXPN_SUB_CODE_SEQ_NAME;
+			}
 			String result = ledgerServic.getNextIncCode(seqName);
 			getResponse().setContentType("text/json;charset=utf-8");
 			JSONObject responseObject = new JSONObject();

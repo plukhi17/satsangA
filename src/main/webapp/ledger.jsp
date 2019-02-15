@@ -165,15 +165,23 @@ response.setDateHeader ("Expires", 0);
                        		{{balanceSheetHeader}}
                        	</div>
                        	 <div class="col-md-6 cAlign-right">
-                			<button class="btn btn-info btn-parmentForm "  ng-click="addCode()" > 
+                       		 <button  ng-show="balanceSheetHeader =='Balance Sheet'" class="btn btn-info btn-parmentForm "  ng-click="showEntryLedger()" > 
+                					<i class="fa fa-plus"></i>
+                				   {{ledGerBtn}}
+                			 </button>
+                			<button ng-show="balanceSheetHeader =='Balance Sheet'" class="btn btn-info btn-parmentForm "  ng-click="addCode()" > 
                 					<span ng-if="codeBtn == 'Income Code'">
                 						<i class="fa fa-plus"></i>
                 					</span> {{codeBtn}} 
                 			</button>
-                			<button ng-show="codeBtn == 'Income Code' " class="btn btn-info btn-parmentForm "  ng-click="addExpCode()" > 
+                			<button ng-show="balanceSheetHeader =='Balance Sheet'" class="btn btn-info btn-parmentForm "  ng-click="addExpCode()" > 
                 					<span ng-if="codeBtn == 'Income Code'">
                 						<i class="fa fa-plus"></i>
                 					</span> {{expCodeBtn}} 
+                			</button>
+                			
+               				<button ng-show="balanceSheetHeader != 'Balance Sheet'" class="btn btn-info btn-parmentForm "  ng-click="backToLedger()" > 
+                					Back
                 			</button>
             			 </div>
                        </div>
@@ -185,62 +193,7 @@ response.setDateHeader ("Expires", 0);
                                     <div class="col-md-12 ledgerWrapper">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <div id="entryLedgerWrap">
-                                                    <!--<button id="remove" class="btn btn-danger" disabled>
-                                                        <i class="glyphicon glyphicon-remove"></i> Delete
-                                                    </button>-->
-                                                     <form id="addSubFrm" class="form-inline">
-                                                     <div class="row ledger-row">
-										    	 	  <div class="form-group">
-										    	 	  	<label for="cd">Select Head</label>
-														  <select name='balanceHead' required id="balanceHead" style="text-transform:uppercase;" ng-change="onChangeHead()" class="form-control input-sm"  ng-model="balanceHead"  placeholder="Select Head">
-									                		<option value="-1" selected>Select Head</option>
-									                			<option value="income" selected>Income</option>
-									                			<option value="expense" >Expense</option>
-									                    	</select>
-													  	</div>
-													  	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
-													   	  	<label for="headCode">Select {{balanceHead | uppercase}} Code</label>
-																  <select name='headCode' required id="headCode" ng-change="getSubCodebyCodeFun()" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Income Code" ng-options="code.codeName for code in allCodes">
-											                			<option value="" selected>Select  Code</option>
-											                		</select>
-											  			</div>
-										  			 
-														
-										  			 	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
-												    	 	  	<label for="headCode">Select Sub Code</label>
-																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" >
-											                			<option value="" selected>Select Sub Code</option>
-											                			<option ng-repeat="x in allSubCodes">{{x.subCodeName}} - {{x.subCodeDesc}}</option>
-											                		</select>
-											  			</div>
-											  			</div>
-											  			<div class="row ledger-row">
-											  			
-												  	 	<div class="form-group" >
-															<label class="ledgerHead-label" for="amount">Amount</label>
-															
-															<input type="text" id="amount" required ng-model="amount" class="form-control input" 
-																placeholder="Enter amount" >
-															
-														</div>
-														<div class="form-group" >
-															<label class="ledgerHead-label" for="amountDesc">Description</label>
-															
-															<input type="text" id="amountDesc" required ng-model="amountDesc" class="form-control input" 
-																placeholder="Enter Head Description" >
-															
-														</div>
-														</div>
-														<div class="form-group" >
-															<div>	
-																	<button class="btn btn-info btn-md form-control" ng-click="addLedger()"> Add </button>
-																	<label class="res-info">{{saveLedgerRes}} </label> 
-																  
-															</div>
-													  	</div>
-                                                    </form>
-                                                </div>
+                                               
                                                 <div id="ledgerEntryWrap"  ng-init="loadLedgerEntries()">
 	                                                <table id="tblLedger" 
 	                                                       data-toolbar="#toolbar"
@@ -364,8 +317,73 @@ response.setDateHeader ("Expires", 0);
 											
 										</div>
 								    </div>
-								 <!--  Income Modal  -->
+								 <!--  Expense Modal  -->
 								 
+								<!-- Ledger Modal -->
+								<div id="ledgerModal" class="codeWrapper col-md-12"  >
+								   
+								     <div id="entryLedgerWrap">
+                                                    <!--<button id="remove" class="btn btn-danger" disabled>
+                                                        <i class="glyphicon glyphicon-remove"></i> Delete
+                                                    </button>-->
+                                                     <form id="addSubFrm" class="form-inline">
+                                                  
+                                                     <div class="row ledger-row">
+                                                  
+										    	 	  <div class="form-group">
+										    	 	  	<label for="cd">Select Head</label>
+														  <select name='balanceHead' required id="balanceHead" style="text-transform:uppercase;" ng-change="onChangeHead()" class="form-control input-sm"  ng-model="balanceHead"  placeholder="Select Head">
+									                		<option value="-1" selected>Select Head</option>
+									                			<option value="income" selected>Income</option>
+									                			<option value="expense" >Expense</option>
+									                    	</select>
+													  	</div>
+													  	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
+													   	  	<label for="headCode">Select {{balanceHead | uppercase}} Code</label>
+																  <select name='headCode' required id="headCode" ng-change="getSubCodebyCodeFun()" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadCd"  placeholder="Select Income Code" ng-options="code.codeName for code in allCodes">
+											                			<option value="" selected>Select  Code</option>
+											                		</select>
+											  			</div>
+										  			 
+														
+										  			 	<div class="form-group margin-left-25"  ng-show="balanceHead != '-1'">
+												    	 	  	<label for="headCode">Select Sub Code</label>
+																  <select name='headSubCode' required id="headSubCode"  style="text-transform:uppercase;" class="form-control input-sm"  ng-model="selectedHeadSubCd"  placeholder="Select Sub Code" >
+											                			<option value="" selected>Select Sub Code</option>
+											                			<option ng-repeat="x in allSubCodes">{{x.subCodeName}} - {{x.subCodeDesc}}</option>
+											                		</select>
+											  			</div>
+											  			</div>
+											  			<div class="row ledger-row">
+											  			
+												  	 	<div class="form-group" >
+															<label class="ledgerHead-label" for="amount">Amount</label>
+															
+															<input type="text" id="amount" required ng-model="amount" class="form-control input" 
+																placeholder="Enter amount" >
+															
+														</div>
+														<div class="form-group" >
+															<label class="ledgerHead-label" for="amountDesc">Description</label>
+															
+															<input type="text" id="amountDesc" required ng-model="amountDesc" class="form-control input" 
+																placeholder="Enter Head Description" >
+															
+														</div>
+														</div>
+														   <div class="row ledger-row">
+                                                        <div class="form-group" >
+															<div>	
+																	<button class="btn btn-info btn-md form-control" ng-click="addLedger()"> Add </button>
+																	<label class="res-info">{{saveLedgerRes}} </label> 
+																  
+															</div>
+													  	</div>
+                                                     </div>
+                                                    </form>
+                                                </div>
+								    </div>
+								 <!--  Ledger Modal  -->
 								 
 								</div>
 							

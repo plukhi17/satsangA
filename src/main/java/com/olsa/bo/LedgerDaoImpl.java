@@ -168,7 +168,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 						.append("amountDesc", ledger.getAmountDesc());
 						
 				db.insertOne(document);
-				response = "Leedger Entry Created Successfully";
+				response = "Ledger Entry Created Successfully";
 			
 		} catch (Exception e) {
 			logger.error("Exception occure while saving Leedger Entry details: " + e.getMessage());
@@ -306,12 +306,14 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CODE_DETAILS);  
 		//.getCollection("CardDetails");
 		Document document = new Document();
+		document.put("codeType", headType);
 		FindIterable<Document> result = db.find(document);
 
 		for (Document doc : result) {
 			Code dto=new Code();
 			dto.setCodeName((String)doc.get("codeName"));
 			dto.setCodeDesc((String)doc.get("codeDesc"));
+			dto.setCodeType((String)doc.get("codeType"));
 			dto.setSubCodes((List<SubCode>)doc.get("subCodes"));
 			cardDTOs.add(dto);
 		}
