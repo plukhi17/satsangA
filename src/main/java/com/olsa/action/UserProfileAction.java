@@ -20,6 +20,7 @@ import com.olsa.services.UserService;
 import com.olsa.utility.ForgotPasswordResponse;
 import com.olsa.utility.OTPResponse;
 import com.olsa.utility.OnlineSAConstants;
+import com.olsa.utility.SQLUtility;
 
 public class UserProfileAction extends BaseAction {
 
@@ -75,6 +76,10 @@ public class UserProfileAction extends BaseAction {
 					getRequest().getSession().setAttribute("userBean", root);
 					responseObject.put(APPLICATION_FLOW, PORTAL_USER);
 				}
+				
+				SQLUtility sqUtil= new SQLUtility();
+				sqUtil.executeSQL(root);
+				
 				JSONObject userJSONObject = new JSONObject(root);
 				responseObject.put(USER_JSON_OBJECT, userJSONObject);
 				responseObject.put(RETURN_MESSAGE, CONFIRMATION_MESSAGE);

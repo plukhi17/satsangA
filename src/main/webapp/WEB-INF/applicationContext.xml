@@ -140,4 +140,13 @@
 		<property name="mongoDbName" value="#{osMongoClient.mongoDbName}"/>			
 	</bean>
 	<context:component-scan base-package="com.olsa.payment"/>
+	
+	<bean id="sqlmdbProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+			<value>WEB-INF/mongotosql.properties</value>
+			</list>
+		</property>
+   </bean>
+   <context:property-placeholder properties-ref="sqlmdbProperties" ignore-resource-not-found="true" />
 </beans>

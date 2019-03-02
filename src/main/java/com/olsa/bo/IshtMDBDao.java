@@ -1,24 +1,13 @@
 package com.olsa.bo;
 
-import static com.mongodb.client.model.Filters.eq;
-
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -26,33 +15,23 @@ import org.bson.Document;
 import org.json.JSONObject;
 import org.springframework.util.StringUtils;
 
-import sun.misc.BASE64Encoder;
-
-import com.google.gson.Gson;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-import com.olsa.action.UserProfileAction;
 import com.olsa.mongo.OsMongoClient;
-import com.olsa.pojo.AddressMDB;
 import com.olsa.pojo.FamilyMDB;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
-import com.olsa.pojo.RitvikMDB;
 import com.olsa.utility.DateUtility;
 import com.olsa.utility.MongoConstants;
 import com.olsa.utility.OnlineSAConstants;
 import com.olsa.utility.ReportDTO;
-import com.olsa.utility.TaskThread;
 
 public class IshtMDBDao extends MongoBaseDao {
 	

@@ -26,6 +26,7 @@ import com.olsa.utility.DateUtility;
 import com.olsa.utility.MailThread;
 import com.olsa.utility.OnlineSAConstants;
 import com.olsa.utility.ReportDTO;
+import com.olsa.utility.SQLUtility;
 import com.olsa.utility.SendEmail;
 import com.olsa.utility.TaskThread;
 import com.olsa.utility.WriteToMySQL;
@@ -259,6 +260,8 @@ public class IshtAction extends BaseAction {
 				// Save the same data to MySQL Database as well
 				logger.info("Going to insert into My SQL");
 				WriteToMySQL writeToSQL = new WriteToMySQL();
+				SQLUtility sqlUtil=new SQLUtility();
+				sqlUtil.executeSQL(isht);
 				try {
 					String sql = "";
 					Connection con = writeToSQL.executeSelectSQL(sql);
