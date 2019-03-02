@@ -190,7 +190,7 @@ response.setDateHeader ("Expires", 0);
 									<tr>
 										<td>Amount</td>
 										<td>
-											<p id="GradTotalAmount"> <%= ishtPay.getTotal() %></p>
+											<p id="GradTotalAmount">  $ <%= ishtPay.getTotal() %> </p>
 										<!-- 	<script type="text/javascript">
 											document.getElementById("GradTotalAmount").innerHTML = sessionStorage.getItem("GradTotalAmount");
 											</script> -->

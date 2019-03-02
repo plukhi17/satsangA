@@ -466,7 +466,7 @@ response.setDateHeader ("Expires", 0);
 														</td>
 													
 														<td colspan="2"><strong>E-Transaction Date / Cheque Date:</strong><br><!-- <input id="dtChqDate" onchange="checkDate()" name="dtChqDate" type="date" style="text-transform:uppercase;" class="form-control" ng-model = "dtChqDate" disabled required>
-															 --> {{dtChqDate| date:'medium'}}
+															 --> {{dtChqDate| date:'d-M-yyyy'}}
 														</td>
 													
 														
@@ -951,19 +951,19 @@ response.setDateHeader ("Expires", 0);
 												</div>
 												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
 													<div class="cardinfo-cvv" >
-														<label class="cardinfo-label" for="locality">Locality</label>
+														<label class="cardinfo-label" for="locality">City</label>
 														<div id="bank-locality">
 														<input type="text" id="locality" ng-model="locality" class="form-control input" 
-																placeholder="Locality" >
+																placeholder="City" >
 														</div>
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
 												<div class="row" >
 													  <div class="form-group  fName-ach col-sm-6 col-md-6 margin-top-5">
-														    <label class="cardinfo-label" for="state">Region</label>
-															<select name='state' required id="state" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="state"  placeholder="Select Region" ng-options="state as state.StateName for state in allStates">
-									                			<option value="" selected >Select Region</option>
+														    <label class="cardinfo-label" for="state">State</label>
+															<select name='state' required id="state" style="text-transform:uppercase;" class="form-control input-sm"  ng-model="state"  placeholder="Select State" ng-options="state as state.StateName for state in allStates">
+									                			<option value="" selected >Select State</option>
 									                		</select>
 													   </div>
 													   <div class="form-group  lName-ach col-sm-6 col-md-6 margin-top-5">
