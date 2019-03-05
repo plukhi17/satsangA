@@ -4,13 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.olsa.pojo.AddressMDB;
+import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.RootMDB;
 
@@ -22,10 +25,74 @@ public class SQLUtility {
 	public String executeSQL(Object bean) throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		String result = "";
 		InputStream inputStream;
-
-		
+		Properties prop;
+		String propFileName;
 		if(bean.getClass().getName()==IshtMDB.class.getName()) {
-			
+			 prop= new Properties();
+			 propFileName = "istadeposite.properties";
+			 StringBuilder qryString = new StringBuilder();
+			    StringBuilder valueString = new StringBuilder();
+			    inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+			    Field ishtLineFld = bean.getClass().getDeclaredField("line");
+			    ishtLineFld.setAccessible(true);
+			    List<IshtLineMDB> ishtLine = (List<IshtLineMDB>) ishtLineFld.get(bean); 
+			   
+				if (inputStream != null) {
+					prop.load(inputStream);
+					 for(IshtLineMDB ishtLIne: ishtLine){
+					   System.out.println("==================================");
+					for(Object key: prop.keySet()) {
+						
+						  Field field = null;
+						try {
+						
+							field = bean.getClass().getDeclaredField(key.toString());
+							field.setAccessible(true);
+							
+							  Object value = field.get(bean);
+							  //System.out.println("value is "+value);
+							 
+						    	qryString.append(prop.getProperty(key.toString()));
+						    	if(value!=null) {
+						    		value="'"+value+"'";
+						    	}
+						    	valueString.append(value);
+						    	qryString.append(",");
+						    	valueString.append(",");
+						    	
+						    	
+						    	
+						} catch (NoSuchFieldException e) {
+							
+							
+							
+							//System.out.println("##No key found for "+key.toString());
+						}   
+						
+						
+					}
+					
+					String res = qryString.length() > 0 ? qryString.toString().substring(0, qryString.toString().length() - 1): "";
+					String res1 = valueString.length() > 0 ? valueString.toString().substring(0, valueString.toString().length() - 1): "";
+					StringBuilder sb= new StringBuilder();
+					sb.append("INSERT INTO istavrity_deposit_summary ("+res+") values ("+res1+")");
+					System.out.println(sb.toString());
+					System.out.println(res);
+					System.out.println(res1);
+					 }
+					    	
+					    	
+					    	
+						
+						
+					
+				
+				
+					
+				} else {
+					throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+				}
+			 
 		}else if(bean.getClass().getName()==RootMDB.class.getName()) {
 			for (Field field : bean.getClass().getDeclaredFields()) {
 			    field.setAccessible(true); // You might want to set modifier to public first.
@@ -36,8 +103,8 @@ public class SQLUtility {
 			}
 			//String sql= 
 			System.out.println("This is bean");
-			Properties prop = new Properties();
-			String propFileName = "rootfamily.properties";
+			 prop= new Properties();
+			 propFileName = "rootfamily.properties";
 		    StringBuilder qryString = new StringBuilder();
 		    StringBuilder valueString = new StringBuilder();
 		    inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
@@ -178,8 +245,17 @@ public class SQLUtility {
 		
 		rootMDB.setFamilyID("11111");
 		rootMDB.setAddress(addm);
+		
+		isht.setFamilyID("SA111111");
+		IshtLineMDB line1= new IshtLineMDB();
+		line1.setAcharyavrity(11111.0);
+		
+		List<IshtLineMDB> line= new ArrayList<IshtLineMDB>();
+		line.add(line1);
+		
+		isht.setLine(line);
 		SQLUtility util= new SQLUtility();
-		util.executeSQL(rootMDB);
+		util.executeSQL(isht);
 				
 	}
 }
