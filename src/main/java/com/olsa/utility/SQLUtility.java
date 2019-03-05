@@ -30,8 +30,8 @@ public class SQLUtility {
 		if(bean.getClass().getName()==IshtMDB.class.getName()) {
 			 prop= new Properties();
 			 propFileName = "istadeposite.properties";
-			 StringBuilder qryString = new StringBuilder();
-			    StringBuilder valueString = new StringBuilder();
+			 StringBuilder qryString ;
+			    StringBuilder valueString ;
 			    inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 			    Field ishtLineFld = bean.getClass().getDeclaredField("line");
 			    ishtLineFld.setAccessible(true);
@@ -41,21 +41,47 @@ public class SQLUtility {
 					prop.load(inputStream);
 					 for(IshtLineMDB ishtLIne: ishtLine){
 					   System.out.println("==================================");
+					   qryString = new StringBuilder();
+					   valueString = new StringBuilder();
 					for(Object key: prop.keySet()) {
-						
+						 Object value = null;
 						  Field field = null;
 						try {
+							if(key.toString().contains(".")){
+								//System.out.println("---key------------"+key);
+								//String istLineKey=key.toString().split("\\.")[1];
+								//System.out.println("---------------"+istLineKey);
+								field=ishtLIne.getClass().getDeclaredField(key.toString().split("\\.")[1]);
+								qryString.append(prop.getProperty(key.toString()));
+								field.setAccessible(true);
+								
+								if(field.getType()==Double.class){
+									value = (Double)field.get(ishtLIne);
+								}else if(field.getType()==String.class){
+									value = (String)field.get(ishtLIne);
+								}
+								
+							}else{
+								field = bean.getClass().getDeclaredField(key.toString());
+								qryString.append(prop.getProperty(key.toString()));
+								field.setAccessible(true);
+								if(field.getType()==Double.class){
+									value = (Double)field.get(bean);
+								}else if(field.getType()==String.class){
+									value = (String)field.get(bean);
+								}
+								else if(field.getType()==Date.class){
+									value = (Date)field.get(bean);
+								}
+							}
 						
-							field = bean.getClass().getDeclaredField(key.toString());
-							field.setAccessible(true);
 							
-							  Object value = field.get(bean);
-							  //System.out.println("value is "+value);
+							
+							 //value = field.get(bean);
+							 //System.out.println("value is "+value);
 							 
-						    	qryString.append(prop.getProperty(key.toString()));
-						    	if(value!=null) {
-						    		value="'"+value+"'";
-						    	}
+						    	
+						    	
 						    	valueString.append(value);
 						    	qryString.append(",");
 						    	valueString.append(",");
@@ -66,19 +92,21 @@ public class SQLUtility {
 							
 							
 							
-							//System.out.println("##No key found for "+key.toString());
+							System.out.println("##No key found for "+key.toString());
 						}   
 						
 						
 					}
+					
+					
 					
 					String res = qryString.length() > 0 ? qryString.toString().substring(0, qryString.toString().length() - 1): "";
 					String res1 = valueString.length() > 0 ? valueString.toString().substring(0, valueString.toString().length() - 1): "";
 					StringBuilder sb= new StringBuilder();
 					sb.append("INSERT INTO istavrity_deposit_summary ("+res+") values ("+res1+")");
 					System.out.println(sb.toString());
-					System.out.println(res);
-					System.out.println(res1);
+					//System.out.println(res);
+					//System.out.println(res1);
 					 }
 					    	
 					    	
@@ -250,9 +278,13 @@ public class SQLUtility {
 		IshtLineMDB line1= new IshtLineMDB();
 		line1.setAcharyavrity(11111.0);
 		
+		
+		IshtLineMDB line2= new IshtLineMDB();
+		line2.setAcharyavrity(11111.0);
+		
 		List<IshtLineMDB> line= new ArrayList<IshtLineMDB>();
 		line.add(line1);
-		
+		line.add(line2);
 		isht.setLine(line);
 		SQLUtility util= new SQLUtility();
 		util.executeSQL(isht);
