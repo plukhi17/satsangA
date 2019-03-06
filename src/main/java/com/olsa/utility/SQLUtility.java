@@ -10,18 +10,43 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.olsa.bo.BaseDao;
 import com.olsa.pojo.AddressMDB;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.RootMDB;
 
 public class SQLUtility {
+	
 	static final Logger logger = Logger.getLogger(SQLUtility.class);
-
+	
+	
 	private JdbcTemplate olsaJdbcTemplate;
-	private SqlMdbMapping sqlMdbMapping;
+	
+	
+	/**
+	 * @return the olsaJdbcTemplate
+	 */
+	public JdbcTemplate getOlsaJdbcTemplate() {
+		return olsaJdbcTemplate;
+	}
+
+
+
+	/**
+	 * @param olsaJdbcTemplate the olsaJdbcTemplate to set
+	 */
+	public void setOlsaJdbcTemplate(JdbcTemplate olsaJdbcTemplate) {
+		this.olsaJdbcTemplate = olsaJdbcTemplate;
+	}
+
+
+
 	public String executeSQL(Object bean) throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		String result = "";
 		InputStream inputStream;
@@ -59,6 +84,7 @@ public class SQLUtility {
 									value = (Double)field.get(ishtLIne);
 								}else if(field.getType()==String.class){
 									value = (String)field.get(ishtLIne);
+									value="'"+value+"'";
 								}
 								
 							}else{
@@ -69,9 +95,18 @@ public class SQLUtility {
 									value = (Double)field.get(bean);
 								}else if(field.getType()==String.class){
 									value = (String)field.get(bean);
+									value="'"+value+"'";
 								}
 								else if(field.getType()==Date.class){
-									value = (Date)field.get(bean);
+									Date dateVar= (Date)field.get(bean);
+									if(dateVar!=null) {
+										value=new java.sql.Date(dateVar.getTime());
+									}else {
+										value=null;
+									}
+									
+									System.out.println("value is "+value);
+									//value=java.sql.Date.valueOf((String) field.get(bean));
 								}
 							}
 						
@@ -97,8 +132,16 @@ public class SQLUtility {
 						
 						
 					}
-					
-					
+
+			       
+
+					 //ApplicationContext ctx
+		               // = new FileSystemXmlApplicationContext(
+		                    //    "src/main/webapp/WEB-INF/applicationContext.xml"
+		                	 //   );
+
+		        //JdbcTemplate olsaJdbcTemplate = (JdbcTemplate) ctx.getBean("olsaJdbcTemplate");
+
 					
 					String res = qryString.length() > 0 ? qryString.toString().substring(0, qryString.toString().length() - 1): "";
 					String res1 = valueString.length() > 0 ? valueString.toString().substring(0, valueString.toString().length() - 1): "";
@@ -107,6 +150,8 @@ public class SQLUtility {
 					System.out.println(sb.toString());
 					//System.out.println(res);
 					//System.out.println(res1);
+						int jdbcRes=getOlsaJdbcTemplate().update(sb.toString());
+						System.out.println("JDBC result "+jdbcRes);
 					 }
 					    	
 					    	
@@ -252,14 +297,7 @@ public class SQLUtility {
  	
 	
 	}
-	public JdbcTemplate getOlsaJdbcTemplate() {
-		return olsaJdbcTemplate;
-	}
 
-	public void setOlsaJdbcTemplate(JdbcTemplate olsaJdbcTemplate) {
-		this.olsaJdbcTemplate = olsaJdbcTemplate;
-		logger.info("setOlsaJdbcTemplate Called to test");
-	}
 
 	
 	public static void main(String[] arg) throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
@@ -286,8 +324,11 @@ public class SQLUtility {
 		line.add(line1);
 		line.add(line2);
 		isht.setLine(line);
+		isht.setSubmittedOn(new Date());
 		SQLUtility util= new SQLUtility();
 		util.executeSQL(isht);
 				
 	}
+	
+	
 }
