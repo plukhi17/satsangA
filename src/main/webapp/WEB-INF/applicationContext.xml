@@ -28,6 +28,12 @@
 		</property>  -->
 	</bean>
 	
+	 <!-- Definition for studentJDBCTemplate bean -->
+   <bean id="sqlTemplate" 
+      class = "com.olsa.bo.SQLTemplate">
+      <property name = "dataSource" ref = "olsaDataSource" />    
+   </bean>
+	
     <bean name="userProfileAction" class="com.olsa.action.UserProfileAction" scope="prototype">
 	<property name="userService">
 			<ref bean="userService" />

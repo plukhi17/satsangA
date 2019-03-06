@@ -16,6 +16,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.olsa.bo.BaseDao;
+import com.olsa.bo.SQLTemplate;
 import com.olsa.pojo.AddressMDB;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
@@ -26,13 +27,17 @@ public class SQLUtility {
 	static final Logger logger = Logger.getLogger(SQLUtility.class);
 	
 	
-	private JdbcTemplate olsaJdbcTemplate;
+	private SQLTemplate olsaJdbcTemplate;
 	
 	
+
+
+
+
 	/**
 	 * @return the olsaJdbcTemplate
 	 */
-	public JdbcTemplate getOlsaJdbcTemplate() {
+	public SQLTemplate getOlsaJdbcTemplate() {
 		return olsaJdbcTemplate;
 	}
 
@@ -41,7 +46,7 @@ public class SQLUtility {
 	/**
 	 * @param olsaJdbcTemplate the olsaJdbcTemplate to set
 	 */
-	public void setOlsaJdbcTemplate(JdbcTemplate olsaJdbcTemplate) {
+	public void setOlsaJdbcTemplate(SQLTemplate olsaJdbcTemplate) {
 		this.olsaJdbcTemplate = olsaJdbcTemplate;
 	}
 
@@ -150,7 +155,7 @@ public class SQLUtility {
 					System.out.println(sb.toString());
 					//System.out.println(res);
 					//System.out.println(res1);
-						int jdbcRes=getOlsaJdbcTemplate().update(sb.toString());
+						int jdbcRes=getOlsaJdbcTemplate().getJdbcTemplateObject().update(sb.toString());
 						System.out.println("JDBC result "+jdbcRes);
 					 }
 					    	
