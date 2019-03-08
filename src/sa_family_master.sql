@@ -1,0 +1,81 @@
+-- phpMyAdmin SQL Dump
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 08, 2019 at 02:05 PM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.1.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `onlinesa`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sa_family_master`
+--
+
+CREATE TABLE `sa_family_master` (
+  `Sr_No` int(11) NOT NULL,
+  `SA_FAMILY_CODE` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `SA_MEM_CODE` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `IND_FAMILY_CODE` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
+  `FIRST_NAME` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `MIDDLE_NAME` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `LAST_NAME` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `RITWIK_STATUS` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `RITWIK_FIRST_NAME` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `RITWIK_MIDDLE_NAME` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `RITWIK_LAST_NAME` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `ADDRESS1` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `ADDRESS2` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `ADDRESS3` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `ADDRESS4` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
+  `CITY` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `STATE` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `PROVINCE` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
+  `COUNTRY` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `ZIP_CODE` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `ARGHYA_PRASWASTI_PAPERLESS_SETUP` varchar(10) CHARACTER SET ucs2 NOT NULL,
+  `EMAIL_ID` varchar(50) CHARACTER SET utf8 COLLATE utf8_german2_ci NOT NULL,
+  `PRIMARY_PHONE` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `PERSONALIZE` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `sa_family_master`
+--
+ALTER TABLE `sa_family_master`
+  ADD PRIMARY KEY (`Sr_No`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sa_family_master`
+--
+ALTER TABLE `sa_family_master`
+  MODIFY `Sr_No` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

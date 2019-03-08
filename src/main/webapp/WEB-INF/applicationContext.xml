@@ -41,6 +41,9 @@
 	<property name="ritvikService">
 			<ref bean="ritvikService" />
 		</property>
+		<property name="jdbcTemplate">
+			<ref bean="olsaJdbcTemplate" />
+		</property>
 	</bean>
 	<bean name="braintreeGateway" class="com.braintreegateway.BraintreeGateway">
 		<!-- <constructor-arg value="Environment.SANDBOX"/> -->

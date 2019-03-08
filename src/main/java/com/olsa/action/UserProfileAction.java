@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.mongodb.client.FindIterable;
 import com.olsa.pojo.ResultObject;
@@ -28,7 +29,24 @@ public class UserProfileAction extends BaseAction {
 	private static final long serialVersionUID = -5357706454746642860L;
 	private UserService userService;
 	private RitvikService ritvikService;
+	private JdbcTemplate jdbcTemplate;
+	
+	
 
+	
+	/**
+	 * @return the jdbcTemplate
+	 */
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	/**
+	 * @param jdbcTemplate the jdbcTemplate to set
+	 */
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	public UserService getUserService() {
 		return userService;
 	}
@@ -78,7 +96,7 @@ public class UserProfileAction extends BaseAction {
 				}
 				
 				SQLUtility sqUtil= new SQLUtility();
-				sqUtil.executeSQL(root);
+				sqUtil.executeSQL(root,jdbcTemplate);
 				
 				JSONObject userJSONObject = new JSONObject(root);
 				responseObject.put(USER_JSON_OBJECT, userJSONObject);

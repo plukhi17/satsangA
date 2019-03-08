@@ -92,10 +92,7 @@ public class SQLUtility {
 							
 							 //value = field.get(bean);
 							 //System.out.println("value is "+value);
-							 
-						    	
-						    	
-						    	valueString.append(value);
+								valueString.append(value);
 						    	qryString.append(",");
 						    	valueString.append(",");
 						    	
@@ -131,14 +128,7 @@ public class SQLUtility {
 						int jdbcRes=jdbc.update(sb.toString());
 						System.out.println("JDBC result "+jdbcRes);
 					 }
-					    	
-					    	
-					    	
-						
-						
-					
-				
-				
+					   
 					
 				} else {
 					throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
@@ -174,9 +164,23 @@ public class SQLUtility {
 						  //System.out.println("value is "+value);
 						 
 					    	qryString.append(prop.getProperty(key.toString()));
-					    	if(value!=null) {
-					    		value="'"+value+"'";
-					    	}
+					    	if(field.getType()==Double.class){
+								value = (Double)field.get(bean);
+							}else if(field.getType()==String.class){
+								value = (String)field.get(bean);
+								value="'"+value+"'";
+							}
+							else if(field.getType()==Date.class){
+								Date dateVar= (Date)field.get(bean);
+								if(dateVar!=null) {
+									value="'"+new Timestamp(dateVar.getTime())+"'";
+								}else {
+									value=null;
+								}
+								
+								System.out.println("value is "+value);
+								//value=java.sql.Date.valueOf((String) field.get(bean));
+							}
 					    	valueString.append(value);
 					    	qryString.append(",");
 					    	valueString.append(",");
@@ -252,6 +256,8 @@ public class SQLUtility {
 				System.out.println(sb.toString());
 				System.out.println(res);
 				System.out.println(res1);
+				int jdbcRes=jdbc.update(sb.toString());
+				System.out.println("JDBC result "+jdbcRes);
 			
 				
 			} else {
@@ -304,7 +310,7 @@ public class SQLUtility {
 		isht.setLine(line);
 		isht.setSubmittedOn(new Date());
 		SQLUtility util= new SQLUtility();
-		//util.executeSQL(isht);
+		util.executeSQL(rootMDB,null);
 				
 	}
 	
