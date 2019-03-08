@@ -13,9 +13,13 @@ import org.codehaus.jackson.JsonParser.Feature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.olsa.bo.BaseDao;
+import com.olsa.bo.SQLTemplate;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
@@ -36,6 +40,41 @@ public class IshtAction extends BaseAction {
 	static final Logger logger = Logger.getLogger(IshtAction.class);
 	private UserService userService;
 	private IshtService ishtService;
+	private BaseDao baseDao;
+	private JdbcTemplate jdbcTemplate;
+	
+	
+
+	
+	/**
+	 * @return the jdbcTemplate
+	 */
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	/**
+	 * @param jdbcTemplate the jdbcTemplate to set
+	 */
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	/**
+	 * @return the baseDao
+	 */
+	public BaseDao getBaseDao() {
+		return baseDao;
+	}
+
+	/**
+	 * @param baseDao the baseDao to set
+	 */
+	public void setBaseDao(BaseDao baseDao) {
+		this.baseDao = baseDao;
+	}
+
+	
 
 	public UserService getUserService() {
 		return userService;
@@ -260,8 +299,8 @@ public class IshtAction extends BaseAction {
 				// Save the same data to MySQL Database as well
 				logger.info("Going to insert into My SQL");
 				WriteToMySQL writeToSQL = new WriteToMySQL();
-				SQLUtility sqlUtil=new SQLUtility();
-				sqlUtil.executeSQL(isht);
+				
+				new SQLUtility().executeSQL(isht,getJdbcTemplate());
 				try {
 					String sql = "";
 					Connection con = writeToSQL.executeSelectSQL(sql);

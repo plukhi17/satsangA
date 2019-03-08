@@ -4,19 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.olsa.bo.BaseDao;
-import com.olsa.bo.SQLTemplate;
 import com.olsa.pojo.AddressMDB;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
@@ -25,34 +22,10 @@ import com.olsa.pojo.RootMDB;
 public class SQLUtility {
 	
 	static final Logger logger = Logger.getLogger(SQLUtility.class);
-	
-	
-	private SQLTemplate olsaJdbcTemplate;
-	
+
 	
 
-
-
-
-	/**
-	 * @return the olsaJdbcTemplate
-	 */
-	public SQLTemplate getOlsaJdbcTemplate() {
-		return olsaJdbcTemplate;
-	}
-
-
-
-	/**
-	 * @param olsaJdbcTemplate the olsaJdbcTemplate to set
-	 */
-	public void setOlsaJdbcTemplate(SQLTemplate olsaJdbcTemplate) {
-		this.olsaJdbcTemplate = olsaJdbcTemplate;
-	}
-
-
-
-	public String executeSQL(Object bean) throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+	public String executeSQL(Object bean, JdbcTemplate jdbc) throws IOException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		String result = "";
 		InputStream inputStream;
 		Properties prop;
@@ -105,7 +78,7 @@ public class SQLUtility {
 								else if(field.getType()==Date.class){
 									Date dateVar= (Date)field.get(bean);
 									if(dateVar!=null) {
-										value=new java.sql.Date(dateVar.getTime());
+										value="'"+new Timestamp(dateVar.getTime())+"'";
 									}else {
 										value=null;
 									}
@@ -155,7 +128,7 @@ public class SQLUtility {
 					System.out.println(sb.toString());
 					//System.out.println(res);
 					//System.out.println(res1);
-						int jdbcRes=getOlsaJdbcTemplate().getJdbcTemplateObject().update(sb.toString());
+						int jdbcRes=jdbc.update(sb.toString());
 						System.out.println("JDBC result "+jdbcRes);
 					 }
 					    	
@@ -331,7 +304,7 @@ public class SQLUtility {
 		isht.setLine(line);
 		isht.setSubmittedOn(new Date());
 		SQLUtility util= new SQLUtility();
-		util.executeSQL(isht);
+		//util.executeSQL(isht);
 				
 	}
 	

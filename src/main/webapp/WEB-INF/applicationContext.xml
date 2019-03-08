@@ -13,13 +13,13 @@
     <import resource="datasources-config.xml" />
     <import resource="mongoAppContext.xml" />
     
-    <bean id="baseDao" class="com.olsa.bo.BaseDao" scope="singleton">
+    <bean id="baseDao" class="com.olsa.bo.BaseDao" scope="prototype">
 		<property name="olsaJdbcTemplate">
 			<ref bean="olsaJdbcTemplate"/>
 		</property>
 	</bean>
     
-    <bean id="olsaJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" scope="singleton">
+    <bean id="olsaJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" scope="prototype">
 		<property name="dataSource">
 			<ref bean="olsaDataSource"/>
 		</property>
@@ -75,6 +75,9 @@
 		<property name="ishtService">
 			<ref bean="ishtService" />
 		</property>
+		<property name="jdbcTemplate">
+			<ref bean="olsaJdbcTemplate" />
+		</property>
 	</bean>
 
 	<bean name="flexAction" class="com.example.FlexAction" scope="prototype">
@@ -97,6 +100,13 @@
 			<ref bean="userProfileMDBDao"/>
 		</property>
 		
+	</bean>
+	
+	<bean name="sqlUtility" class="com.olsa.utility" scope="prototype">
+		<property name="SQLTemplate">
+			<ref bean="sqlTemplate"/>
+		</property>
+	
 	</bean>
 
 	<bean name="ishtService" class="com.olsa.services.IshtServiceImpl" scope="prototype">
@@ -145,7 +155,7 @@
 		<property name="mongoClient" value="#{osMongoClient.mongoClient}"/>		
 		<property name="mongoDbName" value="#{osMongoClient.mongoDbName}"/>			
 	</bean>
-	<context:component-scan base-package="com.olsa.payment"/>
+	<context:component-scan base-package="com.olsa"/>
 	
 	
    
