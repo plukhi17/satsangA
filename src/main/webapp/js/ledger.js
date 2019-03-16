@@ -157,7 +157,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 					 			
 				  			};
 		  			$scope.onChangeHead= function(){
-						
+						$scope.codeHeadType=$scope.balanceHead;
 						$scope.getCodesFun();
 						//$scope.grandTotal=0.0;
 						
@@ -234,10 +234,10 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	
 		  			$scope.getCodesFun = function() {
   		  			
-		  				var headType=$scope.balanceHead;
-		  				if(headType=="-1"){
+		  				var headType=$scope.codeHeadType;
+		  				/*if(headType=="-1"){
 		  					headType=$scope.codeHeadType;
-		  				}
+		  				}*/
   		  			 	
   		  			 	var contextPath = "getCodes.do?headType="+ headType;
   	  				

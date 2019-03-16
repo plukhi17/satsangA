@@ -65,7 +65,7 @@
 			border-style:solid;
 		}
 		.headerrow{
-			background-color:#F6B4A5;
+			/*background-color:#F6B4A5;*/
 		}
 		.datarow{
 			background-color:white;
@@ -183,18 +183,19 @@ response.setDateHeader ("Expires", 0);
 				<tr class="headerrow" > 
 					<th style="text-align: center;">Family Code</th> 
 					<th style="text-align: center;">Receipt No.</th>
-					<th style="text-align: center;" colspan="2">To-Date    &nbsp;&nbsp; &nbsp;|&nbsp;&nbsp;&nbsp;    From date</th>
+					<th style="text-align: center;" colspan="2">From-Date    &nbsp;&nbsp; &nbsp;|&nbsp;&nbsp;&nbsp;    to- date</th>
 					<th style="text-align: center;">Search</th>
 					<th style="text-align: center;">Export</th>
 				</tr>
 				<tr class="headerrow"> 
 					<td><input type="search" ng-model="familyCode" id="familyCodeId" name="familyCode" class="form-control" placeholder="Family Code"></td> 
 					<td><input type="text"  ng-model="receiptNo" id="receiptnoId" name="receiptno" class="form-control" placeholder="Receipt No."> </td>
+					<td>	<input ng-model="fromDate" id="fromDateId" type="date" name="fromDate" class="form-control">
+					</td>
 					<td>
 						<input ng-model="toDate" id="toDateId" type="date" name="toDate" class="form-control sm">
 					</td>
-					<td>	<input ng-model="fromDate" id="fromDateId" type="date" name="fromDate" class="form-control">
-					</td>
+					
 					<td>
 							<div>
 								<button class="btn btn-primary btn-ef btn-ef-3 btn-ef-3c mb-10" ng-click="myReport()"><span class="glyphicon glyphicon-search"></span> Report </button>
