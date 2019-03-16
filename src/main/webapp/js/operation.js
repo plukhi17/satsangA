@@ -215,21 +215,21 @@ function reviewForm() {
 function findValueForReview(index) {
 	var collections = new Array();
 
-	collections.push($('#id' + (Number(index) + Number(11))).val());
-	collections.push($('#name' + (Number(index) + Number(12))).val());
-	collections.push(document.getElementById('my_select,' + index).value);
+	collections.push($('#id' + (Number(index) + Number(10))).val());
+	collections.push($('#name' + (Number(index) + Number(11))).val());
+	//collections.push(document.getElementById('my_select,' + index).value);
 
-	collections.push($('#value' + index).val());
-	collections.push($('#S' + (Number(index) + Number(1))).val());
-	collections.push($('#I' + (Number(index) + Number(2))).val());
-	collections.push($('#A' + (Number(index) + Number(3))).val());
-	collections.push($('#D' + (Number(index) + Number(4))).val());
-	collections.push($('#Sa' + (Number(index) + Number(5))).val());
-	collections.push($('#P' + (Number(index) + Number(6))).val());
-	collections.push($('#Su' + (Number(index) + Number(7))).val());
-	collections.push($('#Pa' + (Number(index) + Number(8))).val());
-	collections.push($('#Ri' + (Number(index) + Number(9))).val());
-	collections.push($('#tot' + (Number(index) + Number(10))).text());
+	//collections.push($('#value' + index).val());
+	collections.push($('#S' + (Number(index) + Number(0))).val());
+	collections.push($('#I' + (Number(index) + Number(1))).val());
+	collections.push($('#A' + (Number(index) + Number(2))).val());
+	collections.push($('#D' + (Number(index) + Number(3))).val());
+	collections.push($('#Sa' + (Number(index) + Number(4))).val());
+	collections.push($('#P' + (Number(index) + Number(5))).val());
+	collections.push($('#Su' + (Number(index) + Number(6))).val());
+	collections.push($('#Pa' + (Number(index) + Number(7))).val());
+	collections.push($('#Ri' + (Number(index) + Number(8))).val());
+	collections.push($('#tot' + (Number(index) + Number(9))).text());
 	// alert(collections);
 	return collections;
 }
