@@ -139,6 +139,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 			  			 $scope.showEntryLedger=function() {
 				  				
 			  				 		$scope.balanceSheetHeader="Add Ledger";
+			  				 		$scope.balanceHead="-1";
 				  					$('#ledgerModal').show();
 					  				$('.ledgerWrapper').hide();
 						 		   delete $scope.addCodeRes;
