@@ -735,7 +735,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  		  	        'click .approve': function (e, value, row, index) {
 				  		  	        var istPhone = $('#phoneNo').val();
 						  			 var applicationFlow = $('#applicationFlow').val();
-						  			   var collecctedOn = $('#col_'+row.index).val();
+						  			   var collecctedOn = $('#col_'+index).val();
 						  			  //var collecctedOn = $('#col_'+row).val();
 						  			    // alert('row 6 :'+index);
 						  			       //alert('collecctedOn :'+collecctedOn);
@@ -803,7 +803,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  	    };
 		  		 
 		  		function formatRowItem(val, row,index) {
-		        	 return '<input id="col_'+row.index+'" name="col_'+row.index+'"  type="date" style="width:100pt;" value="" />';
+		        	 return '<input id="col_'+index+'" name="col_'+index+'"  type="date" style="width:100pt;" value="" />';
 		        	 //return '<input id="col_'+row+'" name="col_'+row+'"  type="date" style="width:100pt;" value="" />';
 		        	// return '<input id="col" name="col"  type="date" style="width:100pt;" value="" />';
 		        };

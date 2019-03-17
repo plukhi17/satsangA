@@ -166,7 +166,7 @@ response.setDateHeader ("Expires", 0);
 				<div class="panel panel-default">
 					<div class="panel-heading" id="accordion">ISTAVRITY
 						TRANSCATIONS</div>
-						 <div id="dvErrAlert" class="alert alert-danger" style= "display:none" class="col-md-12">
+						 <div id="dvErrAlert" class="alert alert-info" style= "display:none" class="col-md-12">
 						  <a class="close" href="#">×</a>
 						  <p><strong>{{PostDataResponse}}</strong> 
 					 	</div>
