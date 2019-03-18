@@ -231,11 +231,12 @@ public class IshtAction extends BaseAction {
 			
 			// get line details to make line and header total
 			IshtLineMDB[] ishtLineObj = mapper.readValue(ishtLineData, IshtLineMDB[].class);
-			
+			RootMDB rootMdb = (RootMDB) getRequest().getSession().getAttribute("userBean");
 			logger.info(ishtLineObj.length);
 			List<IshtLineMDB> ishtLineMDBList = new ArrayList<IshtLineMDB>();
 			double total = 0;
 			for (int i = 0; i < ishtLineObj.length - 1; i++) {
+				(ishtLineObj[i + 1]).setRitwik(rootMdb.getRitvikName());
 				ishtLineMDBList.add(ishtLineObj[i + 1]);
 				ishtLineObj[i + 1].setTotal(ishtLineObj[i + 1].lineTotal());
 				total = total + ishtLineObj[i + 1].getTotal();
