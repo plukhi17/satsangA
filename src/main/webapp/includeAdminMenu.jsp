@@ -1,5 +1,7 @@
 
-
+<%@page import="com.olsa.pojo.RootMDB"%>
+<%@page import="com.olsa.utility.OnlineSAConstants"%>
+<%@ page errorPage="error.jsp" %>  
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -22,19 +24,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 
   </head>
+
   
   <body>
   	
-		<%
-		//RootMDB root = (RootMDB)session.getAttribute("userBean");
-	
-		System.out.println("Admin  Page -"+ root.getUserType());
-      	%>
+		
 	
 			<% if(root.getUserType()!=null && root.getUserType().equalsIgnoreCase(OnlineSAConstants.ADMIN_USER)) { %>
 					
 			<li class="parent ">
-				<a href="#">
+				<a>
 					<span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked chevron-down">
 						<use xlink:href="#stroked-chevron-down"></use></svg></span>Admin
 				</a>
