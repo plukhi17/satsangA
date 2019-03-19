@@ -215,8 +215,8 @@ function reviewForm() {
 function findValueForReview(index) {
 	var collections = new Array();
 
-	collections.push($('#id' + (Number(index) + Number(10))).val());
-	collections.push($('#name' + (Number(index) + Number(11))).val());
+	collections.push($('#id' + (Number(index) + Number(11))).val());
+	collections.push($('#name' + (Number(index) + Number(12))).val());
 	//collections.push(document.getElementById('my_select,' + index).value);
 
 	//collections.push($('#value' + index).val());
@@ -759,8 +759,20 @@ function cardNameChacking(num) {
 								            	if($(this).attr("name")!="action" && $(this).attr("name")!="textValue" ){
 								            		row[$(this).attr("name")]=$(this).val();
 								            	}
+								            	if($(this).attr("name")=="id")
+								            	{
+								            		var idVal= $(this).val();
+								            		$scope.ishtLine.forEach(function(ishtLineObj) {
+								            			if(idVal!="" && idVal == ishtLineObj.id){
+								            				row['ritwik']=ishtLineObj.ritwik;
+								            			}
+													})
+								            
+								            	}
 								                
 								            });
+								            
+								            
 								            data.push(row);
 								        });
 								        
