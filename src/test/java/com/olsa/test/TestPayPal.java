@@ -22,7 +22,7 @@ public class TestPayPal {
 	public static void main(String[] args) {
 		//TestPayPal.testPayMent();
 		//TestPayPal.generate();
-		TestPayPal.test();
+		//TestPayPal.test();
 	}
 	
 	public static void generate() {
