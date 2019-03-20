@@ -151,6 +151,7 @@ public class IshtMDBDao extends MongoBaseDao {
     			ist.setSurplus(0.00d);
     			ist.setRitwiki(0.00d);
     			ist.setTotal(0.00d);
+    			ist.setRitwik(root.getRitvikName());
     			line.add(ist);
 
     			/**
@@ -172,6 +173,7 @@ public class IshtMDBDao extends MongoBaseDao {
     					istLine.setSurplus(0.00d);
     					istLine.setRitwiki(0.00d);
     					istLine.setTotal(0.00d);
+    					istLine.setRitwik(family.getrName());
     					line.add(istLine);
     				}  
     			}
