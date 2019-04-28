@@ -34,6 +34,9 @@
 <%
 	RootMDB root = (RootMDB)session.getAttribute("userBean");
 	List<FamilyMDB> familyList = root.getFamily();
+	
+
+  	
 %>
 <%
 response.setHeader("Cache-Control","no-cache");

@@ -1,5 +1,7 @@
 
-
+<%@page import="com.olsa.pojo.RootMDB"%>
+<%@page import="com.olsa.utility.OnlineSAConstants"%>
+<%@ page errorPage="error.jsp" %>  
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -67,44 +69,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</svg> Transaction Details
 						</a>
 					</li>
-	
-					<li>
-						<a href="ledger.jsp">
-							<svg class="glyph stroked chevron-right">
-								<use xlink:href="#stroked-chevron-right"></use>
-							</svg> Ishtavrity Ledger	</a>
-					</li>
-					
-					<li>
-						<a href="reportmech.jsp">
-							<svg class="glyph stroked chevron-right">
-								<use xlink:href="#stroked-chevron-right"></use>
-							</svg> Collection Report</a>
-					</li>
-					
-					<!-- -
-					<li>
-						<a href="ledger.jsp">
-							<svg class="glyph stroked chevron-right">
-							<use xlink:href="#stroked-chevron-right"/> 
-							Ishtavrity Ledger
-							</svg>
-							</a>
-					</li>
-					
-				<li>
-					<a href="reportmech.jsp">
-					<svg class="glyph stroked chevron-right">
-					<use xlink:href="##stroked-chevron-right"/>
-         			Report
-         			</svg>
-       			 </a>
-			  </li>
-			   -->
-							
 				</ul>
 			</li>
-			
 			<% } %>
   </body>
 </html>
