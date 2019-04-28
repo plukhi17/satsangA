@@ -17,7 +17,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Satsang America - Dashboard</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
@@ -57,6 +56,7 @@ response.setDateHeader ("Expires", 0);
 					<span class="icon-bar"></span>
 				</button>
 				<%@include file="HeaderBar.jsp" %>
+				
 				<!-- 
 				<a class="navbar-brand" href="#"><span>Satsang America Ishtarghya Deposit System</span> </a>
 				<ul class="user-menu">
@@ -119,21 +119,8 @@ response.setDateHeader ("Expires", 0);
 					Ishtavrity Transcations</a>
 			</li>
 			
-				<li>
-				<a href="ledger.jsp">
-					<svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg>
-					Ishtavrity Ledger</a>
-			</li>
-			
 			<%@include file="includeAdminMenu.jsp" %>
-				
 			
-			<li role="presentation" class="divider" style="margin-top: 0px ;font-size: 12px;">
-				<a href="reportmech.jsp">
-				<svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg>
-         			Report
-       			 </a>
-			</li>
 			<li>
 				<a href="login.jsp">
 					<svg class="glyph stroked male-user">
@@ -162,7 +149,7 @@ response.setDateHeader ("Expires", 0);
 
 		<div class="row">
 			<div class="col-lg-8">
-				<h1 class="page-header">Welcome <%= root.getFirstName() %> !!!</h1>
+				<h4 class="page-header">Welcome <%= root.getFirstName() %> !!!</h4>
 			</div>
 		</div>
 		<!--/.row sub header-->
@@ -197,15 +184,13 @@ response.setDateHeader ("Expires", 0);
 					</div>
 										
 					<div class="panel-footer">
-						<small class="text-muted">Satsang America</small>
+						<small class="text-muted"><%@include file="footer.jsp" %></small>
 					</div>
 				</div>
 				
 			</div>
 			<!--/.col - Left-->
-
 			<div class="col-md-4">
-
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<svg class="glyph stroked clipboard-with-paper">

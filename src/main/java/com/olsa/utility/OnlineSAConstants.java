@@ -45,5 +45,17 @@ public interface OnlineSAConstants {
 	String EXPN_SUB_CODE_SEQ_NAME = "ExpenseSubCode";
 	
 	
+	final String EMAIL_ID="satsangamericatest@gmail.com";
+    final String CREDENTIALS="SatsangAmerica123$";	
+    final String SENDER_EMAIL_ID2="Satsang America Test <satsangamericatest@gmail.com>";
+    final String SENDER_EMAIL_ID1="Satsang America Test <satsangamericatest@gmail.com>";
+    final String IMAGE_URL="https://www.satsangamerica.com/images/";
+    
+    final String SQL_DB_LOCAL = "jdbc:mysql://127.0.0.1:3306/istavrity";
+	final String SQL_DB_LOCAL_USER = "root";
+	final String SQL_DB_LOCAL_PASS = "!stavrity$";
+	
+
+	
 	public static final HashMap<String, JSONObject> ritvikHashMapCache = new HashMap<String, JSONObject>();
 }

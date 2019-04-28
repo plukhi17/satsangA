@@ -73,7 +73,7 @@
 					if(obj.status=="true"){
 						//alert("true")
 						document.getElementById("responseEmailId").innerHTML=obj.email;
-						document.getElementById("responseMsg").innerHTML="OTP Send your email id:";
+						document.getElementById("responseMsg").innerHTML="Verification Code has been sent your registered email id and Phone Number:";
 							
 						document.getElementById("hidenEmail").value=obj.email;
 						document.getElementById("hideDate").value=obj.date;
@@ -192,14 +192,16 @@
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">Ishtavrity - Forgot Password</div>
 				<div class="panel-body" id="forgotPasswordBody">
-                    <div id="dvAlertErr" class="alert-common bg-danger" role="alert">Invalid User ID / Password</div>
-                    <div id="dvAlertWarning" class="alert-common bg-success" role="alert">Your password has been emailed it to you.</div>
+                   <!--  <div id="dvAlertErr" class="alert-common bg-danger" role="alert">Invalid User ID / Password</div> -->
+                    <div id="dvAlertWarning" class="alert-common bg-success" role="alert">
+                    A Verification Code will be sent out to your below registered email id and Phone Number.<br></div>
+                    <br>
 					<form role="form">
 						<fieldset>
                             <div class="form-group has-error">
                                 <!--<label class="control-label" for="txtFamilyCode">User ID:</label>-->
                                 <input class="form-control" placeholder="Enter your email id (someone@mail.com)"
-                                 id="txtEmailId" name="txtEmailId" required="required">
+                                 id="txtEmailId" name="txtEmailId" value="" required="required">
                             </div>
 							<a href="#"  onclick="return forgotPassword()" class="btn btn-primary">Submit</a>
                             <span class="pull-right">Go back to <a href="/OnlineSA">Login</a></span>
@@ -225,11 +227,11 @@
 								</div>
 							</div>
 							<div class="row" style="margin-top: 10px;">
-								<div class="col-xs-12 col-sm-3 col-md-3">
-								<button style="font-size:20px;" id="submitOTPId" onclick="verifyOTP()" class="btn btn-success btn-md">Submit</button>
+								<div class="col-xs-12 col-sm-4 col-md-4">
+								<button style="font-size:15px; color: white; background-color: #428bca;" id="submitOTPId" onclick="verifyOTP()" class="btn btn-success btn-md">Submit</button>
 								</div>
-								<div class="col-xs-12 col-sm-3 col-md-3">
-									<button style="font-size:20px; color: white; background-color: #428bca;" 
+								<div class="col-xs-12 col-sm-4 col-md-4">
+									<button style="font-size:15px; color: white; background-color: #428bca;" 
 									class="btn btn-default" onclick="reSendOTP()">Re-Send OTP</button>
 								</div>
 							</div>
@@ -273,6 +275,7 @@
 									<button type="submit" style="font-size:20px;" onclick="return newPassword()"
 										class="btn btn-success">Submit
 									</button>
+			
 								</div>
 								<div class="col-xs-12 col-sm-4 col-md-4">
 									<button type="reset" class="btn btn-danger" style="font-size:20px;" onclick="newPasswordReset()">Reset</button>
@@ -288,13 +291,18 @@
 								<div class="col-xs-12 col-sm-9 col-md-9">
 									 <span class="pull-right">Go back to <a href="/OnlineSA">Login</a></span>
 								</div>
+								
 							</div>
+			
 						</div>
+			
 					</div>
+			
 				</div>
-				
+				 <small class="text-muted"> <%@include file="footer.jsp" %> </small> 
 			</div>
 		</div>
+		
 		<!-- /.col-->
 	</div>
 	<!-- /.row -->

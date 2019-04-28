@@ -17,7 +17,7 @@
 					Ishtavrity Transcations</a>
 			</li>
 			
-				
+							
 			<li role="presentation" class="divider"></li>
 			<li><a href="login.jsp"> <svg
 						class="glyph stroked male-user">

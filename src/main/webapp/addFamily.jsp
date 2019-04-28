@@ -254,7 +254,7 @@ response.setDateHeader ("Expires", 0);
                     </div>
 
                     <div class="panel-footer">
-                        <small class="text-muted">Satsang America</small>
+                        	<small class="text-muted"><%@include file="footer.jsp" %></small>
                     </div>
                 </div>
 

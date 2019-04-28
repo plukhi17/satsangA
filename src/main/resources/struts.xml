@@ -8,9 +8,8 @@
 	<constant name="struts.action.extension" value="do,order,orderInfo,action" />
     <constant name="struts.action.excludePattern" value="/OrderDataService/?.*"/>
 	<constant name="struts.action.excludePattern" value="/rest/?.*"/>
-	
-	
-	<package name="default" extends = "struts-default">
+	<constant name="struts.devMode" value="true" />
+	<package name="default" namespace="/" extends="struts-default">
 				
 		<action name ="validateUser" method = "validateUser" class="userProfileAction">
 			<result name="success">register.jsp</result>

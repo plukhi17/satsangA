@@ -50,6 +50,7 @@ import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
 import com.olsa.services.UserServiceImpl;
+import com.olsa.utility.OnlineSAConstants;
 
 import java.net.URL;
 
@@ -241,7 +242,7 @@ public class CreateNSendArghyaPraswasti {
 
 			// third Row
 
-			String imageUrl = "http://www.satsangamerica.com/images/image.jpeg";
+			String imageUrl =OnlineSAConstants.IMAGE_URL+"image.jpeg";
 			Image image = Image.getInstance(new URL(imageUrl));
 			imageUrl = "";
 
@@ -249,9 +250,9 @@ public class CreateNSendArghyaPraswasti {
 			// Image image = Image.getInstance("./WEB-INF/images/image.jpeg");
 			// Image image = Image.getInstance("src/main/webapp/images/image.jpeg"); //this
 			// works in local
-			// http://www.satsangamerica.com/images/image.jpeg //this workss
+			
 
-			logger.info("Image Path :" + image.getUrl());
+			//logger.info("Image Path :" + image.getUrl());
 			image.scaleAbsolute(50f, 50f);
 			PdfPCell cell = new PdfPCell(Image.getInstance(image), true);
 			cell.setBorder(PdfPCell.NO_BORDER);
@@ -829,7 +830,7 @@ public class CreateNSendArghyaPraswasti {
 
 				String Ritwik_Name = "Not Available";
 				String Complete_Ritwik_Name = "";
-				if ((null == lineMdb.getRitwik()) || (!lineMdb.getRitwik().isEmpty())) {
+				if ((null == lineMdb.getRitwik()) || (lineMdb.getRitwik().isEmpty())) {
 
 				} else {
 					Ritwik_Name = lineMdb.getRitwik();// ""+ RITWIK_STATUS+" "+ RITWIK_FIRST_NAME+"
@@ -1181,7 +1182,7 @@ public class CreateNSendArghyaPraswasti {
 			// image = Image.getInstance("src/main/webapp/images/MySignature.jpg"); this
 			// works fine in local
 
-			imageUrl = "http://www.satsangamerica.com/images/MySignature.jpg";
+			imageUrl = OnlineSAConstants.IMAGE_URL+"MySignature.jpg";
 			image = Image.getInstance(new URL(imageUrl));
 			imageUrl = "";
 
@@ -1314,9 +1315,11 @@ public class CreateNSendArghyaPraswasti {
 			if ((null == str_CHEQUE_DATE) || ("".equalsIgnoreCase(str_CHEQUE_DATE))) {
 				str_CHEQUE_DATE = str_COLLECTED_ON;
 			}
-
+			
+			Date dte = new Date(str_CHEQUE_DATE);
+			String formatteddate = formatter.format(dte);
 			logger.info(" CHEQUE_DATE : " + str_CHEQUE_DATE);
-			Date cvtd_cheque_Date = formatter.parse(str_CHEQUE_DATE);
+			Date cvtd_cheque_Date = formatter.parse(formatteddate);
 			logger.info("convertedDate cvtd_cheque_Date in Java : " + cvtd_cheque_Date.toString());
 
 			// chunk1 = new Chunk("Date : "+convertDate(date, "MMM dd, yyyy"));
@@ -1496,7 +1499,7 @@ public class CreateNSendArghyaPraswasti {
 			para.setFont(FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL, BaseColor.DARK_GRAY));
 			// image = Image.getInstance("src/main/webapp/images/Richi_Daa_Signature.jpg");
 
-			imageUrl = "http://www.satsangamerica.com/images/Richi_Daa_Signature.jpg";
+			imageUrl = OnlineSAConstants.IMAGE_URL+"Richi_Daa_Signature.jpg";
 			image = Image.getInstance(new URL(imageUrl));
 			imageUrl = "";
 			// image = Image.getInstance("images/Richi_Daa_Signature.jpg");
@@ -1727,7 +1730,7 @@ public class CreateNSendArghyaPraswasti {
 					.append("</p> <p style=\"font-family:sans-serif;  color: grey; font-weight:normal; font-size: 12px;\">")
 					.append("Satsang America, Inc.<br>").append("111-17 Sutphin Blvd<br>")
 					.append("Jamaica, NY 11435<br>").append("EIN:46-5341000<br>").append("Ph: 317-480-3184<br>")
-					.append("Visit Us www.SatsangAmerica.org <br>").append("Email - istabhrity@gmail.com <br>");
+					.append("Visit Us www.SatsangAmerica.org <br>").append("Email - "+OnlineSAConstants.EMAIL_ID +" <br>");
 
 			/*
 			 * Satsang America, Inc. 111-17 Sutphin Blvd Jamaica, NY 11435 EIN:46-5341000
@@ -1743,7 +1746,8 @@ public class CreateNSendArghyaPraswasti {
 				SendEmail SendingProgram = new SendEmail();
 
 				SendingProgram.setRecipient(GuestEmailId);
-				SendingProgram.setSender("istabhrity@gmail.com");
+				//SendingProgram.setSender("istabhrity@gmail.com");
+				SendingProgram.setSender(OnlineSAConstants.EMAIL_ID);
 				SendingProgram.setSubject("SA-TEST: Arghya Praswasti " + month_year);
 
 				String MailbodyContent = "<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu "

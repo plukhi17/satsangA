@@ -1,5 +1,8 @@
 package com.olsa.utility;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import org.apache.log4j.Logger;
 
 import com.olsa.pojo.IshtMDB;
@@ -39,7 +42,10 @@ public class MailThread extends Thread {
 		
 		try  {
 			sendUserNotification(this.root, this.ishtMdb);
-			sendApproverNotification(this.root, this.ishtMdb);
+			if (this.ishtMdb.getPaymentMethod().equalsIgnoreCase("MANUAL")) {
+				sendApproverNotification(this.root, this.ishtMdb);
+			}
+			
 			
 		}
 		catch (Exception ex) {
@@ -59,13 +65,14 @@ public class MailThread extends Thread {
 			StringBuffer  content_html= new StringBuffer();
 			content_html.append("Hope this will find you in good health and spirited mind by the divine grace of our Love Lord Sree Sree Thakur !!.<br> <br>")
 			
-			 .append("Thank you for your istarghy submisssion. Your istarghya has been successfully submitted to Satsang America Istarghay Deposit System (SAIDS) with following details . <br> <br>")
+			 .append("Thank you for your istarghya oblation.Your istarghya has been successfully submitted to Satsang America Istarghay Deposit System (SAIDS) with following details . <br> <br>")
 			//.append("Date of Payment :"+ getIshtService().formatDate(isht.getCollectedOn()))
 			.append("Date of Submission :"+isht.getCollectedOn().substring(0,10))
 			.append("<br> <br>")
 			.append("Ishtavrity Submission Ref# :"+ isht.getReceiptNo()) 
 			.append("<br> <br>")
-			.append("Ishtavrity Amount :$"+ isht.getTotal()) 
+			//.append("Ishtavrity Amount :$"+ isht.getTotal()) 
+			.append("Ishtavrity Amount :$"+ String.format("%.2f", isht.getTotal()))
 			
 			.append("<br> <br>")
 			.append("Jayguru and Regards <br>")
@@ -79,9 +86,10 @@ public class MailThread extends Thread {
 			
 			SendEmail SendingProgram = new SendEmail();						
 			SendingProgram.setRecipient(root.getEmail());
-			SendingProgram.setSender("istabhrity@gmail.com");
+			//SendingProgram.setSender("istabhrity@gmail.com");
+			SendingProgram.setSender(OnlineSAConstants.EMAIL_ID);
 			SendingProgram.setSubject("SA-TEST: Submission of Ishtabhrity Notification");
-			String MailbodyContent="<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu Admin Jayguru, <br><br>"+content_html.toString();
+			String MailbodyContent="<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu  Jayguru, <br><br>"+content_html.toString();
 			SendingProgram.setContent(MailbodyContent); //setting the boy contennt.
 		    
 			try {
@@ -113,10 +121,15 @@ public class MailThread extends Thread {
 			.append("Ph: 317-480-3184<br>") 
 			.append("Visit Us www.SatsangAmerica.org <br>") ;
 			
-			SendEmail SendingProgram = new SendEmail();						
-			SendingProgram.setRecipient(OnlineSAConstants.APPROVER_1);
+			SendEmail SendingProgram = new SendEmail();
+			String toSent[] = { OnlineSAConstants.APPROVER_1,OnlineSAConstants.APPROVER_2,OnlineSAConstants.APPROVER_3};// Sent to there
+			//SendingProgram.setRecipient(OnlineSAConstants.APPROVER_1);
 			//SendingProgram.setRecipient(OnlineSAConstants.APPROVER_1 +","+OnlineSAConstants.APPROVER_2+","+OnlineSAConstants.APPROVER_3);
-			SendingProgram.setSender("istabhrity@gmail.com");
+			SendingProgram.setMultipleRecipients(toSent);
+			SendingProgram.setIsMultiRecipient(true);
+			//SendingProgram.setRecipients(javax.mail.internet.MimeMessage.RecipientType.TO,	sendTo);
+			//SendingProgram.setSender("istabhrity@gmail.com");
+			SendingProgram.setSender(OnlineSAConstants.EMAIL_ID);
 			SendingProgram.setSubject("SA-TEST: Istabhrity Transactons Approval Required.");
 			String MailbodyContent="<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu Admin Jayguru, <br><br>"+content_html.toString();
 			SendingProgram.setContent(MailbodyContent); //setting the boy contennt.
@@ -126,7 +139,7 @@ public class MailThread extends Thread {
 			} catch (Exception e) {
 				logger.error("exception occure while Approval Email Sent to "+ e.getMessage());
 			}//sendEmailInviation(); 
-			logger.info("Approval Email Sent to ");
+			logger.info("Approval Email Sent to "+toSent.toString());
 			return true;
 		}
 		

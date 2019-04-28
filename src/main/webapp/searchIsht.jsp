@@ -55,6 +55,8 @@ response.setDateHeader ("Expires", 0);
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <%@include file="HeaderBar.jsp" %>
+                	
                 <a class="navbar-brand" href="#"><span>Satsang America</span> Ishtavrity</a>
                 <ul class="user-menu">
                     <li class="dropdown pull-right">
@@ -139,7 +141,7 @@ response.setDateHeader ("Expires", 0);
                         </svg>
                     </a>
                 </li>
-                <li class="active">PAY ISTAVRITY</li>
+                <li class="active">ISHTAVRITY TRANSACTIONS </li>
             </ol>
         </div>
         <!--/.row sub navigation-->
@@ -158,7 +160,7 @@ response.setDateHeader ("Expires", 0);
            
            	<input type="hidden" id="phoneNo" value = <%= root.getPhoneNo()%> name="phoneNo" placeholder="your phone no" ><br>
                 <div class="panel panel-default">
-                    <div class="panel-heading" id="accordion">ISTAVRITY TRANSCATIONS</div>
+                    <div class="panel-heading" id="accordion">ISHTAVRITY TRANSCATIONS</div>
                     <div class="panel-body">
                         <form class="form-horizontal">
                             <fieldset>
@@ -195,7 +197,7 @@ response.setDateHeader ("Expires", 0);
                     </div>
                     
                     <div class="panel-footer">
-                        <small class="text-muted">Satsang America,Inc </small>
+                     	<small class="text-muted"><%@include file="footer.jsp" %></small>
                     </div>
                 </div>
 

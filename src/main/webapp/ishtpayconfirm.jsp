@@ -2,6 +2,7 @@
 <%@page import="java.io.Console"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="com.olsa.pojo.RootMDB"%>
+<%@page import="com.olsa.utility.CreateNSendArghyaPraswasti"%>
 <%@ page session="true" %>
 <%@ page errorPage="error.jsp" %>  
 
@@ -54,6 +55,10 @@ response.setDateHeader ("Expires", 0);
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
+				<%@include file="HeaderBar.jsp" %>
+				
+				<jsp:include page="slidemenu.jsp" /> 
+				<!-- 
 				<a class="navbar-brand" href="#"><span>Satsang America</span>Ishtavrity</a>
 				<ul class="user-menu">
 					<li class="dropdown pull-right">
@@ -85,16 +90,21 @@ response.setDateHeader ("Expires", 0);
 				</ul>
 			</div>
 
-		</div>
+		</div>-->
+		  
 		<!-- /.container-fluid -->
 	</nav>
+	
+	 
 
-	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+	<!-- <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<!--<form role="search">
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="Search">
 			</div>
 		</form>-->
+		
+		<!-- 
 		<ul class="nav menu">
 			<li class="active">
 				<a href="index.jsp">
@@ -123,7 +133,7 @@ response.setDateHeader ("Expires", 0);
 			</li>
 		</ul>
 
-	</div>
+	</div> -->
 	<!--/.sidebar-->
 
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -142,7 +152,6 @@ response.setDateHeader ("Expires", 0);
 		<!--/.row sub navigation-->
 
 
-
 		<div class="row">
 			<div class="col-lg-12">
 				<h1 class="page-header">Confirmation</h1>
@@ -156,10 +165,10 @@ response.setDateHeader ("Expires", 0);
 					<div class="panel-heading" id="accordion">
 						<svg class="glyph stroked empty-message">
 							<use xlink:href="#stroked-empty-message"></use>
-						</svg> Hello <%= ishtPay.getName() %> your ISTARGHYA details submission is successful.</div>
+						</svg> Hello <%= ishtPay.getName() %> your ISTARGHYA Submission is successful.</div>
 					<div class="panel-body">
 						<div class="chat-body clearfix">
-							<p>We recommend you to keep the below copy of transaction ref# for your records. The Arghya Praswasti (receipt) will be sent shortly to your email Id ,once your oblation has been verified and approved by Admin.</p>
+							<p>We recommend you to keep the below copy of transaction ref# for your records. The Arghya Praswasti (receipt) will be sent shortly to your email Id , once your oblation has been verified and approved by Admin.</p>
 						</div>
 					</div>
 
@@ -189,8 +198,14 @@ response.setDateHeader ("Expires", 0);
 									</tr>
 									<tr>
 										<td>Amount</td>
+										<%
+										CreateNSendArghyaPraswasti crp = new CreateNSendArghyaPraswasti(); 
+										String wordAmount =crp.ConvertMoneyToWords(String.format("%.2f", ishtPay.getTotal()));
+										System.out.println("#######TOTAL AMOUNT PAID #### :"+String.format("%.2f", ishtPay.getTotal()) + "  ( " + wordAmount + " ) " );
+										
+										%>
 										<td>
-											<p id="GradTotalAmount"> UD $ <%= ishtPay.getTotal() %> </p>
+											<p id="GradTotalAmount"> USD $ <%= String.format("%.2f", ishtPay.getTotal()) +" ( "+ wordAmount + ")  " %> </p>
 										<!-- 	<script type="text/javascript">
 											document.getElementById("GradTotalAmount").innerHTML = sessionStorage.getItem("GradTotalAmount");
 											</script> -->
@@ -211,7 +226,7 @@ response.setDateHeader ("Expires", 0);
 					</div>
 					
 					<div class="panel-footer">
-						<small class="text-muted">Satsang America</small>
+						<small class="text-muted"><%@include file="footer.jsp" %></small>
 					</div>
 				</div>
 			</div>

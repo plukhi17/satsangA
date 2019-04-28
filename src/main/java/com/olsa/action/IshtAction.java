@@ -216,7 +216,7 @@ public class IshtAction extends BaseAction {
 	public void saveIshtJSONData() {
 		logger.info("Inside saveIshtJSONData() Action");
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		//mapper.getDeserializationConfig().setDateFormat(new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO));
 		//mapper.getSerializationConfig().setDateFormat(new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO));
 		String ishtLineData = getRequest().getParameter(("ishtLineData"));
@@ -228,14 +228,16 @@ public class IshtAction extends BaseAction {
 			logger.info("ishtLineData :" + ishtLineData);
 			// get header details
 			IshtMDB ishtMDBObj = mapper.readValue(ishtHeaderData, IshtMDB.class);
-			
+
 			// get line details to make line and header total
 			IshtLineMDB[] ishtLineObj = mapper.readValue(ishtLineData, IshtLineMDB[].class);
-			
+			RootMDB rootMdb = (RootMDB) getRequest().getSession().getAttribute("userBean");
 			logger.info(ishtLineObj.length);
 			List<IshtLineMDB> ishtLineMDBList = new ArrayList<IshtLineMDB>();
 			double total = 0;
 			for (int i = 0; i < ishtLineObj.length - 1; i++) {
+				
+				
 				ishtLineMDBList.add(ishtLineObj[i + 1]);
 				ishtLineObj[i + 1].setTotal(ishtLineObj[i + 1].lineTotal());
 				total = total + ishtLineObj[i + 1].getTotal();
@@ -249,34 +251,34 @@ public class IshtAction extends BaseAction {
 			ishtMDBObj.setFamilyID(portalUser.getFamilyID());
 
 			String MonthYear ;
-				DateUtility dtl = new DateUtility();
-				if(ishtMDBObj.getChecqDate()!=null) {
-					
-					logger.info("Extract :" + (ishtMDBObj.getChecqDate().toString()));
-					MonthYear= dtl.getMonthYear((ishtMDBObj.getChecqDate().toString()));
-				}else {
-					MonthYear= dtl.getMonthYear(dtl.getCurrentDate1().toString());
-				}
-				
+			DateUtility dtl = new DateUtility();
+			if(ishtMDBObj.getChecqDate()!=null) {
 
-				logger.info("MonthYear : " + MonthYear);
-				ishtMDBObj.setMonthYear(MonthYear);
-				ishtMDBObj.setCollectedBy("SHYAM GIRI");
-				//ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
-				ishtMDBObj.setSubmittedOn(dtl.getCurrentDateInDate());
-				ishtMDBObj.setReceiptDate(dtl.getCurrentDate4().toString());
-				ishtMDBObj.setApprovedBy("SYSTEM");
-				ishtMDBObj.setApprovedOn(dtl.getCurrentDate4().toString());
-			
+				logger.info("Extract :" + (ishtMDBObj.getChecqDate().toString()));
+				MonthYear= dtl.getMonthYear((ishtMDBObj.getChecqDate().toString()));
+			}else {
+				MonthYear= dtl.getMonthYear(dtl.getCurrentDate1().toString());
+			}
+
+
+			logger.info("MonthYear : " + MonthYear);
+			ishtMDBObj.setMonthYear(MonthYear);
+			ishtMDBObj.setCollectedBy("SHYAM GIRI");
+			//ishtMDBObj.setSubmittedOn(dtl.getCurrentDate());
+			ishtMDBObj.setSubmittedOn(dtl.getCurrentDateInDate());
+			ishtMDBObj.setReceiptDate(dtl.getCurrentDate4().toString());
+			ishtMDBObj.setApprovedBy("SYSTEM");
+			ishtMDBObj.setApprovedOn(dtl.getCurrentDate4().toString());
+
 
 		
 			logger.info("Payment method of AUTO  "+ishtMDBObj.getPaymentMethod()+"HHHH");
-			
+			logger.info("Receipt No : "+ishtMDBObj.getReceiptNo());
 
 			ResultObject result = new ResultObject();
 			result = getIshtService().saveIshtObjectJSON(ishtMDBObj);
 			getResponse().setContentType("text/json;charset=utf-8");
-			 responseObject = new JSONObject();
+			responseObject = new JSONObject();
 
 			if (result.isSuccess()) {
 				logger.info("inside sucess");
@@ -299,7 +301,7 @@ public class IshtAction extends BaseAction {
 				// Save the same data to MySQL Database as well
 				logger.info("Going to insert into My SQL");
 				WriteToMySQL writeToSQL = new WriteToMySQL();
-				
+
 				new SQLUtility().executeSQL(isht,getJdbcTemplate());
 				try {
 					String sql = "";
@@ -313,6 +315,7 @@ public class IshtAction extends BaseAction {
 
 				// send email notification to Admin and User about the transaction.
 				ResultObject resultObj = getUserService().getUserObjectJSON(isht.getPhoneNo());
+			    
 				if (resultObj.isSuccess()) {
 					RootMDB root = (RootMDB) resultObj.getObject1();
 					// sendUserNotification(root, isht);
@@ -326,13 +329,42 @@ public class IshtAction extends BaseAction {
 					logger.info("MailThread has been started");
 					// End // calling the Thread to execute the Task of Creating Receipt and sending
 					// to the users.
-
 				}
-
 			} else {
 				logger.info("inside failure");
 				responseObject.put(RETURN_CODE, ERROR_FLAG);
 			}
+
+			// creating the PDF Receipt ---
+			
+			IshtMDB isht1 = (IshtMDB) result.getObject1();
+			String receiptNo = isht1.getReceiptNo();
+			logger.info("Inside approveIshtTran() Action - receiptNo :" + receiptNo);
+
+			ResultObject resultObj = getUserService().getUserObjectJSON(isht1.getPhoneNo());
+			//ResultObject resultObj = getUserService().getUserObjectJSON(isht.getPhoneNo());
+			if (resultObj.isSuccess()) {
+				RootMDB root = (RootMDB) resultObj.getObject1();
+				// CreateNSendArghyaPraswasti createAP = new CreateNSendArghyaPraswasti();
+				// Start // calling the Thread to execute the Task of Creating Receipt and
+				// sending to the users.
+				logger.info("Calling Thread Creating the Receipt  and Send Email");
+				Thread t3 = new TaskThread(receiptNo, isht1, root);
+				logger.info("Starting TaskThread");
+				t3.start();
+				logger.info("TaskThread has been started");
+				// End // calling the Thread to execute the Task of Creating Receipt and sending
+				// to the users.
+				// working fine
+				// createAP.sendEmailPdfAttachment(receiptNo, ishtMdb, root);
+				// createAP.sendArghyaPraswastiPDFAttachmentInEmail(receiptNo, ishtMdb, root);
+				// throw new Exception ("DataObject retrival failed to create
+				// ArghyaPraswasti.");
+			} else {
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			// creating the PDF Receipt ---
+
 			responseObject.write(getResponse().getWriter());
 
 		} catch (Exception e) {
@@ -389,7 +421,7 @@ public class IshtAction extends BaseAction {
 				.append("</p> <p style=\"font-family:sans-serif;  color: grey; font-weight:normal; font-size: 12px;\">")
 				.append("Satsang America, Inc.<br>").append("111-17 Sutphin Blvd<br>").append("Jamaica, NY 11435<br>")
 				.append("EIN:46-5341000<br>").append("Ph: 317-480-3184<br>")
-				.append("Visit Us www.SatsangAmerica.org <br>").append("Email - istabhrity@gmail.com <br>");
+				.append("Visit Us www.SatsangAmerica.org <br>").append("Email - "+OnlineSAConstants.EMAIL_ID+"<br>");
 
 		/*
 		 * Satsang America, Inc. 111-17 Sutphin Blvd Jamaica, NY 11435 EIN:46-5341000
@@ -399,7 +431,8 @@ public class IshtAction extends BaseAction {
 
 		SendEmail SendingProgram = new SendEmail();
 		SendingProgram.setRecipient(root.getEmail());
-		SendingProgram.setSender("istabhrity@gmail.com");
+		//SendingProgram.setSender("istabhrity@gmail.com");
+		SendingProgram.setSender(OnlineSAConstants.EMAIL_ID);
 		SendingProgram.setSubject("Submission of Ishtabhrity Notification");
 		String MailbodyContent = "<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu Admin Jayguru, <br><br>"
 				+ content_html.toString();
@@ -429,7 +462,7 @@ public class IshtAction extends BaseAction {
 				.append("</p> <p style=\"font-family:sans-serif;  color: grey; font-weight:normal; font-size: 12px;\">")
 				.append("Satsang America, Inc.<br>").append("111-17 Sutphin Blvd<br>").append("Jamaica, NY 11435<br>")
 				.append("EIN:46-5341000<br>").append("Ph: 317-480-3184<br>")
-				.append("Visit Us www.SatsangAmerica.org <br>").append("Email - istabhrity@gmail.com <br>");
+				.append("Visit Us www.SatsangAmerica.org <br>").append("Email - "+OnlineSAConstants.EMAIL_ID+"<br>");
 
 		/*
 		 * Satsang America, Inc. 111-17 Sutphin Blvd Jamaica, NY 11435 EIN:46-5341000
@@ -441,7 +474,7 @@ public class IshtAction extends BaseAction {
 		SendingProgram.setRecipient(OnlineSAConstants.APPROVER_1);
 		// SendingProgram.setRecipient(OnlineSAConstants.APPROVER_1
 		// +","+OnlineSAConstants.APPROVER_2+","+OnlineSAConstants.APPROVER_3);
-		SendingProgram.setSender("istabhrity@gmail.com");
+		SendingProgram.setSender(OnlineSAConstants.EMAIL_ID);
 		SendingProgram.setSubject("Istabhrity Transactons Approval Required.");
 		String MailbodyContent = "<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu Admin Jayguru, <br><br>"
 				+ content_html.toString();

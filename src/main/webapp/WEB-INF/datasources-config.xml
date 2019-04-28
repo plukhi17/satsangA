@@ -4,11 +4,14 @@
 	<bean id="olsaDataSource" 
       class="org.springframework.jdbc.datasource.DriverManagerDataSource">
       <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-      <property name="url" value="jdbc:mysql://localhost:3306/onlinesa"/>
-      <property name="username" value="root"/>
-      <property name="password" value=""/>
+     
+      
+     <!-- Local DB Entries  -->
+      <property name="url" value="jdbc:mysql://127.0.0.1:3306/test"/>
+       <property name="username" value="root"/>
+       <property name="password" value="!stavrity$"/>  
+       
    </bean>
 
-	<!-- <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor" lazy-init="true"/> -->
 	
 </beans>

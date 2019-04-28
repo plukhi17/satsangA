@@ -24,10 +24,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  	
-		<%
+ 		<%
 		//RootMDB root = (RootMDB)session.getAttribute("userBean");
-	
 		System.out.println("Admin  Page -"+ root.getUserType());
       	%>
 	
@@ -61,6 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</svg> Search User
 						</a>
 					</li>
+					
 					<li>
 						<a href="ishtTrnDet.jsp">
 							<svg class="glyph stroked chevron-right">
@@ -68,8 +67,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</svg> Transaction Details
 						</a>
 					</li>
+	
+					<li>
+						<a href="ledger.jsp">
+							<svg class="glyph stroked chevron-right">
+								<use xlink:href="#stroked-chevron-right"></use>
+							</svg> Ishtavrity Ledger	</a>
+					</li>
+					
+					<li>
+						<a href="reportmech.jsp">
+							<svg class="glyph stroked chevron-right">
+								<use xlink:href="#stroked-chevron-right"></use>
+							</svg> Collection Report</a>
+					</li>
+					
+					<!-- -
+					<li>
+						<a href="ledger.jsp">
+							<svg class="glyph stroked chevron-right">
+							<use xlink:href="#stroked-chevron-right"/> 
+							Ishtavrity Ledger
+							</svg>
+							</a>
+					</li>
+					
+				<li>
+					<a href="reportmech.jsp">
+					<svg class="glyph stroked chevron-right">
+					<use xlink:href="##stroked-chevron-right"/>
+         			Report
+         			</svg>
+       			 </a>
+			  </li>
+			   -->
+							
 				</ul>
 			</li>
+			
 			<% } %>
   </body>
 </html>

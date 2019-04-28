@@ -68,6 +68,8 @@ public class IshtMDBDao extends MongoBaseDao {
 
     	ResultObject resultObject = new ResultObject();
     	List<IshtLineMDB> line = new ArrayList<IshtLineMDB>();
+    	List<IshtLineMDB> ishtLineMDBList =  new ArrayList <IshtLineMDB>(); //Creating new list add RitwikName
+    	
     	List<FamilyMDB> familyList = root.getFamily();
     	//logger.info("family list count" + familyList.size());
     	IshtMDB isht = new IshtMDB();
@@ -92,7 +94,23 @@ public class IshtMDBDao extends MongoBaseDao {
     			ListIterator<IshtLineMDB> ishtLine=list.listIterator();  
     			while(ishtLine.hasNext()){  
     				IshtLineMDB ishtLineObj = (IshtLineMDB)ishtLine.next();
+    				
     				list1.add(ishtLineObj.getId());
+        			/*added blcok for RitwikName */
+    				if(familyList!=null && !familyList.isEmpty()){
+        				ListIterator<FamilyMDB> itr=familyList.listIterator();  
+        				while(itr.hasNext()){  
+        					FamilyMDB family = (FamilyMDB)itr.next();
+        						if(ishtLineObj.getId().equalsIgnoreCase(family.getPersonalID())) {
+        						logger.info("family.getPersonalID() :  " +family.getPersonalID());
+            					logger.info("ishtLineObj.getId() : " +ishtLineObj.getId());
+        						ishtLineObj.setRitwik(family.getrName());
+        						ishtLineMDBList.add(ishtLineObj);	
+        					}
+        				}
+        			}
+        			/*added blcok for RitwikName */
+    				
     			}
 
     			if(familyList!=null && !familyList.isEmpty()){
@@ -106,7 +124,8 @@ public class IshtMDBDao extends MongoBaseDao {
     			list2.removeAll(list1);
     			logger.info("getting remaning objects of family "+ list2);
     			logger.info("getting remaning objects of family "+ list2.size());
-
+    			
+    			
     			for(int i=0; i<=list2.size()-1;i++ ){
     				logger.info("List 2 contents "+list2.get(i).toString());
     				ListIterator<FamilyMDB> itr=familyList.listIterator();  
@@ -126,11 +145,13 @@ public class IshtMDBDao extends MongoBaseDao {
     						istLine.setSurplus(0.00d);
     						istLine.setRitwiki(0.00d);
     						istLine.setTotal(0.00d);
+    						istLine.setRitwik(family.getrName());
     						list.add(istLine);
     					}
     				}
     			}
-    			isht.setLine(list);
+    			//isht.setLine(list);
+    			isht.setLine(ishtLineMDBList);
     		}
     		else
     		{
@@ -150,7 +171,9 @@ public class IshtMDBDao extends MongoBaseDao {
     			ist.setSurplus(0.00d);
     			ist.setRitwiki(0.00d);
     			ist.setTotal(0.00d);
+    			ist.setRitwik(root.getRitvikName());
     			line.add(ist);
+    			ishtLineMDBList.add(ist);
 
     			/**
     			 * add family member
@@ -171,10 +194,13 @@ public class IshtMDBDao extends MongoBaseDao {
     					istLine.setSurplus(0.00d);
     					istLine.setRitwiki(0.00d);
     					istLine.setTotal(0.00d);
+    					istLine.setRitwik(family.getrName());
     					line.add(istLine);
+    					ishtLineMDBList.add(istLine);
     				}  
     			}
-    			isht.setLine(line);
+    			//isht.setLine(line);
+    			isht.setLine(ishtLineMDBList);
     		}
     		resultObject.setObject1(isht);
     		resultObject.setSuccess(true);

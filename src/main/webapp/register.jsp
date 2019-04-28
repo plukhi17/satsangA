@@ -18,6 +18,7 @@
     <script src="js/lumino.glyphs.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <script src="js/controller.js"></script>
+    <script src="js/Phone.js"></script>
    
     <script language="javascript" type="text/javascript">
 function pulsar(obj) {
@@ -296,7 +297,8 @@ response.setDateHeader ("Expires", 0);
                                 <div class="form-group ">
                                     <label class="control-label col-md-12">Contact Informations:</label>
                                     <div class="col-md-8 row-group">
-                                             <input id="txtPhoneNo" name="txtPhoneNo" placeholder="Phone Number (XXX) XXX XXXX" type="number" ng-model="txtPhoneNo" class="form-control input-sm" required>
+                                             <input id="txtPhoneNo" name="txtPhoneNo" placeholder="Phone Number (XXX)XXX-XXXX" r ng-model="txtPhoneNo" class="form-control input-sm" 
+                                             onkeydown="javascript:backspacerDOWN(this,event);" onkeyup="javascript:backspacerUP(this,event);" required>
                                     </div>
                                     <div class="col-md-8">
                                            <input id="txtEmailId" name="txtEmailId" style="text-transform:uppercase;" placeholder="someid@mail.com" type="email" ng-model = "txtEmailId" class="form-control input-sm" required>

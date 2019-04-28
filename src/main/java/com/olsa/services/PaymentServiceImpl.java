@@ -68,7 +68,7 @@ public String transactionGetToken() {
 		return token;
 		
 
-	}
+		}
 	
 	
 	
@@ -76,7 +76,8 @@ public String transactionGetToken() {
 		
 		PaymentResponseUtils paymentResponseUtils=new PaymentResponseUtils();
 		
-		if (amount(paymentUtils.getAmount()) == false) {
+		if (!amount(paymentUtils.getAmount())) {
+		
 			paymentResponseUtils.setResMessage("Amount Not valid Try again");
 			paymentResponseUtils.setStatus(false);
 			logger.error("Payment Transaction Respponse Failed: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact());
@@ -91,7 +92,7 @@ public String transactionGetToken() {
 					.cvv(paymentUtils.getCvv()).done()
 					.amount(new BigDecimal(paymentUtils.getAmount())).paymentMethodNonce("fake-valid-nonce").options()
 					.submitForSettlement(true).done();
-		       	Result<Transaction> result = gateway.transaction().sale(request);
+		        	Result<Transaction> result = gateway.transaction().sale(request);
 			
 			if (result.isSuccess()) {
 				Transaction transaction = result.getTarget();
@@ -147,7 +148,7 @@ public String transactionGetToken() {
 		
 		PaymentResponseUtils paymentResponseUtils=new PaymentResponseUtils();
 		
-		if (amount(paymentUtils.getAmount()) == false) {
+		if (!amount(paymentUtils.getAmount())) {
 			paymentResponseUtils.setResMessage("Amount Not valid Try again");
 			paymentResponseUtils.setStatus(false);
 			logger.error("Payment Transaction Respponse Failed: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact());
@@ -220,7 +221,7 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 		
 		PaymentResponseUtils paymentResponseUtils=new PaymentResponseUtils();
 		
-		if (amount(paymentUtils.getAmount()) == false) {
+		if (!amount(paymentUtils.getAmount())) {
 			paymentResponseUtils.setResMessage("Amount Not valid Try again");
 			paymentResponseUtils.setStatus(false);
 			logger.error("Payment Transaction Respponse Failed: FamilyCode: "+paymentUtils.getFamilyCode()+", contact number: "+paymentUtils.getContact());
@@ -231,7 +232,7 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 		
 			
 	
-				paymentResponseUtils.setResMessage("Success");
+					paymentResponseUtils.setResMessage("Success");
 				paymentResponseUtils.setStatus(true);
 				String uniqueID = UUID.randomUUID().toString();
 				paymentResponseUtils.setTrasactionId(uniqueID);
@@ -252,17 +253,12 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 		BigDecimal decimalAmount;
 		decimalAmount = new BigDecimal(amount);
 
-		TransactionRequest request = new TransactionRequest().amount(decimalAmount)
-				.paymentMethodNonce("fake-valid-nonce").options().submitForSettlement(true).done();
+		
 
-		Result<Transaction> result = gateway.transaction().sale(request);
-
-		if (result.isSuccess()) {
-			return true;
-		} else if (result.getTransaction() != null) {
+			if (decimalAmount.compareTo(BigDecimal.ZERO) > 0) {
 			return true;
 		} else {
-			return true;
+			return false;
 		}
 	}
 

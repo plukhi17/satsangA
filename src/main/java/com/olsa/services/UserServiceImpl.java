@@ -12,6 +12,7 @@ import com.mongodb.client.FindIterable;
 import com.olsa.bo.MongoBaseDao;
 import com.olsa.bo.UserDao;
 import com.olsa.bo.UserProfileMDBDao;
+import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.OTPResponseBO;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
@@ -21,6 +22,7 @@ import com.olsa.utility.MongoConstants;
 import com.olsa.utility.OTPResponse;
 import com.olsa.utility.OnlineSAConstants;
 import com.olsa.utility.RandomNumber;
+import com.olsa.utility.SendEmail;
 
 public class UserServiceImpl implements UserService {
 
@@ -177,11 +179,13 @@ public class UserServiceImpl implements UserService {
 			response.setDate(date);
 			response.setEmail(email);
 			logger.info("forgot password: " + response + "   OTP:" + OTPnum);
+			boolean retvalue = sendOTPToEmailId(response,OTPnum); //calling to send Email and SMS
 			return response;
 		} else {
 			response.setResponseMsg("Not match this email id");
 			response.setStatus("false");
 			response.setEmail(email);
+			
 			return response;
 		}
 		// verifyOTP(email, OTPnum.toString(), date);
@@ -271,5 +275,42 @@ public class UserServiceImpl implements UserService {
 			return response;
 		}
 	}
+	
+	 private boolean sendOTPToEmailId(ForgotPasswordResponse resObj, Integer OtPnum){
+			
+		    logger.info("Email to sent :" +resObj.getEmail());
+			SendEmail sendEmail = new SendEmail();
+			
+			StringBuffer  content_html= new StringBuffer();
+			content_html.append("Your Satsang America account password verification code is :"+OtPnum+".  This code is valid for 10 Minutes Please do not share this code with anyone.")
+			
+			.append("<br> <br>")
+			.append("Jayguru and Regards <br>")
+			.append("Istavrity Team <br>")
+			.append("</p> <p style=\"font-family:sans-serif;  color: grey; font-weight:normal; font-size: 12px;\">")
+			.append("Satsang America, Inc.<br>") 
+			.append("14 W District Rd<br>") 
+			.append("Unionville, CT 06085<br>") 
+			.append("Ph: 317-480-3184<br>") 
+			.append("Visit Us www.SatsangAmerica.org <br>") ;
+			
+			SendEmail SendingProgram = new SendEmail();						
+			SendingProgram.setRecipient(resObj.getEmail());
+			//SendingProgram.setSender("istabhrity@gmail.com");
+			SendingProgram.setSender(OnlineSAConstants.EMAIL_ID);
+			SendingProgram.setSubject("Password Verification Code");
+			String MailbodyContent="<p style=\"font-family:sans-serif;  color:blue; font-weight: bold; font-size: 14px;\"> Ishtapraneshu  Jayguru, <br><br>"+content_html.toString();
+			SendingProgram.setContent(MailbodyContent); //setting the boy contennt.
+			try {
+				SendingProgram.sendHtmlEmail();
+			} catch (Exception e) {
+				logger.error("Exception occure while sending User Notification"+e.getMessage());
+			}//sendEmailInviation(); //Caling program to send the Email 
+			logger.info("Approval Email Sent to ");
+			
+			return true;
+		}
+		
+	
 
 }

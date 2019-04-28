@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 
@@ -37,7 +38,16 @@ public class SendEmail {
 	    private Session session;
 	    private Transport trans;
 	    private MimeMessage msg;
+		
+	    private boolean IsMultiRecipient=false;
+		
+	    public boolean isIsMultiRecipient() {
+			return IsMultiRecipient;
+		}
 
+		public void setIsMultiRecipient(boolean isMultiRecipient) {
+			IsMultiRecipient = isMultiRecipient;
+		}
 	    public String getSender() {
 			return sender;
 		}
@@ -71,8 +81,19 @@ public class SendEmail {
 		}
 
 		private String sender, recipient, content, contenct_html,subject ;
+		
+		private String[] multipleRecipients = new String[4]; 
+		
 	    
-	    public String getSubject() {
+	    public String[] getMultipleRecipients() {
+			return multipleRecipients;
+		}
+
+		public void setMultipleRecipients(String[] multipleRecipients) {
+			this.multipleRecipients = multipleRecipients;
+		}
+
+		public String getSubject() {
 			return subject;
 		}
 
@@ -107,13 +128,24 @@ public class SendEmail {
 	            MimeMultipart mimeMultipart = new MimeMultipart();
 	            //create the sender/recipient addresses
 	            InternetAddress iaSender = new InternetAddress(sender);
-	            InternetAddress iaRecipient = new InternetAddress(recipient);
+	           
 	            //construct the mime message
 			    msg.setFrom(new InternetAddress("SatsangBayArea USA <satsangbayareausa@gmail.com>"));
 				msg.setSender(iaSender);
 				msg.setSubject(subject);
-				msg.setRecipient(Message.RecipientType.TO, iaRecipient);
-				String MailbodyContent=this.getContent();
+				
+				if(this.multipleRecipients.length>1) {
+		            InternetAddress[] sendTo = new InternetAddress[multipleRecipients.length];
+		            	for (int i = 0; i <multipleRecipients.length; i++) {
+		    				//System.out.println("Send to:" + to[i]);
+		    				sendTo[i] = new InternetAddress(multipleRecipients[i]);
+		    			}
+		            	msg.addRecipients(Message.RecipientType.TO, sendTo);
+		    		}else {
+		    			 InternetAddress iaRecipient = new InternetAddress(recipient);
+		    			msg.setRecipient(Message.RecipientType.TO, iaRecipient);		
+		    		}
+		    	String MailbodyContent=this.getContent();
 				textBodyPart.setContent("<html><body><h1> </h1>\n" + MailbodyContent.toString() + "</body></html>", "text/html");
 				mimeMultipart.addBodyPart(textBodyPart);
 			    msg.setContent(mimeMultipart,"text/html" ); 
@@ -244,14 +276,10 @@ public class SendEmail {
 		      props.put("mail.smtp.port", "587");
 		      props.put("mail.debug", "false");
 		      
-		      final String emailId="";
-		      final String password="";
-		      
-		      
 		      Session session = Session.getInstance(props,
 		    		  new Authenticator() {
 		  			protected PasswordAuthentication getPasswordAuthentication() {
-		  				return new PasswordAuthentication(emailId, password);
+		  				return new PasswordAuthentication( OnlineSAConstants.EMAIL_ID,OnlineSAConstants.CREDENTIALS );
 		  			}
 		  		  });
 		  
@@ -289,8 +317,8 @@ public class SendEmail {
 
 	        	//construct the mime message
 	        	//msg mimeMessage = new MimeMessage(session);
-	        	//msg.setFrom(new InternetAddress("SatsangBayArea USA <satsangbayareausa@gmail.com>"));
-	        	msg.setFrom(new InternetAddress("Satsang America Istavrity <istabhrity@gmail.com>"));
+	        	//msg.setFrom(new InternetAddress(OnlineSAConstants.SENDER_EMAIL_ID2));
+	        	msg.setFrom(new InternetAddress(OnlineSAConstants.SENDER_EMAIL_ID2));
 	        	//msg.setFrom(new InternetAddress(sender));
 	        	msg.setSender(iaSender);
 	        	msg.setSubject(subject);
@@ -338,17 +366,11 @@ public class SendEmail {
 		      props.put("mail.smtp.host", "smtp.gmail.com");
 		      props.put("mail.smtp.port", "587");
 		      props.put("mail.debug", "false");
-		      
-		      //final String emailId="";
-		      //final String password="";
-		      
-		      final String emailId="istabhrity@gmail.com";
-		      final String password="ThakurWel0veu";
-		     
+		 	     
 		      Session session = Session.getInstance(props,
 		    		  new Authenticator() {
 		  			protected PasswordAuthentication getPasswordAuthentication() {
-		  				return new PasswordAuthentication(emailId, password);
+		  				return new PasswordAuthentication(OnlineSAConstants.EMAIL_ID,OnlineSAConstants.CREDENTIALS);
 		  			}
 		  		  });
 		  
@@ -367,14 +389,14 @@ public class SendEmail {
 
 	        	//create the sender/recipient addresses
 	        	InternetAddress iaSender = new InternetAddress(sender);
-	        	InternetAddress iaRecipient = new InternetAddress(recipient);
-	        
-	        	msg.setFrom(new InternetAddress("Satsang America Istavrity <istabhrity@gmail.com>"));
+	        	//InternetAddress iaRecipient = new InternetAddress(recipient);
+	        	
+	        	msg.setFrom(new InternetAddress(OnlineSAConstants.SENDER_EMAIL_ID2));
 	        	//msg.setFrom(new InternetAddress(sender));
 	        	msg.setSender(iaSender);
 	        	msg.setSubject(subject);
-	        	msg.setRecipient(Message.RecipientType.TO, iaRecipient);
-	        	msg.setRecipient(Message.RecipientType.CC, iaRecipient);
+	        	//msg.setRecipient(Message.RecipientType.TO, iaRecipient);
+	        	//msg.setRecipient(Message.RecipientType.CC, iaRecipient);
 	        	msg.setSentDate(new Date());
 	        	//msg.setContent(mimeMultipart);
 	        	String MailbodyContent=this.getContent();
@@ -385,10 +407,33 @@ public class SendEmail {
 	        	//mimeMultipart.addBodyPart(pdfBodyPart);
 	        	msg.setContent(mimeMultipart,"text/html" ); 
 	        	//send off the email
-	        	trans.send(msg);
+	        	
+	        	if(this.IsMultiRecipient) {	        		        	
+		        	if(this.multipleRecipients.length>1) {
+		        	    InternetAddress[] sendTo = new InternetAddress[multipleRecipients.length];
+			            	for (int i = 0; i <multipleRecipients.length; i++) {
+			    					sendTo[i] = new InternetAddress(multipleRecipients[i]);	 
+			    			}
+			            	msg.addRecipients(Message.RecipientType.TO, sendTo);
+			            	trans.send(msg);
+			           }else {
+			    			 InternetAddress iaRecipient = new InternetAddress(recipient);
+			    			 msg.setRecipient(Message.RecipientType.TO, iaRecipient);
+			    			trans.sendMessage(msg, msg.getAllRecipients());
+			    			System.out.println("Successfully !!! Sent to Approver " + sender + ", to " + Arrays.toString(multipleRecipients)+"");
+			    		}
+		        	}
+		        	else {
+		        		InternetAddress iaRecipient = new InternetAddress(recipient);
+		        		msg.setRecipient(Message.RecipientType.TO, iaRecipient);
+		        		trans.send(msg);
+		        		System.out.println("Successfully !!! Sent to Approver " + sender + ", to " + recipient +"");
+		        	}
+	        		
 	        	//trans.sendMessage(msg, msg.getAllRecipients());
 
-	        	System.out.println("Successfully !!! Sent to Approver " + sender + ", to " + recipient +""); 
+	        	
+	        	//System.out.println("Successfully !!! Sent to Approver " + sender + ", to " + multipleRecipients +"");
 	        
 	        } catch(Exception ex) {
 	            ex.printStackTrace();
