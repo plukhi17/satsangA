@@ -53,7 +53,9 @@
 		<action name="achTransactions" method="achTransactions" class="checkoutAction"></action>
 		<action name="viewCards" method="viewCard" class="checkoutAction"></action>
 		<action name="viewACHs" method="viewACH" class="checkoutAction"></action>
-			<action name="getClientToken" method="getClientToken" class="checkoutAction"></action>
+		<action name="getClientToken" method="getClientToken" class="checkoutAction"></action>
+		<action name="checkTrNoExist" method="checkTrNoExist" class="checkoutAction"></action>
+		
 		<action name="transactionsuccess" method="transactionsuccess" class="checkoutAction">
 			<result name="success">ishtpayconfirm.jsp</result>
 		</action>

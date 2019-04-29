@@ -40,6 +40,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -251,7 +252,20 @@ public class CreateNSendArghyaPraswasti {
 			// Image image = Image.getInstance("src/main/webapp/images/image.jpeg"); //this
 			// works in local
 			
-
+			// image watermark
+			Image waterMarkImg = Image.getInstance(new URL(imageUrl));
+	        float w = waterMarkImg.getScaledWidth();
+	        float h = waterMarkImg.getScaledHeight();
+	        
+	        // transparency
+	        PdfGState gs1 = new PdfGState();
+	        gs1.setFillOpacity(0.5f);
+	        
+	        float x, y;
+	        
+	     
+	        
+	        
 			//logger.info("Image Path :" + image.getUrl());
 			image.scaleAbsolute(50f, 50f);
 			PdfPCell cell = new PdfPCell(Image.getInstance(image), true);

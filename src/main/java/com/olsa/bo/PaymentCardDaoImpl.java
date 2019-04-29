@@ -33,7 +33,7 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	public String saveCadeDetails(PaymentUtils paymentUtils) {
 		String response = null;
 		try {
-			if (ifExistCardNumber(paymentUtils.getCardNumber()) != true) {
+			if (ifExistCardNumber(paymentUtils) != true) {
 				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.CARD_DETAILS);
 						//.getCollection("CardDetails");
@@ -120,15 +120,33 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	}
 	
 
-	boolean ifExistCardNumber(String cardNumber) {
+	boolean ifExistCardNumber(PaymentUtils paymentUtils) {
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CARD_DETAILS);
 				//.getCollection("CardDetails");
 		boolean flag = false;
 		Document document = new Document();
-		document.put("cardNumber", cardNumber);
+		document.put("cardNumber", paymentUtils.getCardNumber());
+		document.put("familyCode", paymentUtils.getFamilyCode());
 		FindIterable<Document> result = db.find(document);
 		for (Document doc : result) {
 			if (doc.get("cardNumber") != null) {
+				return true;
+			}
+		}
+		return flag;
+	}
+	
+	@Override
+	public boolean ifExistTrNo(String trNo) {
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.ISHT_COLLECTION);
+				//.getCollection("CardDetails");
+		boolean flag = false;
+		Document document = new Document();
+		document.put("trnDetails",trNo.toString());
+	
+		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			if (doc.get("trnDetails") != null) {
 				return true;
 			}
 		}

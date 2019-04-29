@@ -100,6 +100,16 @@ public class CheckoutAction extends BaseAction {
 		writer.append(mapper.writeValueAsString(paymentResponseUtils));
 	}
 	
+	
+	public void checkTrNoExist() throws JsonParseException, JsonMappingException, IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		String trNo = getRequest().getParameter("trNo");
+		Map<String,String> response=new HashMap<String,String>();
+		response.put("responseMsg", paymentServic.checkTrNoExists(trNo));
+		writer.append(mapper.writeValueAsString(response));
+	}
+	
 	public void addCard() throws JsonParseException, JsonMappingException, IOException {
 		PrintWriter writer = getResponse().getWriter();
 		ObjectMapper mapper = new ObjectMapper();

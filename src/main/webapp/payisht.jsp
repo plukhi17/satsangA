@@ -264,7 +264,12 @@ response.setDateHeader ("Expires", 0);
 							<fieldset>
 								<div class="form-group">
 									<div class="row">
+									
 										<div class=" col-md-7">
+										<div id="dvTrNoAlert" class="alert alert-danger" style= "display:none">
+												
+													<p><strong>{{checkTrNoRes}}</strong> 
+										</div>
 											<table class="table table-striped table-bordered">
 												<tbody>
 													<tr>
@@ -290,7 +295,7 @@ response.setDateHeader ("Expires", 0);
 															<strong>Transaction Ref / Cheque No</strong>
 														</td>
 														<td>
-															<input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" style="text-transform:uppercase;"
+															<input id="stTrnNo" name="stTrnNo" placeholder="Transaction Ref /Cheque No" type="text" ng-blur="checkTrNoExist()" style="text-transform:uppercase;"
 															class="form-control" ng-model = "stTrnNo" ng-required="selPmtMethod == 'MANUAL'">
 														</td>
 													</tr>
@@ -315,15 +320,15 @@ response.setDateHeader ("Expires", 0);
 											<th>Name </th>
 											<!-- <th>Option</th>
 											<th>Value</th> -->
-											<th>Swastyayani</th>
-											<th>Istavrity</th>
-											<th>Acharyavrity</th>
-											<th>Dakshina</th>
-											<th>Sangathani</th>
-											<th>Pronami</th>
-											<th>S Surplus</th>
-											<th>Parivrity</th>
-											<th>Ritwiki</th>
+											<th>Swastyayani <i class="fa fa-info-circle cursror-pointer" title="Swastyayani" aria-hidden="true"></i></th>
+											<th>Istavrity <i class="fa fa-info-circle cursror-pointer" title="Istavrity" aria-hidden="true"></i></th>
+											<th>Acharyavrity <i class="fa fa-info-circle cursror-pointer" title="Acharyavrity" aria-hidden="true"></i></th>
+											<th>Dakshina <i class="fa fa-info-circle cursror-pointer"  title="Dakshina" aria-hidden="true"></i></th>
+											<th>Sangathani <i class="fa fa-info-circle cursror-pointer" title="Sangathani" aria-hidden="true"></i></th>
+											<th>Pronami<i class="fa fa-info-circle cursror-pointer" title="Pronami" aria-hidden="true"></i></th>
+											<th>S Surplus<i class="fa fa-info-circle cursror-pointer" title="S Surplus" aria-hidden="true"></i></th>
+											<th>Parivrity<i class="fa fa-info-circle cursror-pointer" title="Parivrity" aria-hidden="true"></i></th>
+											<th>Ritwiki<i class="fa fa-info-circle cursror-pointer" title="Ritwiki" aria-hidden="true"></i></th>
 											<th>Total</th>
 											
 										</tr> 
@@ -359,19 +364,22 @@ response.setDateHeader ("Expires", 0);
 									</tbody>
 								</table>
 								<div class="form-group">
-									<div class="col-md-14">
+									<div class="col-md-12">
 										<table id="grand_sum_table"
 											class="grand_sum_table table table-borderless">
 											<thead>
 													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td></td>
 													<td  align = "right" style="border-top: none;">Ishtabhrity Amount</td>
 													<td  align = "right" style="border-top: none;">{{ishtAmount | number : 2}}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;border-bottom:none;color:blue">2.9% Processig + 0.30$ for Gateway</td>
 													<td  align = "right" style="border-top: none;">Processing Fee</td>
 													<td  align = "right" style="border-top: none;">{{processIng | number : 2}}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td style="border-top: none;"></td>
 														<td  align = "right" style="">Grand Total : US $ </td>
 														<td  align = "right" style=""> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2}}</label></td>
 															
@@ -555,15 +563,15 @@ response.setDateHeader ("Expires", 0);
 											<th scope="col">Name </th>
 											<!-- <th scope="col">Option</th>
 											<th scope="col">Value</th> -->
-											<th scope="col">Swastyayani</th>
-											<th scope="col">Istavrity</th>
-											<th scope="col">Acharyavrity</th>
-											<th scope="col">Dakshina</th>
-											<th scope="col">Sangathani</th>
-											<th scope="col">Pronami</th>
-											<th scope="col">S Surplus</th>
-											<th scope="col">Parivrity</th>
-											<th scope="col">Ritwiki</th>
+											<th scope="col">Swastyayani <i class="fa fa-info-circle cursror-pointer" title="Swastyayani" aria-hidden="true"></i></th>
+											<th scope="col">Istavrity <i class="fa fa-info-circle cursror-pointer" title="Istavrity" aria-hidden="true"></i></th>
+											<th scope="col">Acharyavrity <i class="fa fa-info-circle cursror-pointer" title="Acharyavrity" aria-hidden="true"></i></th>
+											<th scope="col">Dakshina <i class="fa fa-info-circle cursror-pointer"  title="Dakshina" aria-hidden="true"></i></th>
+											<th scope="col">Sangathani <i class="fa fa-info-circle cursror-pointer" title="Sangathani" aria-hidden="true"></i></th>
+											<th scope="col">Pronami<i class="fa fa-info-circle cursror-pointer" title="Pronami" aria-hidden="true"></i></th>
+											<th scope="col">S Surplus<i class="fa fa-info-circle cursror-pointer" title="S Surplus" aria-hidden="true"></i></th>
+											<th scope="col">Parivrity<i class="fa fa-info-circle cursror-pointer" title="Parivrity" aria-hidden="true"></i></th>
+											<th scope="col">Ritwiki<i class="fa fa-info-circle cursror-pointer" title="Ritwiki" aria-hidden="true"></i></th>
 											<th scope="col">Total</th>
 										</tr> 
 									</thead>
@@ -576,15 +584,17 @@ response.setDateHeader ("Expires", 0);
 											<thead >
 													<thead>
 													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td style="border-top:none"></td>
 													<td  align = "right" style="border-top: none;">Ishtabhrity Amount: US $</td>
 													<td  align = "right" style="border-top: none;">{{ishtAmount | number : 2 }}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;border-bottom:none;color:blue">2.9% Processig + 0.30$ for Gateway</td>
 													<td  align = "right" style="border-top: none;">Processing Fee: US $ </td>
 													<td  align = "right" style="border-top: none;">{{processIng | number : 2}}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													
+													<td style="border-bottom:none"></td>
 													<td  align = "right" style="">Grand Total : US $ </td>
 													<td  align = "right" style="">{{grandTotal | number : 2}}</td>
 													</tr>

@@ -94,7 +94,7 @@
 					</svg> Dashboard</a>
 			</li>
 			<li>
-				<a href="payisht.html">
+				<a href="payisht.jsp">
 					<svg class="glyph stroked app-window-with-content">
 						<use xlink:href="#stroked-app-window-with-content"></use>
 					</svg> Pay Ishtavrity</a>

@@ -614,7 +614,7 @@ function cardNameChacking(num) {
 	var courseApp = angular.module("ishtApp", [ "xeditable" ]);
 	courseApp.controller('ishtCtrl',['$scope','$http','$filter','$compile',
 		function($scope, $http, $filter,$compile) {
-		
+		 $scope.checkTrNoRes="Transaction No is already submitted.";
 		 $scope.allStates = [
 				{StateName:"Alabama",StateCode:"AL" },
 				{StateName:"Alaska",StateCode:"AK" },
@@ -809,7 +809,7 @@ function cardNameChacking(num) {
 												 
 												 if(returnObject.data.applicationFlow=='adminFlow') {
 													 $scope.PostDataResponse = returnObject.data.returnMessage;
-													 $("#dvErrAlert").show();
+													 $("#dvErrAlert").show(); 
 													 $("#submit_1").prop("disabled",true);
 												 }else						 
 													 window.location = 'ishtpayconfirm.jsp';
@@ -1224,6 +1224,35 @@ function cardNameChacking(num) {
 										 });
 									}//else
 								}//addCard
+								//Check if transaction no exist for the manual ref
+								$scope.checkTrNoExist=function(){
+									
+									
+										var contextPath = "checkTrNoExist.do?trNo="
+											+ $scope.stTrnNo;
+										$http({
+											 method : "POST",
+											 url : contextPath,
+										
+											 headers: {'Content-Type': 'application/json'}
+										 }).then(function mySucces(data) {
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											 if(obj.responseMsg=='true'){
+												 alert("Transaction No is already submitted.");
+												 $("#dvTrNoAlert").show(); 
+												 $scope.stTrnNo="";
+												 $scope.checkTrNoRes="Transaction No is already submitted.";
+											 }else{
+												 $("#dvTrNoAlert").hide(); 
+												
+											 }
+											  
+										 },function myError(d) {
+											 console.log("Error:    "+d);
+										 });
+									
+								}//checkTrNoExist
 								
 								$scope.removeCardScope= function(myCard){
 

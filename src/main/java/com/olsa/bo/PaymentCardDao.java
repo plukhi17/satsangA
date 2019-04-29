@@ -19,4 +19,5 @@ public interface PaymentCardDao {
 	public List<ACHDetailsDTO> viewAllACH(String contact);
 	public String removeCardDetails(PaymentUtils paymentUtils);
 	public String removeACHDetails(PaymentACHUtils paymentUtils);
+	public boolean ifExistTrNo(String trNo);
 }

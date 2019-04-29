@@ -291,6 +291,12 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	public String addCard(PaymentUtils paymentUtils) {
 		return paymentCard.saveCadeDetails(paymentUtils);
 	}
+	
+	@Override
+	public String checkTrNoExists(String trNo) {
+		return String.valueOf(paymentCard.ifExistTrNo(trNo));
+	}
+	
 	@Override
 	public String removeCard(PaymentUtils paymentUtils) {
 		return paymentCard.removeCardDetails(paymentUtils);

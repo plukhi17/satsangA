@@ -32,4 +32,6 @@ public interface PaymentService {
 
 	String removeACH(PaymentACHUtils paymentUtils);
 
+	String checkTrNoExists(String trNo);
+
 }

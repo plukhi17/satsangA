@@ -352,9 +352,9 @@ public class UserProfileMDBDao extends MongoBaseDao {
 				Document familyObject = new Document("_id", familyID)
 		        .append("personalID", root.getFamilyID()+"-0"+familyID)
 		        .append("firstName", root.getFirstName().toUpperCase())
-		        .append("middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():"")
+		        .append("middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():null)
 		        .append("lastName", root.getLastName().toUpperCase())
-				.append("rName", root.getRitvikName().toUpperCase())
+				.append("rName", root.getRitvikName()!=null?root.getRitvikName().toUpperCase():null)
 				.append("saID", root.getRitwikID());
 				 
 				 fetchRootCollection().findOneAndUpdate(eq("phoneNo", userSession.getPhoneNo().toString()),
