@@ -181,7 +181,8 @@ response.setDateHeader ("Expires", 0);
 
                                 <!-- Member Family# -->
                                 <div class="form-group ">
-                                    <label class="control-label col-md-12" for="stFamilyCode">Family Code:</label>
+                                    <label class="control-label col-md-12" for="stFamiName:
+                                    lyCode">Family Code:</label>
                                     <div class="col-md-4">
  										<%= root.getFamilyID()%>  
                                      </div>
@@ -214,22 +215,22 @@ response.setDateHeader ("Expires", 0);
 								 <div class="form-group ">
                                     <label class="control-label col-md-12" for="txtFirstName">Name:</label>
                                     <div class="col-md-4">
-                                            <input id="txtFirstName" name="txtFirstName" type="text" style="text-transform:uppercase;" class="form-control" ng-model="txtFirstName" placeholder="First Name" required>
+                                            <input id="txtFirstName" name="txtFirstName" type="text" style="text-transform:uppercase;" class="form-control" ng-model="txtFirstName" placeholder="First Name *" required>
                                     </div>
                                     
                                     <div class="col-md-4">
                                             <input id="txtMiddleName" name="txtMiddleName" type="text" style="text-transform:uppercase;" class="form-control" ng-model="txtMiddleName" placeholder="Middle Name">
                                     </div>
                                     <div class="col-md-4">
-                                            <input id="txtLastName" name="txtLastName" type="text"  style="text-transform:uppercase;" class="form-control" ng-model="txtLastName" placeholder="Last Name" required>
+                                            <input id="txtLastName" name="txtLastName" type="text"  style="text-transform:uppercase;" class="form-control" ng-model="txtLastName" placeholder="Last Name *" required>
                                     </div>
                                 </div>
                                     
                                   <!-- Ritwik Name input-->
                                 <div class="form-group ">
-                                    <label class=" col-md-12 control-label" for="txtRtFirstName">Ritwik's Details:</label>
+                                    <label class=" col-md-12 control-label" for="txtRtFirstName">Ritwik's Details: <span ng-show="!chkNotInit"> * </span></label>
                                     <div class="col-md-5" ng-init="loadAllRitvik()">
-                                            <input list="ritvikList" class="form-control" style="text-transform:uppercase;" placeholder="Select Ritvik"  ng-model="txtRitvikName">
+                                            <input list="ritvikList" class="form-control" style="text-transform:uppercase;" placeholder="Select Ritvik"  ng-model="txtRitvikName" ng-required="!chkNotInit ">
 											<datalist id="ritvikList">
 											           <option ng-repeat="x1 in ritvikList" value="{{x1.firstName +' '+ x1.lastName +' | '+ x1.saID }}">{{x1.address}}</option>
 							                 </datalist>
@@ -239,6 +240,11 @@ response.setDateHeader ("Expires", 0);
                                     <div class="checkbox col-md-2">
                                         <label>
                                            <input id="chkIsDecessed" type="checkbox" ng-model="chkIsDecessed" value="Is Decessed" />Is Not Alive
+                                        </label>
+                                    </div>
+                                     <div class="checkbox col-md-2">
+                                        <label>
+                                           <input id="chkNotInitiated" type="checkbox" ng-model="chkNotInit" value="nInitiated" />Not Initiated
                                         </label>
                                     </div>
                                 </div>

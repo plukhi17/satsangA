@@ -199,7 +199,7 @@ response.setDateHeader ("Expires", 0);
                                 <div class="form-group ">
                                     <label class="control-label col-xs-12" for="txtFirstName"> User Name:  </label>
                                     <div class="col-md-8 row-group">
-                                            <input id="txtFirstName" name="txtFirstName" type="text"  style="text-transform:uppercase;" class="form-control input-sm" ng-model="txtFirstName" placeholder="First Name"  required>
+                                            <input id="txtFirstName" name="txtFirstName" type="text"  style="text-transform:uppercase;" class="form-control input-sm" ng-model="txtFirstName" placeholder="First Name *"  required>
                                     </div>
                                     <div role="alert">
       									<span class="error" ng-show="myForm.userName.$error.required">
@@ -209,7 +209,7 @@ response.setDateHeader ("Expires", 0);
                                             <input id="txtMiddleName" name="txtMiddleName" style="text-transform:uppercase;" type="text" class="form-control input-sm" ng-model="txtMiddleName" placeholder="Middle Name" >
                                     </div>
                                     <div class="col-md-8 row-group">
-                                            <input id="txtLastName" name="txtLastName" type="text" style="text-transform:uppercase;" class="form-control input-sm"" ng-model="txtLastName" placeholder="Last Name" required>
+                                            <input id="txtLastName" name="txtLastName" type="text" style="text-transform:uppercase;" class="form-control input-sm"" ng-model="txtLastName" placeholder="Last Name *" required>
                                             <input id="txtApplicationFlow" name="txtApplicationFlow" type="hidden" value =<%= applciationFlow %>>
                                     </div>
                                     <div class="col-md-8 row-group">
@@ -230,7 +230,7 @@ response.setDateHeader ("Expires", 0);
                                 <div class="form-group ">
                                     <label class=" col-md-12 control-label" for="txtRtFirstName">Ritwik's Details:</label>
                                     <div class="col-md-5" ng-init="loadAllRitvik()">
-                                            <input list="ritvikList" class="form-control" style="text-transform:uppercase;" placeholder="Select Ritvik"  ng-model="txtRitvikName">
+                                            <input list="ritvikList" class="form-control" style="text-transform:uppercase;" placeholder="Select Ritvik *"  ng-model="txtRitvikName">
 											<datalist id="ritvikList">
 											           <option ng-repeat="x1 in ritvikList" value="{{x1.firstName +' '+ x1.lastName +' | '+ x1.saID }}">{{x1.address}}</option>
 							                 </datalist>
@@ -251,17 +251,17 @@ response.setDateHeader ("Expires", 0);
                                     <!-- Country -->
                                         <div class="col-md-8  row-group">
                                             <!--<label class="control-label" for="stCountry">Country:</label>-->
-                                            <select name='country' id="country"  style="text-transform:uppercase;" class="form-control input-sm" ng-model="country" placeholder="Select Country" ng-options="country as country.CountryName for country in countries" required>
-                							<option value="" selected disabled hidden>Select Country</option>
+                                            <select name='country' id="country"  style="text-transform:uppercase;" class="form-control input-sm" ng-model="country" placeholder="Select Country *" ng-options="country as country.CountryName for country in countries" required>
+                							<option value="" selected disabled hidden>Select Country *</option>
             							</select>
                                         </div>
                                         
                                     
                                     <div class="col-md-8 row-group">
-                                           <input id="stSenderAdd1" name="stSenderAdd" placeholder="Street Address" type="text" style="text-transform:uppercase;" ng-model="stSenderAdd1" class="form-control input-sm" required>
+                                           <input id="stSenderAdd1" name="stSenderAdd" placeholder="Street Address *" type="text" style="text-transform:uppercase;" ng-model="stSenderAdd1" class="form-control input-sm" required>
                                     </div>
                                     <div class="col-md-8  row-group">
-                                            <input id="stSenderAdd2" name="stSenderAdd2" placeholder="Apt. No., PO Boxes" type="text" style="text-transform:uppercase;"  ng-model="stSenderAdd2" class="form-control input-sm" required>
+                                            <input id="stSenderAdd2" name="stSenderAdd2" placeholder="Apt. No., PO Boxes *" type="text" style="text-transform:uppercase;"  ng-model="stSenderAdd2" class="form-control input-sm" required>
                                     </div>
                                    
                                     <div class="col-md-8  row-group">
@@ -274,12 +274,12 @@ response.setDateHeader ("Expires", 0);
 										<!-- City -->
                                         <div class="col-md-8  row-group">
                                             <!--<label class="control-label" for="stSendercity">City:</label>-->
-                                            <input id="stSenderCity" name="stSenderCity" placeholder="City"  type="text" style="text-transform:uppercase;" ng-model ="stSenderCity" class="form-control input-sm" required>
+                                            <input id="stSenderCity" name="stSenderCity" placeholder="City *"  type="text" style="text-transform:uppercase;" ng-model ="stSenderCity" class="form-control input-sm" required>
                                         </div>
                                         
                                           <!-- State-->
                                         <div class="col-md-8  row-group">
-                                        <select name='state' required id="state" style="text-transform:uppercase;" class="form-control input-sm" ng-disabled="states.length == 0" ng-model="state"  placeholder="Select State" ng-options="state as state.StateName for state in states">
+                                        <select name='state' required id="state" style="text-transform:uppercase;" class="form-control input-sm" ng-disabled="states.length == 0" ng-model="state"  placeholder="Select State *" ng-options="state as state.StateName for state in states">
 							                <option value="" selected disabled hidden>Select State</option>
 							              </select>
                                         </div>
@@ -287,7 +287,7 @@ response.setDateHeader ("Expires", 0);
                                          <!-- Zip Code -->
                                         <div class="col-md-6 row-group">
                                             <!--<label class="control-label" for="stZipCode">Zip Code:</label>-->
-                                            <input id="stZipCode" name="stZipCode" placeholder="Zip Code" type="text" style="text-transform:uppercase;" ng-model = "stZipCode" class="form-control input-sm" required>
+                                            <input id="stZipCode" name="stZipCode" placeholder="Zip Code *" type="text" style="text-transform:uppercase;" ng-model = "stZipCode" class="form-control input-sm" required>
                                         </div>
                                         
                                     <!--</div>-->
@@ -297,15 +297,15 @@ response.setDateHeader ("Expires", 0);
                                 <div class="form-group ">
                                     <label class="control-label col-md-12">Contact Informations:</label>
                                     <div class="col-md-8 row-group">
-                                             <input id="txtPhoneNo" name="txtPhoneNo" placeholder="Phone Number (XXX)XXX-XXXX" r ng-model="txtPhoneNo" class="form-control input-sm" 
+                                             <input id="txtPhoneNo" name="txtPhoneNo" placeholder="Phone Number (XXX)XXX-XXXX *"  ng-model="txtPhoneNo" class="form-control input-sm" 
                                              onkeydown="javascript:backspacerDOWN(this,event);" onkeyup="javascript:backspacerUP(this,event);" required>
                                     </div>
                                     <div class="col-md-8">
-                                           <input id="txtEmailId" name="txtEmailId" style="text-transform:uppercase;" placeholder="someid@mail.com" type="email" ng-model = "txtEmailId" class="form-control input-sm" required>
+                                           <input id="txtEmailId" name="txtEmailId" style="text-transform:uppercase;" placeholder="someid@mail.com *" type="email" ng-model = "txtEmailId" class="form-control input-sm" required>
                                     </div>
                                     <div class="col-md-8">
                                       <label class="control-label" for="stPassword">Create Password:</label>
-                                     <input id="stPassword" name="stPassword" placeholder="create password" type="password" ng-model="stPassword"  type="password" class="form-control input-sm" required>
+                                     <input id="stPassword" name="stPassword" placeholder="create password *" type="password" ng-model="stPassword"  type="password" class="form-control input-sm" required>
                                       </div>
                                  
                                  <div class="col-md-8">

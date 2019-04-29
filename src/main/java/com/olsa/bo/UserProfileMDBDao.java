@@ -352,7 +352,7 @@ public class UserProfileMDBDao extends MongoBaseDao {
 				Document familyObject = new Document("_id", familyID)
 		        .append("personalID", root.getFamilyID()+"-0"+familyID)
 		        .append("firstName", root.getFirstName().toUpperCase())
-		        .append("middleName", root.getMiddleName().toUpperCase())
+		        .append("middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():"")
 		        .append("lastName", root.getLastName().toUpperCase())
 				.append("rName", root.getRitvikName().toUpperCase())
 				.append("saID", root.getRitwikID());
@@ -378,6 +378,7 @@ public class UserProfileMDBDao extends MongoBaseDao {
 			}
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			logger.error("Exception occure in :"+ e.getMessage());
 			resultObject.setSuccess(false);
 			errorMap.put("errorCode", "unknown");
