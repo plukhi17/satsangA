@@ -103,6 +103,7 @@ public class CreateNSendArghyaPraswasti {
 			// Dynamic PDF creation
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			writer.setPageEvent(new WaterMarkPageEvent());
 			document.open();
 
 			// Static PDF File creation
@@ -1646,7 +1647,7 @@ public class CreateNSendArghyaPraswasti {
 														// email address
 		// String recipient ="rprosad@gmail.com"; //"gs.gsgiri@gmail.com";
 		// //"rprosad@gmail.com"; // //replace this with a valid recipient email address
-		String recipient = "gs.gsgiri@gmail.com";
+		String recipient = "parthl@meditab.com";
 		String GuestEmailId = recipient;
 		String content = "Please find your attached Arghya Receipt "; // this will be the text of the email
 		String subject = "Your Arghya Receipt"; // this will be the subject of the email

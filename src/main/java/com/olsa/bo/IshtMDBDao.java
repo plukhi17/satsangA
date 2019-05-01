@@ -106,6 +106,7 @@ public class IshtMDBDao extends MongoBaseDao {
             					logger.info("ishtLineObj.getId() : " +ishtLineObj.getId());
         						ishtLineObj.setRitwik(family.getrName());
         						ishtLineMDBList.add(ishtLineObj);	
+        						
         					}
         				}
         			}
@@ -147,11 +148,12 @@ public class IshtMDBDao extends MongoBaseDao {
     						istLine.setTotal(0.00d);
     						istLine.setRitwik(family.getrName());
     						list.add(istLine);
+    						ishtLineMDBList.add(istLine);
     					}
     				}
     			}
-    			//isht.setLine(list);
-    			isht.setLine(ishtLineMDBList);
+    			isht.setLine(list);
+    			//isht.setLine(ishtLineMDBList);
     		}
     		else
     		{
@@ -199,8 +201,8 @@ public class IshtMDBDao extends MongoBaseDao {
     					ishtLineMDBList.add(istLine);
     				}  
     			}
-    			//isht.setLine(line);
-    			isht.setLine(ishtLineMDBList);
+    			isht.setLine(line);
+    			//isht.setLine(ishtLineMDBList);
     		}
     		resultObject.setObject1(isht);
     		resultObject.setSuccess(true);
