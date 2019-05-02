@@ -254,6 +254,7 @@ public class CreateNSendArghyaPraswasti {
 			// works in local
 			
 			// image watermark
+			imageUrl =OnlineSAConstants.IMAGE_URL+"image.jpeg";
 			Image waterMarkImg = Image.getInstance(new URL(imageUrl));
 	        float w = waterMarkImg.getScaledWidth();
 	        float h = waterMarkImg.getScaledHeight();
@@ -1647,7 +1648,7 @@ public class CreateNSendArghyaPraswasti {
 														// email address
 		// String recipient ="rprosad@gmail.com"; //"gs.gsgiri@gmail.com";
 		// //"rprosad@gmail.com"; // //replace this with a valid recipient email address
-		String recipient = "parthl@meditab.com";
+		String recipient = "parth.lukhi17@gmail.com";
 		String GuestEmailId = recipient;
 		String content = "Please find your attached Arghya Receipt "; // this will be the text of the email
 		String subject = "Your Arghya Receipt"; // this will be the subject of the email
