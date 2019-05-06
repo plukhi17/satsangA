@@ -3,12 +3,20 @@
  */
 package com.olsa.utility;
 
+import java.io.IOException;
+import java.net.URL;
+
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfPageEvent;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -41,9 +49,46 @@ public class WaterMarkPageEvent implements PdfPageEvent  {
 	 */
 	@Override
 	public void onEndPage(PdfWriter writer, Document document) {
-		ColumnText.showTextAligned(writer.getDirectContentUnder(),
-                Element.ALIGN_CENTER, new Phrase("Memorynotfound.com"),
-                297.5f, 421, writer.getPageNumber() % 2 == 1 ? 45 : -45);
+	
+	        
+	        
+		 //Get waterMarkImage from some URL
+	        String imageUrl =OnlineSAConstants.IMAGE_URL+"image.jpeg";
+	        Image waterMarkImg = null;
+			try {
+				waterMarkImg = Image.getInstance(new URL(imageUrl));
+			
+			} catch (BadElementException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        
+        //Get width and height of whole page
+        float pdfPageWidth = document.getPageSize().getWidth();
+        float pdfPageHeight = document.getPageSize().getHeight();
+
+        float w = waterMarkImg.getScaledWidth();
+        float h = waterMarkImg.getScaledHeight();
+        
+        float x = (document.getPageSize().getWidth() - 100f) / 2;
+        float y = (document.getPageSize().getHeight() - 100f) / 2;
+        
+        try {
+        PdfContentByte canvas = writer.getDirectContentUnder();
+       
+        canvas.saveState();
+        PdfGState state = new PdfGState();
+        state.setFillOpacity(0.7f); 
+        canvas.setGState(state);
+    	waterMarkImg.setAbsolutePosition(250f, 250f);
+        canvas.addImage(waterMarkImg,100f, 0, 0, 100f, x, y);
+        canvas.restoreState();
+        //Set waterMarkImage on whole page
+    
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

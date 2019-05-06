@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -253,22 +254,7 @@ public class CreateNSendArghyaPraswasti {
 			// Image image = Image.getInstance("src/main/webapp/images/image.jpeg"); //this
 			// works in local
 			
-			// image watermark
-			Image waterMarkImg = Image.getInstance(new URL(imageUrl));
-	        float w = waterMarkImg.getScaledWidth();
-	        float h = waterMarkImg.getScaledHeight();
-	        
-	        // transparency
-	        PdfGState gs1 = new PdfGState();
-	        gs1.setFillOpacity(0.5f);
-	        
-	        float x, y;
-	        
-	     
-	        
-	        
-			//logger.info("Image Path :" + image.getUrl());
-			image.scaleAbsolute(50f, 50f);
+		
 			PdfPCell cell = new PdfPCell(Image.getInstance(image), true);
 			cell.setBorder(PdfPCell.NO_BORDER);
 			table.addCell(cell); // 1
@@ -1331,7 +1317,15 @@ public class CreateNSendArghyaPraswasti {
 				str_CHEQUE_DATE = str_COLLECTED_ON;
 			}
 			
-			Date dte = new Date(str_CHEQUE_DATE);
+			Date dte= new Date();
+			try {
+				dte = new Date(str_CHEQUE_DATE);
+			}catch(IllegalArgumentException i) {
+				
+				DateFormat frmt = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+				dte = (Date)frmt.parse(str_CHEQUE_DATE);
+			}
+			
 			String formatteddate = formatter.format(dte);
 			logger.info(" CHEQUE_DATE : " + str_CHEQUE_DATE);
 			Date cvtd_cheque_Date = formatter.parse(formatteddate);
