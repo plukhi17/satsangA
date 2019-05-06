@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -137,9 +139,21 @@ public class MongoBaseDao extends BaseDao {
 	 * @return Root Document
 	 */
 
-	public RootMDB fetchRootDocument(String phoneNo){
+	public RootMDB fetchRootDocument1(String phoneNo){
 		logger.info("fetchRootDocument " + phoneNo);
 		return fetchRootCollection().find(Filters.eq("phoneNo", phoneNo), RootMDB.class).first();
+	}
+	
+	
+	/***
+	 * 	This method is used to fetch Root Document
+	 * @return Root Document
+	 */
+
+	public RootMDB fetchRootDocument(String username){
+		logger.info("fetchRootDocument " + username + " familyId "+username);
+		Bson filter = Filters.or(eq("phoneNo", username), eq("familyID", username));
+		return fetchRootCollection().find(filter, RootMDB.class).first();
 	}
 	
 	/***
