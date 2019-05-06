@@ -299,19 +299,23 @@ public class IshtAction extends BaseAction {
 				getRequest().getSession().setAttribute("ishtPay", isht);
 
 				// Save the same data to MySQL Database as well
+
 				
 				try {
+
 					logger.info("Going to insert into My SQL");
+
 					WriteToMySQL writeToSQL = new WriteToMySQL();
 
 					new SQLUtility().executeSQL(isht,getJdbcTemplate());
 					String sql = "";
 					Connection con = writeToSQL.executeSelectSQL(sql);
+					logger.info("Successfully data inserted to My SQL");
 				} catch (Exception ex) {
 
 					logger.info("Execption while inserting data to MySQL " + ex);
 				}
-				logger.info("Successfully data inserted to My SQL");
+			
 				// Save the same data to MySQL Database as well
 
 				// send email notification to Admin and User about the transaction.

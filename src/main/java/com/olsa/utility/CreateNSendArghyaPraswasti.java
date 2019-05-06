@@ -253,8 +253,7 @@ public class CreateNSendArghyaPraswasti {
 			// Image image = Image.getInstance("./WEB-INF/images/image.jpeg");
 			// Image image = Image.getInstance("src/main/webapp/images/image.jpeg"); //this
 			// works in local
-			
-		
+
 			PdfPCell cell = new PdfPCell(Image.getInstance(image), true);
 			cell.setBorder(PdfPCell.NO_BORDER);
 			table.addCell(cell); // 1
@@ -1641,7 +1640,7 @@ public class CreateNSendArghyaPraswasti {
 														// email address
 		// String recipient ="rprosad@gmail.com"; //"gs.gsgiri@gmail.com";
 		// //"rprosad@gmail.com"; // //replace this with a valid recipient email address
-		String recipient = "parthl@meditab.com";
+		String recipient = "parth.lukhi17@gmail.com";
 		String GuestEmailId = recipient;
 		String content = "Please find your attached Arghya Receipt "; // this will be the text of the email
 		String subject = "Your Arghya Receipt"; // this will be the subject of the email

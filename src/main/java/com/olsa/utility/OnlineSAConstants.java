@@ -45,8 +45,8 @@ public interface OnlineSAConstants {
 	String EXPN_SUB_CODE_SEQ_NAME = "ExpenseSubCode";
 	
 	
-	final String EMAIL_ID="satsangamericatest@gmail.com";
-    final String CREDENTIALS="SatsangAmerica123$";	
+	final String EMAIL_ID="parthl@meditab.com";
+    final String CREDENTIALS="Mar@2018";	
     final String SENDER_EMAIL_ID2="Satsang America Test <satsangamericatest@gmail.com>";
     final String SENDER_EMAIL_ID1="Satsang America Test <satsangamericatest@gmail.com>";
     final String IMAGE_URL="https://www.satsangamerica.com/images/";
