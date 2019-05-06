@@ -414,14 +414,10 @@ public class SendEmail {
 			            	for (int i = 0; i <multipleRecipients.length; i++) {
 			    					sendTo[i] = new InternetAddress(multipleRecipients[i]);	 
 			    			}
-			            	//msg.addRecipients(Message.RecipientType.TO, sendTo);
-			            	msg.addRecipients(Message.RecipientType.TO, "plukhi17@gmail.com");
+			            	msg.addRecipients(Message.RecipientType.TO, sendTo);
 			            	trans.send(msg);
 			           }else {
-			    			// InternetAddress iaRecipient = new InternetAddress(recipient);
-			        	   InternetAddress iaRecipient = new InternetAddress("plukhi17@gmail.com");
-			    			// msg.setRecipient(Message.RecipientType.TO, iaRecipient);
-			    			 
+			    			 InternetAddress iaRecipient = new InternetAddress(recipient);
 			    			 msg.setRecipient(Message.RecipientType.TO, iaRecipient);
 			    			trans.sendMessage(msg, msg.getAllRecipients());
 			    			System.out.println("Successfully !!! Sent to Approver " + sender + ", to " + Arrays.toString(multipleRecipients)+"");
