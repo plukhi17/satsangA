@@ -952,3 +952,34 @@ form[editable-form] > div {
 
 
 
+.required::-webkit-input-placeholder:after {
+    content: " *";
+    color: red;
+}
+/* Start is the class for corner triangle*/
+.required {
+  background-image: linear-gradient(45deg, transparent, transparent 50%, red 50%, red 100%);
+  background-position: top right;
+  background-size: .5em .5em;
+  background-repeat: no-repeat;
+}
+/* end is the class for corner triangle*/
+
+/* Start is the class for red dot */
+ .required1 {
+background-image: radial-gradient(red 20%, transparent 25%);
+  background-size: 1em 1em;
+  background-position: top right;
+  background-repeat: no-repeat
+}
+ /* end is the class for red dot */
+
+.required:-moz-placeholder:after {
+    content: " *";
+    color: red;  
+}
+
+.required:-ms-input-placeholder:after {  
+    content: " *";
+    color: red;  
+}
