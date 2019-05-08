@@ -50,7 +50,7 @@
                             <div class="form-group has-error">
                                 <!--<label class="control-label" for="txtFamilyCode">User ID:</label>-->
                                  <input class="form-control" placeholder="SA Family ID / Phone Number" id="userName" name="userName" autofocus="" ng-model="userName"
-                                 onkeydown="javascript:backspacerDOWN(this,event);" onkeyup="javascript:backspacerUP(this,event);" required>
+                                onkeyup="javascript:backspacerUP(this,event);" required>
                             </div>
 							<div class="form-group">
                                 <!--<label class="control-label" for="txtFamilyCode">Password:</label>-->

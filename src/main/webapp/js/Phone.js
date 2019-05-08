@@ -28,7 +28,8 @@
 
 	    ParseForNumber1(object)
 
-	    if (keycode >= 48) {
+	 
+	    if (keycode >= 48 || (keycode===65 || keycode ===97 || keycode === 90 || keycode===122)) {
 	        ValidatePhone(object)
 	    }
 	}
@@ -44,13 +45,19 @@
 	    } else {
 	        var keycode = e.keyCode
 	    }
-	    ParseForNumber2(object)
+	    if(keycode===65 || keycode ===97 || keycode === 90 || keycode===122){
+	    	
+	    }
+	    else{
+	    	 ParseForNumber2(object)
+	    }
+	   
 	}
 
 	function GetCursorPosition() {
 
 	    var t1 = phonevalue1;
-	    var t2 = phonevalue2;
+	    var t2 = phonevalue1;
 	    var bool = false
 	    for (i = 0; i < t1.length; i++) {
 	        if (t1.substring(i, 1) != t2.substring(i, 1)) {
@@ -63,54 +70,93 @@
 	}
 
 	function ValidatePhone(object) {
+	 var myUser= object.value.toLowerCase();
+		if((myUser.length===1 && myUser==='s') ||(myUser.length===2 && myUser==='sa') ||(myUser.length===2 && myUser==='(s')||
+				(myUser.length>2 &&  ((myUser.indexOf('sa')===0) || (myUser.indexOf('(sa')===00))) ){
+			if(myUser.length>2 ){
+				var myNum= myUser.substring(2);
+				if(isNaN(myNum)){
+					 object.value =myUser.replace(/[^\d]*/gi, "");
+				}else{
+					var p=object.value;
+					 if (p.length == 5) {
+					        pp = p;
+					        d4 = p.indexOf('(')
+					        d5 = p.indexOf(')')
+					        if (d4 == -1) {
+					            pp = "(" + pp;
+					        }
+					        if (d5 == -1) {
+					            pp = pp + ")";
+					        }
+					        object.value = pp;
+					    } else if (p.length > 5 && p.length < 8) {
+					        p = "(" + p;
+					        l30 = p.length;
+					        p30 = p.substring(0, 6);
+					        p30 = p30 + ")"
 
-	    var p = phonevalue1
+					        p31 = p.substring(6, l30);
+					        pp = p30 + p31;
 
-	    p = p.replace(/[^\d]*/gi, "")
+					        object.value = pp;
 
-	    if (p.length < 3) {
-	        object.value = p
-	    } else if (p.length == 3) {
-	        pp = p;
-	        d4 = p.indexOf('(')
-	        d5 = p.indexOf(')')
-	        if (d4 == -1) {
-	            pp = "(" + pp;
-	        }
-	        if (d5 == -1) {
-	            pp = pp + ")";
-	        }
-	        object.value = pp;
-	    } else if (p.length > 3 && p.length < 7) {
-	        p = "(" + p;
-	        l30 = p.length;
-	        p30 = p.substring(0, 4);
-	        p30 = p30 + ")"
+					    } 
 
-	        p31 = p.substring(4, l30);
-	        pp = p30 + p31;
+				}
+			}
+			
+		}else{
+			 var p = phonevalue1;
+			    
+			    p = p.replace(/[^\d]*/gi, "")
 
-	        object.value = pp;
+			    if (p.length < 3) {
+			        object.value = p
+			    } else if (p.length == 3) {
+			        pp = p;
+			        d4 = p.indexOf('(')
+			        d5 = p.indexOf(')')
+			        if (d4 == -1) {
+			            pp = "(" + pp;
+			        }
+			        if (d5 == -1) {
+			            pp = pp + ")";
+			        }
+			        object.value = pp;
+			    } else if (p.length > 3 && p.length < 7) {
+			        p = "(" + p;
+			        l30 = p.length;
+			        p30 = p.substring(0, 4);
+			        p30 = p30 + ")"
 
-	    } else if (p.length >= 7) {
-	        p = "(" + p;
-	        l30 = p.length;
-	        p30 = p.substring(0, 4);
-	        p30 = p30 + ")"
+			        p31 = p.substring(4, l30);
+			        pp = p30 + p31;
 
-	        p31 = p.substring(4, l30);
-	        pp = p30 + p31;
+			        object.value = pp;
 
-	        l40 = pp.length;
-	        p40 = pp.substring(0, 8);
-	        p40 = p40 + "-"
+			    } else if (p.length >= 7) {
+			        p = "(" + p;
+			        l30 = p.length;
+			        p30 = p.substring(0, 4);
+			        p30 = p30 + ")"
 
-	        p41 = pp.substring(8, l40);
-	        ppp = p40 + p41;
+			        p31 = p.substring(4, l30);
+			        pp = p30 + p31;
 
-	        object.value = ppp.substring(0, maxphonelength);
-	    }
+			        l40 = pp.length;
+			        p40 = pp.substring(0, 8);
+			        p40 = p40 + "-"
 
+			        p41 = pp.substring(8, l40);
+			        ppp = p40 + p41;
+
+			        object.value = ppp.substring(0, maxphonelength);
+			    }
+
+			
+		}
+	   
 	    GetCursorPosition()
 
 	    if (cursorposition >= 0) {
