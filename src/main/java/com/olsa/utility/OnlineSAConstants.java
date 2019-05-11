@@ -44,7 +44,7 @@ public interface OnlineSAConstants {
 	String EXPN_CODE_SEQ_NAME = "ExpenseCode";
 	String EXPN_SUB_CODE_SEQ_NAME = "ExpenseSubCode";
 	
-	
+	//Email creds
 	final String EMAIL_ID="satsangamericatest@gmail.com";
     final String CREDENTIALS="SatsangAmerica123$";	
     final String SENDER_EMAIL_ID2="Satsang America Test <satsangamericatest@gmail.com>";
