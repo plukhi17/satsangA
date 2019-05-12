@@ -106,8 +106,9 @@
 						<use xlink:href="#stroked-app-window-with-content"></use>
 					</svg> Search Ishtavrity</a>
 			</li>
-			
+			<% if(root.getUserType()!=null && root.getUserType().equalsIgnoreCase(OnlineSAConstants.ADMIN_USER)) { %>
 				<%@include file="includeAdminMenu.jsp" %>
+			<% } %>
 				<!-- 
 			<li class="parent ">
 				<a href="#">

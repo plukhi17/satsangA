@@ -193,7 +193,7 @@
 				<div class="panel-heading">Ishtavrity - Forgot Password</div>
 				<div class="panel-body" id="forgotPasswordBody">
                    <!--  <div id="dvAlertErr" class="alert-common bg-danger" role="alert">Invalid User ID / Password</div> -->
-                    <div id="dvAlertWarning" class="alert-common bg-success" role="alert">
+                    <div id="dvAlertWarning" class="alert-common" role="alert">
                     A Verification Code will be sent out to your below registered email id and Phone Number.<br></div>
                     <br>
 					<form role="form">

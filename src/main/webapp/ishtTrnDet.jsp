@@ -121,8 +121,9 @@ response.setDateHeader ("Expires", 0);
 					</svg> Search Ishtavrity
 			</a></li>
 			
-		<%@include file="includeAdminMenu.jsp" %>
-
+			<% if(root.getUserType()!=null && root.getUserType().equalsIgnoreCase(OnlineSAConstants.ADMIN_USER)) { %>
+				<%@include file="includeAdminMenu.jsp" %>
+			<% } %>
 			<li role="presentation" class="divider"></li>
 			<li><a href="login.jsp"> <svg
 						class="glyph stroked male-user">

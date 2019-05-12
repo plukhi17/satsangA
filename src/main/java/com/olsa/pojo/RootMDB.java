@@ -29,6 +29,9 @@ public class RootMDB
     private String pprFlag;
     private String pseronalize;
     private String indfamilyCode;
+    private boolean migrated;
+    private boolean firstLogin;
+    
     
  
 
@@ -188,6 +191,36 @@ public class RootMDB
 					+ ", createdOn=" + createdOn + ", lastUpdatedOn=" + lastUpdatedOn + ", userType=" + userType
 					+ ", userName=" + userName + ", userRole=" + userRole + ", rName=" + rName + ", pprFlag=" + pprFlag
 					+ ", pseronalize=" + pseronalize + ", indfamilyCode=" + indfamilyCode + "]";
+		}
+		/**
+		 * @return the migrated
+		 */
+		public boolean isMigrated() {
+			return migrated;
+		}
+		/**
+		 * @param migrated the migrated to set
+		 */
+		public void setMigrated(boolean migrated) {
+			this.migrated = migrated;
+		}
+		/**
+		 * @return the firstLogin
+		 */
+		public boolean isFirstLogin() {
+			return firstLogin;
+		}
+		/**
+		 * @param firstLogin the firstLogin to set
+		 */
+		public void setFirstLogin(boolean firstLogin) {
+			this.firstLogin = firstLogin;
+		}
+		/**
+		 * @param userName the userName to set
+		 */
+		public void setUserName(String userName) {
+			this.userName = userName;
 		}
 		
 	

@@ -122,7 +122,9 @@ response.setDateHeader ("Expires", 0);
 					Ishtavrity Transcations</a>
 			</li>
 			
-			<%@include file="includeAdminMenu.jsp" %>
+				<% if(root.getUserType()!=null && root.getUserType().equalsIgnoreCase(OnlineSAConstants.ADMIN_USER)) { %>
+					<%@include file="includeAdminMenu.jsp" %>
+				<% } %>
 			
 			<li>
 				<a href="login.jsp">

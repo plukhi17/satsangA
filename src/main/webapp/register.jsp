@@ -195,6 +195,10 @@ response.setDateHeader ("Expires", 0);
 					 </div>
                         <form name = "registrationForm" class="form-horizontal">
                             <fieldset>
+                                <div role="alert">
+      									<span class="error">
+       									* are required</span>
+    								</div>
                                 <!-- Member Name -->
                                 <div class="form-group ">
                                     <label class="control-label col-xs-12" for="txtFirstName"> User Name:  </label>

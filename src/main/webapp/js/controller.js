@@ -84,7 +84,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	        
 	    });
 	    
-	    
+	 
 	  $scope.registerUser = function() {
 		  
 		  var applicationFlow = $('#txtApplicationFlow').val();
@@ -186,7 +186,12 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   	 		  	        		 $("#dvErrAlert").show();
   							 }else{
   								 //$rootScope.PostDataResponse = returnObject.data.userJSONObject.phoneNo;
-  								 window.location = 'index.jsp';
+  								 if(returnObject.data.userJSONObject.firstLogin && returnObject.data.userJSONObject.migrated){
+  									window.location = 'forgotpswd.jsp';
+  								 }else{
+  									window.location = 'index.jsp';
+  								 }
+  								 
   							 }
   						 },function myError(d) {
   							 alert("fail");

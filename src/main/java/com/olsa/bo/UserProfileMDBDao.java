@@ -509,7 +509,16 @@ public class UserProfileMDBDao extends MongoBaseDao {
 			newDocument.put("password",passwordHash);
 			BasicDBObject updateObj = new BasicDBObject();
 			updateObj.put("$set", newDocument);
-			db.updateOne(query, updateObj);
+			UpdateResult up=db.updateOne(query, updateObj);
+			if(up.getModifiedCount()>0){
+				query=new BasicDBObject();
+				query.put("phoneNo", mobileNumber);
+				 newDocument = new BasicDBObject();
+				newDocument.put("firstLogin",false);
+				 updateObj = new BasicDBObject();
+				updateObj.put("$set", newDocument);
+				up=db.updateOne(query, updateObj);
+			}
 	}
     
     

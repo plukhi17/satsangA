@@ -26,12 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
- 		<%
-		//RootMDB root = (RootMDB)session.getAttribute("userBean");
-		System.out.println("Admin  Page -"+ root.getUserType());
-      	%>
-	
-			<% if(root.getUserType()!=null && root.getUserType().equalsIgnoreCase(OnlineSAConstants.ADMIN_USER)) { %>
+ 
 					
 			<li class="parent ">
 				<a href="#">
@@ -71,6 +66,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</li>
 				</ul>
 			</li>
-			<% } %>
+		
   </body>
 </html>
