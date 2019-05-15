@@ -171,8 +171,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
                  });
   		  	    
   		  	 $scope.validateUser = function() {
-  				 var userDetails ={
-  					   userName:$scope.userName,
+  		  		 var userName=$scope.userName.replace(/[^a-zA-Z0-9.]/g, '');
+  		  		 var userDetails ={
+  					   userName:userName,
   					   password:$scope.password
   					   };
   		 		   var contextPath = "validateUser.do"+"?userDetails="+ JSON.stringify(userDetails);
@@ -189,6 +190,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   								 if(returnObject.data.userJSONObject.firstLogin && returnObject.data.userJSONObject.migrated){
   									window.location = 'forgotpswd.jsp';
   								 }else{
+  									$scope.userName=userName;
   									window.location = 'index.jsp';
   								 }
   								 
@@ -839,3 +841,5 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 				
 				
 		});
+
+

@@ -49,7 +49,7 @@
 						<fieldset>
                             <div class="form-group has-error">
                                 <!--<label class="control-label" for="txtFamilyCode">User ID:</label>-->
-                                 <input class="form-control" placeholder="SA Family ID / Phone Number" id="userName" name="userName" autofocus="" ng-model="userName"
+                                 <input class="form-control" placeholder="SA Family ID" id="userName" name="userName" autofocus="" ng-model="userName"
                                required>
                             </div>
 							<div class="form-group">
@@ -90,6 +90,30 @@
 		$(window).on('resize', function () {
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		})
+		
+		// A $( document ).ready() block.
+$( document ).ready(function() {
+	 var sacont="(SA0000)";
+	$('#userName').on('keyup', function(e){
+	    var val = $(this).val();
+	   
+	   if( val.startsWith("SA0000")){
+		   val="("+	val.slice(0, 6) + ")" + val.slice(6);
+		   newval=val;
+		  $(this).val(newval);
+	   } else if(!val.startsWith(sacont)){
+		    newval = sacont;
+		    $(this).val(newval);
+	   }
+	   else{
+		   newval=val;
+		  $(this).val(newval);
+	   }
+		
+	   
+	
+	})  
+});
 	</script>
 	<script>
 	
