@@ -64,6 +64,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</svg> Transaction Details
 						</a>
 					</li>
+					
+					
+					<li>
+						<a href="ledger.jsp">
+							<svg class="glyph stroked chevron-right">
+								<use xlink:href="#stroked-chevron-right"></use>
+							</svg> Ishtavrity Ledger	</a>
+					</li>
+					
+					<li>
+						<a href="reportmech.jsp">
+							<svg class="glyph stroked chevron-right">
+								<use xlink:href="#stroked-chevron-right"></use>
+							
+						</svg> Collection Report</a>
 				</ul>
 			</li>
 		
