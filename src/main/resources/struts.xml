@@ -69,6 +69,7 @@
 		<action name="getNextExpCode" method="getNextExpCode" class="ledgerAction"></action>
 		<action name="getNextSubCode" method="getNextSubCode" class="ledgerAction"></action>
 		<action name="getSubCodeByCode" method="getSubCodeByCode" class="ledgerAction"></action>
+		<action name="getBalanceSummary" method="getBalanceSummary" class="ledgerAction"></action>
 		
 
     </package>

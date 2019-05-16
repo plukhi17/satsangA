@@ -125,6 +125,30 @@ public class LedgerAction extends BaseAction {
 
 		}
 	}
+	
+	public void getBalanceSummary() throws IOException {
+
+		
+		logger.info("Inside getBalanceSummary() Action");
+		try {
+			ResultObject result = new ResultObject();
+			result = ledgerServic.getLedgerEntries();
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (result.isSuccess()) {
+				logger.info("inside sucess");
+				responseObject.put("returnCode", "success");
+			
+				responseObject.put(DPST_SMRY_OBJECT,  result.getObject1());
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+
+		}
+	}
 
 	
 	

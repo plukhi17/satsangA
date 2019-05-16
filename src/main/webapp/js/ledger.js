@@ -111,6 +111,33 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 						 });
 		  			};
 		  		
+  				$scope.balanceEntrie = function() {
+  		  			 	
+  		  			 	var contextPath = "getBalanceSummary.do";
+  	  				 	
+  	  				 	
+  	  				$http({
+							 method : "POST",
+							 url : contextPath
+						 }).then(function mySucces(data) {
+							var returnObject = eval(data); // Parse Return Data
+							if(returnObject.data.returnCode=='error') {
+								 $scope.PostDataResponse = returnObject.data.returnMessage;
+							 }else{
+								 $scope.ishtLine = returnObject.data.depositSmryJSONObject;
+							     $table.bootstrapTable('load', returnObject.data.depositSmryJSONObject);
+							     $table.bootstrapTable('hideLoading');
+							     $table.tableEditor();
+							 
+							 }
+ 						 },function myError(d) {
+							 alert("fail");
+						 });
+		  			};
+		  			
+		  			
+		  			
+		  			
 		  			 $scope.addCode=function() {
 		  				
 		  				
