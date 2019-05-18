@@ -216,14 +216,32 @@ response.setDateHeader ("Expires", 0);
                                     <div class="col-md-12 ledgerWrapper">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                               
-                                                <div id="ledgerBalSheetWrap"  ng-init="balanceEntries()">
-	                                             	Hello this is an area where to show balance entry summary
+                                                <div id="ledgerBalSheetWrap"  >
+                                                <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-6">
+								    					Beginning Balance
+                                                	</div>
+                                                	<div class="col-md-5">
+								    					{{depSmrBal1}}
+                                                	</div>
                                                 </div>
+                                                 <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-6">
+								    					Income Balance
+                                                	</div>
+                                                	<div class="col-md-5">
+								    					{{incomeBalWrapper.amount}}
+                                                	</div>
+                                                </div>
+	                                             	
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    </div>
             
 								<!-- Income Modal -->
 								<div id="myModal" class="codeWrapper col-md-12"  >

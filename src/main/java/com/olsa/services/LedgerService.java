@@ -3,6 +3,7 @@
  */
 package com.olsa.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.olsa.pojo.ResultObject;
@@ -23,4 +24,5 @@ public interface LedgerService {
 	String getNextIncCode(String seqName);
 	String addSubCode(SubCode code);
 	List<Code> getAllSubCodesByCode(String codeName);
+	ResultObject getBalanceSummary(Date date);
 }

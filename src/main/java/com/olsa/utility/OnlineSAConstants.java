@@ -8,6 +8,9 @@ public interface OnlineSAConstants {
 	String USER_JSON = "userJSON";
 	String USER_JSON_OBJECT = "userJSONObject";
 	String DPST_SMRY_OBJECT = "depositSmryJSONObject";
+	String DPST_SMRY_BAL = "depositSmryBal";
+	String INC_BAL_WRAPPER = "incomeBalWrapper";
+	String EXP_BAL_WRAPPER = "expenseBalWrapper";
 	String RITVIK_JSON_OBJECT = "ritvikJSONObject";
 	String USER_NAME = "userName";
 	String ISHT_TRAN_OBJECT = "ishtTranObject";

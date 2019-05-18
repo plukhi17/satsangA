@@ -1,5 +1,6 @@
 package com.olsa.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.olsa.pojo.ResultObject;
@@ -17,5 +18,6 @@ public interface LedgerDao {
 	public String getNextIncCode(String sequenceName);
 	public String saveSubCodeDetails(SubCode code);
 	public List<Code> getAllSubCodesByCode(String codeName);
+	public ResultObject getBalanceSummary(Date sDate);
 
 }

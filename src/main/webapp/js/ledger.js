@@ -101,22 +101,21 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 								 $scope.PostDataResponse = returnObject.data.returnMessage;
 							 }else{
 								 $scope.ishtLine = returnObject.data.depositSmryJSONObject;
+								 $scope.depSmrBal = returnObject.data.depositSmryBal;
 							     $table.bootstrapTable('load', returnObject.data.depositSmryJSONObject);
 							     $table.bootstrapTable('hideLoading');
-							     $table.tableEditor();
-							 
+							     //$table.tableEditor();
+							 	$scope.balanceEntries();
 							 }
  						 },function myError(d) {
 							 alert("fail");
 						 });
 		  			};
 		  		
-  				$scope.balanceEntrie = function() {
-  		  			 	
-  		  			 	var contextPath = "getBalanceSummary.do";
-  	  				 	
-  	  				 	
-  	  				$http({
+  				$scope.balanceEntries = function() {
+  		  			 	$scope.summaryDate=new Date();
+  		  			 	var contextPath = "getBalanceSummary.do?summaryDate="+$scope.summaryDate;
+  		  			 	$http({
 							 method : "POST",
 							 url : contextPath
 						 }).then(function mySucces(data) {
@@ -124,10 +123,12 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							if(returnObject.data.returnCode=='error') {
 								 $scope.PostDataResponse = returnObject.data.returnMessage;
 							 }else{
-								 $scope.ishtLine = returnObject.data.depositSmryJSONObject;
-							     $table.bootstrapTable('load', returnObject.data.depositSmryJSONObject);
-							     $table.bootstrapTable('hideLoading');
-							     $table.tableEditor();
+								 
+								 $scope.depSmrBal1 = returnObject.data.depositSmryBal;
+								 $scope.incomeBalWrapper = returnObject.data.incomeBalWrapper;
+								 $scope.expenseBalWrapper = returnObject.data.expenseBalWrapper;
+								
+							     //$table.tableEditor();
 							 
 							 }
  						 },function myError(d) {
@@ -311,7 +312,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			};
 		  			$scope.addLedger = function() {
 		  			//alert($scope.selectedHeadSubCd.split('-')[0].trim());
-						
+	  					if($scope.amount==undefined){
+							return false;
+						}
 							var contextPath = "addLedger.do";
 							$http({
 								 method : "POST",
@@ -323,17 +326,22 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 									 "headSubCode":$scope.selectedHeadSubCd.split('-')[0].trim(),
 									 "headSubCodeDesc":$scope.selectedHeadSubCd.split('-')[1].trim(),
 									 "amount":$scope.amount,
-									 "amountDesc":$scope.amountDesc
+									 "amountDesc":$scope.amountDesc,
+									 "balance":	 $scope.depSmrBal,
+								
 								 },
 								 headers: {'Content-Type': 'application/json'}
 							 }).then(function mySucces(data) {
 								  $scope.json = angular.toJson(data.data);
 								  var obj = JSON.parse($scope.json);
 								  var node = document.createElement("P");
-						  		   var textnode = document.createTextNode(obj.responseMsg);
+						  		  var textnode = document.createTextNode(obj.responseMsg);
 						  		  $scope.saveLedgerRes=obj.responseMsg;
-						  		$scope.loadLedgerEntries();
-								  
+						  		  $scope.loadLedgerEntries();
+						  		delete $scope.amount;
+						  		delete $scope.amountDesc;
+						  	
+									  
 							 },function myError(d) {
 								 console.log("Error:    "+d);
 								 alert("Please contant system admin.");
