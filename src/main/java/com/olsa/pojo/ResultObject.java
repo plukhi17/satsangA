@@ -2,9 +2,7 @@
 package com.olsa.pojo;
 
 
-import java.sql.Timestamp;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

@@ -125,8 +125,8 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 							 }else{
 								 
 								 $scope.depSmrBal1 = returnObject.data.depositSmryBal;
-								 $scope.incomeBalWrapper = returnObject.data.incomeBalWrapper;
-								 $scope.expenseBalWrapper = returnObject.data.expenseBalWrapper;
+								 $scope.incomeBalWrapper = JSON.parse(returnObject.data.incomeBalWrapper);
+								 $scope.expenseBalWrapper = JSON.parse(returnObject.data.expenseBalWrapper);
 								
 							     //$table.tableEditor();
 							 

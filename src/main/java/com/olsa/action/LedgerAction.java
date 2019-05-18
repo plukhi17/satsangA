@@ -13,6 +13,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.mongodb.util.JSON;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
@@ -141,15 +143,15 @@ public class LedgerAction extends BaseAction {
 				logger.info("inside sucess");
 				responseObject.put("returnCode", "success");
 				responseObject.put(DPST_SMRY_BAL,  result.getObject3());
-				responseObject.put(INC_BAL_WRAPPER,  result.getObject4());
-				responseObject.put(EXP_BAL_WRAPPER,  result.getObject5());
+				responseObject.put(INC_BAL_WRAPPER,new Gson().toJson(result.getObject4()));
+				responseObject.put(EXP_BAL_WRAPPER,  new Gson().toJson(result.getObject5()));
 			} else {
 				logger.info("inside failuer");
 				responseObject.put(RETURN_CODE, ERROR_FLAG);
 			}
 			responseObject.write(getResponse().getWriter());
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 

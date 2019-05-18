@@ -215,29 +215,59 @@ response.setDateHeader ("Expires", 0);
                                     </div>
                                     <div class="col-md-12 ledgerWrapper">
                                         <div class="panel panel-default">
+                                       
+    									
                                             <div class="panel-body">
                                                 <div id="ledgerBalSheetWrap"  >
-                                                <div class="row">
+                                                    <div class="row cBeginning">
+                                                	<div class="col-md-1">
+                                                		Summary
+								    				</div>
+								    				
+                                                </div>
+                                                <div class="row ">
                                                 	<div class="col-md-1">
 								    				</div>
-								    				<div class="col-md-6">
+								    				<div class="col-md-4 cBeginning cFooterLine">
 								    					Beginning Balance
                                                 	</div>
-                                                	<div class="col-md-5">
+                                                	<div class="col-md-2 cBeginning cFooterLine cTextAmount">
 								    					{{depSmrBal1}}
                                                 	</div>
                                                 </div>
                                                  <div class="row">
+                                                 	
+                                                 </div>
+                                                 <div class="row">
                                                 	<div class="col-md-1">
 								    				</div>
-								    				<div class="col-md-6">
+								    				<div class="col-md-4">
 								    					Income Balance
                                                 	</div>
-                                                	<div class="col-md-5">
+                                                	<div class="col-md-2 cTextAmount">
 								    					{{incomeBalWrapper.amount}}
                                                 	</div>
                                                 </div>
-	                                             	
+                                            	  <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-4 cFooterLine">
+								    					Expense Balance
+                                                	</div>
+                                                	<div class="col-md-2 cTextAmount cFooterLine">
+								    					{{expenseBalWrapper.amount}}
+                                                	</div>
+                                                </div>
+                                                  <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-4 cBeginning">
+								    					Ending Balance
+                                                	</div>
+                                                	<div class="col-md-2 cTextAmount cBeginning ">
+								    					{{depSmrBal1 + incomeBalWrapper.amount - expenseBalWrapper.amount}}
+                                                	</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

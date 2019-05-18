@@ -983,3 +983,16 @@ background-image: radial-gradient(red 20%, transparent 25%);
     content: " *";
     color: red;  
 }
+.cBeginning{
+	
+	font-weight: bold;
+	font-size: 16px;
+}
+.cFooterLine{
+	
+	border-bottom: 1px solid;
+}
+.cTextAmount{
+	
+	text-align: right;
+}
