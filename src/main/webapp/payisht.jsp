@@ -320,15 +320,15 @@ response.setDateHeader ("Expires", 0);
 											<th>Name </th>
 											<!-- <th>Option</th>
 											<th>Value</th> -->
-											<th>Swastyayani <i class="fa fa-info-circle cursror-pointer" title="Swastyayani" aria-hidden="true"></i></th>
-											<th>Istavrity <i class="fa fa-info-circle cursror-pointer" title="Istavrity" aria-hidden="true"></i></th>
-											<th>Acharyavrity <i class="fa fa-info-circle cursror-pointer" title="Acharyavrity" aria-hidden="true"></i></th>
-											<th>Dakshina <i class="fa fa-info-circle cursror-pointer"  title="Dakshina" aria-hidden="true"></i></th>
-											<th>Sangathani <i class="fa fa-info-circle cursror-pointer" title="Sangathani" aria-hidden="true"></i></th>
-											<th>Pronami<i class="fa fa-info-circle cursror-pointer" title="Pronami" aria-hidden="true"></i></th>
-											<th>S Surplus<i class="fa fa-info-circle cursror-pointer" title="S Surplus" aria-hidden="true"></i></th>
-											<th>Parivrity<i class="fa fa-info-circle cursror-pointer" title="Parivrity" aria-hidden="true"></i></th>
-											<th>Ritwiki<i class="fa fa-info-circle cursror-pointer" title="Ritwiki" aria-hidden="true"></i></th>
+											<th scope="col">Swastyayani <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.swastyayani.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Istavrity <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.istavrity.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Acharyavrity <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.acharyavrity.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Dakshina <i class="fa fa-info-circle cursror-pointer"  title="{{ishtTooltips.dakshina.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Sangathani <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.sangathani.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Pronami<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.pronami.value}}" aria-hidden="true"></i></th>
+											<th scope="col">S Surplus<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.ssurplus.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Parivrity<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.parivrity.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Ritwiki<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.ritwiki.value}}" aria-hidden="true"></i></th>
 											<th>Total</th>
 											
 										</tr> 
@@ -563,15 +563,15 @@ response.setDateHeader ("Expires", 0);
 											<th scope="col">Name </th>
 											<!-- <th scope="col">Option</th>
 											<th scope="col">Value</th> -->
-											<th scope="col">Swastyayani <i class="fa fa-info-circle cursror-pointer" title="Swastyayani" aria-hidden="true"></i></th>
-											<th scope="col">Istavrity <i class="fa fa-info-circle cursror-pointer" title="Istavrity" aria-hidden="true"></i></th>
-											<th scope="col">Acharyavrity <i class="fa fa-info-circle cursror-pointer" title="Acharyavrity" aria-hidden="true"></i></th>
-											<th scope="col">Dakshina <i class="fa fa-info-circle cursror-pointer"  title="Dakshina" aria-hidden="true"></i></th>
-											<th scope="col">Sangathani <i class="fa fa-info-circle cursror-pointer" title="Sangathani" aria-hidden="true"></i></th>
-											<th scope="col">Pronami<i class="fa fa-info-circle cursror-pointer" title="Pronami" aria-hidden="true"></i></th>
-											<th scope="col">S Surplus<i class="fa fa-info-circle cursror-pointer" title="S Surplus" aria-hidden="true"></i></th>
-											<th scope="col">Parivrity<i class="fa fa-info-circle cursror-pointer" title="Parivrity" aria-hidden="true"></i></th>
-											<th scope="col">Ritwiki<i class="fa fa-info-circle cursror-pointer" title="Ritwiki" aria-hidden="true"></i></th>
+											<th scope="col">Swastyayani <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.swastyayani.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Istavrity <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.istavrity.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Acharyavrity <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.acharyavrity.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Dakshina <i class="fa fa-info-circle cursror-pointer"  title="{{ishtTooltips.dakshina.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Sangathani <i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.sangathani.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Pronami<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.pronami.value}}" aria-hidden="true"></i></th>
+											<th scope="col">S Surplus<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.ssurplus.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Parivrity<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.parivrity.value}}" aria-hidden="true"></i></th>
+											<th scope="col">Ritwiki<i class="fa fa-info-circle cursror-pointer" title="{{ishtTooltips.ritwiki.value}}" aria-hidden="true"></i></th>
 											<th scope="col">Total</th>
 										</tr> 
 									</thead>

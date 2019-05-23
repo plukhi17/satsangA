@@ -72,6 +72,13 @@ public class IshtServiceImpl implements IshtService{
 		response = ishtMDBDao.getIshtTran(response);
 		return response;
 	}
+	
+	public ResultObject loadIshtProp(String domain) {
+		ResultObject response = new ResultObject();
+		response.setObject1(domain);
+		response = ishtMDBDao.laodIshtProp(response);
+		return response;
+	}
 
 	public ResultObject getIshtTranAdmin(String phoneNo) {
 		ResultObject response = new ResultObject();

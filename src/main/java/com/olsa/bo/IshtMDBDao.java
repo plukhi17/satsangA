@@ -26,6 +26,7 @@ import com.olsa.mongo.OsMongoClient;
 import com.olsa.pojo.FamilyMDB;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
+import com.olsa.pojo.IshtRefVal;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
 import com.olsa.utility.DateUtility;
@@ -504,6 +505,49 @@ public class IshtMDBDao extends MongoBaseDao {
 			logger.error("Exception occure in iterate (copy");
 		}
 		return reportRoot;
+	}
+
+	public ResultObject laodIshtProp(ResultObject response) {
+
+    	
+    	try {
+
+    		String domainName= (String)response.getObject1();
+    		logger.info(" Inside the laodIshtProp , domainName : "+domainName);
+
+    		MongoCursor<Document> cursor= null;
+    		List<IshtRefVal> listIshtRefMDB = new ArrayList<IshtRefVal>();
+
+    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(OnlineSAConstants.ISHT_REF_VAL).find(Filters.and(Filters.eq("domain", domainName))).iterator();
+    		if(cursor!=null){
+    			while(cursor.hasNext()){
+    				Document result = cursor.next();
+    				IshtRefVal ishtMDB = new IshtRefVal();
+    			
+    				
+    				ishtMDB.setKey(result.get("key").toString());
+
+    				
+    				ishtMDB.setValue(result.get("value").toString());
+    				ishtMDB.setDomain(result.get("domain").toString());
+    				listIshtRefMDB.add(ishtMDB);
+    			}
+
+    		}	
+  
+    		
+    		response.setObject1(listIshtRefMDB);
+
+    		response.setSuccess(true);
+
+    	}
+    	catch(Exception ex) {
+    		ex.printStackTrace();
+    		logger.info("Exception in getIshtTranAdmin  :"+ex);
+    	}
+    	
+    	return response;
+    
 	}
 	
 }

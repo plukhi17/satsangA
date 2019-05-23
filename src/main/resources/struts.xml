@@ -32,6 +32,8 @@
 		<action name ="reports" method = "report" class="ishtAction"></action>
 		
 		<action name ="getIshtJSONObject" method = "getIshtJSONObject" class="ishtAction"></action>
+		<action name ="loadIshtProp" method = "loadIshtProp" class="ishtAction"></action>
+		
 		<action name ="saveIshtJSONData" method = "saveIshtJSONData" class="ishtAction"></action>
 		<action name ="getIshtTran" method = "getIshtTran" class="ishtAction"></action>
 		<action name ="getIshtTranAdmin" method = "getIshtTranAdmin" class="ishtAction"></action>

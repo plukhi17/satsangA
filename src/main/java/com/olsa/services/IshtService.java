@@ -17,5 +17,6 @@ public interface IshtService {
 	String formatDate(String dateValue);
 	ResultObject getRootMDBObject(ResultObject resObj);
 	List<IshtMDB> findReport(ReportDTO reportDTO);
+	ResultObject loadIshtProp(String ishtProp);
 	
 }

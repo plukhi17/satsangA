@@ -182,6 +182,35 @@ public class IshtAction extends BaseAction {
 
 		}
 	}
+	
+	
+
+	/***
+	 * this method will load tran details for individual user
+	 */
+	public void loadIshtProp() {
+
+	
+		logger.info("Inside loadIshtProp() Action");
+		try {
+			ResultObject result = new ResultObject();
+			result = getIshtService().loadIshtProp(OnlineSAConstants.ISHT_PROP);
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (result.isSuccess()) {
+				logger.info("inside sucess");
+				responseObject.put("returnCode", "success");
+			
+				responseObject.put(ISHT_REF_OBJECT, result.getObject1());
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+
+		}
+	}
 
 	/***
 	 * this method will load tran details for admin user to approve reject tran.
