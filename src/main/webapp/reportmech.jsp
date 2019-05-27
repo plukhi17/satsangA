@@ -1,4 +1,4 @@
-<%@page import="sun.reflect.ReflectionFactory.GetReflectionFactoryAction"%>
+	<%@page import="sun.reflect.ReflectionFactory.GetReflectionFactoryAction"%>
 <%@page import="com.olsa.utility.OnlineSAConstants"%>
 <%@page import="com.olsa.pojo.FamilyMDB"%>
 <%@page import="java.util.ArrayList"%>
@@ -44,6 +44,7 @@
 	 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.1/jszip.js"></script>
 	 	 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.1/xlsx.js"></script>
 	    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.js"></script>
+
 	
 		<script src="js/mycsv.js"></script>
 	<script src="js/table2excel.js" type="text/javascript"></script>
@@ -69,6 +70,11 @@
 		}
 		.datarow{
 			background-color:white;
+		}
+		
+		.cursror-pointer{
+	
+			cursor: pointer;
 		}
 	</style>
 	
@@ -253,8 +259,9 @@ response.setDateHeader ("Expires", 0);
 			        <th>RECEIPT NO</th>
 			        <th>TRANSACTION DATE</th>
 			        <th>TRANSACTION/CHEQUE #</th>
-			         <th>CHEQUE ISSUE BANK</th>
+		            <th>CHEQUE ISSUE BANK</th>
 			        <th>TOTAL</th>
+		            <th>Download</th>
 			     
 			           
 			      </tr>

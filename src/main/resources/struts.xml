@@ -30,6 +30,7 @@
 		<action name="newpassword" method="newPassword" class="userProfileAction"></action>
 
 		<action name ="reports" method = "report" class="ishtAction"></action>
+		<action name="downloadReceipt" method="downloadReceipt" class="ishtAction"></action>
 		
 		<action name ="getIshtJSONObject" method = "getIshtJSONObject" class="ishtAction"></action>
 		<action name ="loadIshtProp" method = "loadIshtProp" class="ishtAction"></action>

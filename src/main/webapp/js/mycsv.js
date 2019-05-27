@@ -17,7 +17,37 @@ var app = angular.module('myApp', []);
              filename: "report.xls"
          });
 	}
-	
+	$scope.getReceipt= function(trnId){
+			var contextPath = "downloadReceipt.do";
+		alert(trnId);
+		$http({
+				 method : "POST",
+				 url : contextPath,
+				 data:{
+					 "trnNO":trnId,
+					
+				 },
+				 headers: {'Content-Type': 'application/json'}
+			 }).then(function mySucces(data) {
+				 $scope.json = angular.toJson(data.data);
+				  var obj = JSON.parse($scope.json);
+				  var call = null;
+				  var fileName = "file_name.pdf";
+		            var a = document.createElement("a");
+		            document.body.appendChild(a);
+		     
+		                var file = new Blob([result.data], {type: 'application/pdf'});
+		                var fileURL = window.URL.createObjectURL(file);
+		                a.href = fileURL;
+		                a.download = fileName;
+		                a.click();
+		        
+				  
+			 },function myError(d) {
+				 alert("fail  "+  d);
+			 });
+		
+	} 
 	$scope.myReport=function(){
 		var removeTBody = document.getElementById("reportTBody");
 		removeTBody.innerHTML = "";
@@ -45,7 +75,8 @@ var app = angular.module('myApp', []);
 					  "<td scope='row'>"+(obj[i].dtIshtDate!=undefined ? obj[i].dtIshtDate : '-') +"</td>"+
 					  "<td scope='row'>"+(obj[i].stTrnNo!=undefined ? obj[i].stTrnNo : '-') +"</td>"+
 					  "<td scope='row'>"+(obj[i].stBankName!=undefined ? obj[i].stBankName : '-') +"</td>"+
-					  "<td scope='row'>"+obj[i].total +"</td>";
+					  "<td scope='row'>"+obj[i].total +"</td>"+
+					  "<td scope='row'><i id='"+obj[i].stTrnNo+"' class='fa fa-file-pdf-o cursror-pointer' onClick='getReceipt(this)'></i></td>";
 					  $('#reportTBody').append('<tr align="center">' + call + '</tr>');
 					  call = null;
 				 
@@ -67,7 +98,7 @@ var app = angular.module('myApp', []);
 	};//repoort method
 	
 	
-	
+
 	
 	
 	   $scope.download = function() {
@@ -250,3 +281,12 @@ function dataValidationReport(){
 		return false;
 	}
 }*/
+			
+function getReceipt(trnObj){
+	
+	var scope = angular.element('[ng-controller=appCtrl]').scope();
+    scope.$apply(function () {
+	   
+	    scope.getReceipt(trnObj.id);
+    });
+}

@@ -1,5 +1,6 @@
 package com.olsa.services;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,13 @@ import org.apache.log4j.Logger;
 
 import com.olsa.bo.IshtMDBDao;
 import com.olsa.bo.MongoBaseDao;
+import com.olsa.bo.TransReportDTO;
 import com.olsa.bo.UserProfileMDBDao;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
+import com.olsa.utility.CreateNSendArghyaPraswasti;
+import com.olsa.utility.MailThread;
 import com.olsa.utility.ReportDTO;
 
 public class IshtServiceImpl implements IshtService{
@@ -58,7 +62,31 @@ public class IshtServiceImpl implements IshtService{
 		}
 		return result;
 	}
-
+	public ResultObject downLoadReceipt(TransReportDTO reportDto) {
+		ResultObject result = new ResultObject();
+		
+		result = getUserIshtObjectJSON(reportDto.getPhoneNo());
+		ByteArrayOutputStream outputStream = null;
+		if (result.isSuccess()) {
+			
+			String input_family_code=((RootMDB) result.getObject2()).getFamilyID() ,input_month_year=((IshtMDB) result.getObject1()).getMonthYear();
+        	String filename="ARGHYA_PRASWASTI_"+input_family_code+"_"+""+input_month_year+".pdf"; 
+        	       	
+        	 //now write the PDF content to the output stream
+             outputStream = new ByteArrayOutputStream();
+            CreateNSendArghyaPraswasti createAP = new CreateNSendArghyaPraswasti();
+            try {
+				createAP.buildArghyaPraswasti(outputStream,null,(IshtMDB)result.getObject1(),(RootMDB)result.getObject2());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            byte[] bytes = outputStream.toByteArray();
+            result.setObject1(bytes);
+		}
+		
+		return result;
+	}
 	public ResultObject saveIshtObjectJSON(IshtMDB ishtMDB) {
 		ResultObject response = new ResultObject();
 		response.setObject1(ishtMDB);

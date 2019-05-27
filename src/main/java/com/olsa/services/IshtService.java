@@ -1,9 +1,10 @@
 package com.olsa.services;
 
 import java.util.List;
+
+import com.olsa.bo.TransReportDTO;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
-import com.olsa.pojo.RootMDB;
 import com.olsa.utility.ReportDTO;
 
 public interface IshtService {
@@ -18,5 +19,6 @@ public interface IshtService {
 	ResultObject getRootMDBObject(ResultObject resObj);
 	List<IshtMDB> findReport(ReportDTO reportDTO);
 	ResultObject loadIshtProp(String ishtProp);
+	ResultObject downLoadReceipt(TransReportDTO reportDTO);
 	
 }

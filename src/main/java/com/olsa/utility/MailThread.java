@@ -1,8 +1,5 @@
 package com.olsa.utility;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
 import org.apache.log4j.Logger;
 
 import com.olsa.pojo.IshtMDB;

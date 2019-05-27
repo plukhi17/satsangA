@@ -13,6 +13,7 @@ import org.codehaus.jackson.JsonParser.Feature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.olsa.bo.BaseDao;
 import com.olsa.bo.SQLTemplate;
+import com.olsa.bo.TransReportDTO;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
@@ -653,5 +655,26 @@ public class IshtAction extends BaseAction {
 			throw io;
 		}
 	}
-
+	
+	public void  downloadReceipt() throws IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+		TransReportDTO  reportDTO= null;
+		RootMDB rootMdb = (RootMDB) getRequest().getSession().getAttribute("userBean");
+		String phoneNo = rootMdb.getPhoneNo();
+		try {
+			reportDTO = mapper.readValue(getRequest().getReader().readLine(), TransReportDTO.class);
+			reportDTO.setPhoneNo(phoneNo);
+			ResultObject result = ishtService.downLoadReceipt(reportDTO);
+			writer.append(mapper.writeValueAsString(result));
+			}catch(IOException io) {
+				io.printStackTrace();
+				throw io;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
 }
