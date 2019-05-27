@@ -369,17 +369,17 @@ response.setDateHeader ("Expires", 0);
 											class="grand_sum_table table table-borderless">
 											<thead>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													<td></td>
+													
 													<td  align = "right" style="border-top: none;">Ishtabhrity Amount</td>
 													<td  align = "right" style="border-top: none;">{{ishtAmount | number : 2}}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													<td  align = "right" style="border-top: none;border-bottom:none;color:blue">2.9% Processig + 0.30$ for Gateway</td>
-													<td  align = "right" style="border-top: none;">Processing Fee</td>
+													
+													<td  align = "right" style="border-top: none;"> <i class="fa fa-info-circle cursror-pointer processfee-info"  title="{{ishtTooltips.processfee.value}}" aria-hidden="true"></i>Processing Fee</td>
 													<td  align = "right" style="border-top: none;">{{processIng | number : 2}}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													<td style="border-top: none;"></td>
+													
 														<td  align = "right" style="">Grand Total : US $ </td>
 														<td  align = "right" style=""> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2}}</label></td>
 															
@@ -584,17 +584,17 @@ response.setDateHeader ("Expires", 0);
 											<thead >
 													<thead>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													<td style="border-top:none"></td>
+													
 													<td  align = "right" style="border-top: none;">Ishtabhrity Amount: US $</td>
 													<td  align = "right" style="border-top: none;">{{ishtAmount | number : 2 }}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													<td  align = "right" style="border-top: none;border-bottom:none;color:blue">2.9% Processig + 0.30$ for Gateway</td>
-													<td  align = "right" style="border-top: none;">Processing Fee: US $ </td>
+													
+													<td  align = "right" style="border-top: none;"> <i class="fa fa-info-circle cursror-pointer processfee-info"  title="{{ishtTooltips.processfee.value}}" aria-hidden="true"></i>Processing Fee</td>
 													<td  align = "right" style="border-top: none;">{{processIng | number : 2}}</td>
 													</tr>
 													<tr ng-show="selPmtMethod == 'AUTO'">
-													<td style="border-bottom:none"></td>
+													
 													<td  align = "right" style="">Grand Total : US $ </td>
 													<td  align = "right" style="">{{grandTotal | number : 2}}</td>
 													</tr>
