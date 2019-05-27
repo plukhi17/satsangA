@@ -780,7 +780,7 @@ public class CreateNSendArghyaPraswasti {
 				double TOTAL_AMT = lineMdb.getTotal();
 
 				String FIRST_NAME = lineMdb.getName();
-				String RITWIK_NAME = root.getRitvikName();
+				String RITWIK_NAME = root.getrName();
 				// String MIDDLE_NAME = root.getMiddleName();
 				String EMAIL_ID = root.getEmail();
 

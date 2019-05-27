@@ -103,14 +103,14 @@ public class UserProfileMDBDao extends MongoBaseDao {
 				root.setPhoneNo(obj.get(("phoneNo")).toString());
 			
 			if(obj.has("rName"))
-				root.setRitvikName(obj.get(("rName")).toString().toUpperCase());
+				root.setrName(obj.get(("rName")).toString().toUpperCase());
 			
 			if(obj.has("rName")){
 				StringTokenizer st = new StringTokenizer(obj.get(("rName")).toString(),"|");
 				while (st.hasMoreElements()) {
 					String rName= st.nextElement().toString();
 					String saID = st.nextElement().toString();
-					root.setRitvikName(rName.toUpperCase());
+					root.setrName(rName.toUpperCase());
 					root.setRitwikID(saID);
 				}
 			}
@@ -325,7 +325,7 @@ public class UserProfileMDBDao extends MongoBaseDao {
 					while (st.hasMoreElements()) {
 						String rName= st.nextElement().toString();
 						String saID = st.nextElement().toString();
-						root.setRitvikName(rName.toUpperCase());
+						root.setrName(rName.toUpperCase());
 						root.setRitwikID(saID);
 					}
 				}
@@ -354,7 +354,7 @@ public class UserProfileMDBDao extends MongoBaseDao {
 		        .append("firstName", root.getFirstName().toUpperCase())
 		        .append("middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():null)
 		        .append("lastName", root.getLastName().toUpperCase())
-				.append("rName", root.getRitvikName()!=null?root.getRitvikName().toUpperCase():null)
+				.append("rName", root.getrName()!=null?root.getrName().toUpperCase():null)
 				.append("saID", root.getRitwikID());
 				 
 				 fetchRootCollection().findOneAndUpdate(eq("phoneNo", userSession.getPhoneNo().toString()),

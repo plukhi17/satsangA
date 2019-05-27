@@ -6,7 +6,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		$scope.isEdit = true;    	
 	   	$scope.country = {};
 	    $scope.state = {};
-	    $scope.chkNotInit=true;
+	    $scope.chkNotInit=false;
 
 	    var allCountries = [{
 	        Id: "US",
