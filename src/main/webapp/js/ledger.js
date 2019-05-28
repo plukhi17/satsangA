@@ -147,7 +147,10 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 	  					$('#myModal').show();
 		  				$('.ledgerWrapper').hide();
 		  				$scope.codeHeadType="income";
-			 		   delete $scope.addCodeRes;
+		  				delete $scope.codeDesc;
+		  				delete $scope.subCode;
+		  				delete $scope.subCodeDesc;
+		  			   delete $scope.addCodeRes;
 		 			   delete $scope.addSubCardRes;
 		  			
 		  			};	
@@ -158,6 +161,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 			  					$scope.getNextExpCode();
 			  					$('#myExpModal').show();
 				  				$('.ledgerWrapper').hide();
+				  				delete $scope.codeDesc;
+				  				delete $scope.subCodeName;
+				  				delete $scope.subCodeDesc;
 					 			delete $scope.addCodeRes;
 				 			   delete $scope.addSubCardRes;
 			  				
@@ -183,6 +189,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 			  					$('#myModal').hide();
 				  				$('.ledgerWrapper').show();
 				  				$scope.codeHeadType="-1";
+				  				delete $scope.subCodeName;
 					 			
 				  			};
 		  			$scope.onChangeHead= function(){
@@ -239,7 +246,10 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  	
 		  			$scope.getNextSubCode= function(){
 		  				var codeHeadType= $scope.codeHeadType;
-	  		  		
+		  				if( $scope.selectedCd.codeName==""){
+		  					delete $scope.subCodeName;
+		  					return false;
+		  				}
 	  					var contextPath = "getNextSubCode.do?codeType="+codeHeadType;
   	  				
 	  				 	$http({

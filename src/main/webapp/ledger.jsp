@@ -385,7 +385,7 @@ response.setDateHeader ("Expires", 0);
                                                         <i class="glyphicon glyphicon-remove"></i> Delete
                                                     </button>-->
                                                      <form id="addSubFrm" class="form-inline">
-                                                  
+                                                  	<label class="res-info">{{saveLedgerRes}} </label> 
                                                      <div class="row ledger-row">
                                                   
 										    	 	  <div class="form-group">
@@ -433,7 +433,7 @@ response.setDateHeader ("Expires", 0);
                                                         <div class="form-group" >
 															<div>	
 																	<button class="btn btn-info btn-md form-control" ng-click="addLedger()"> Add </button>
-																	<label class="res-info">{{saveLedgerRes}} </label> 
+																
 																  
 															</div>
 													  	</div>

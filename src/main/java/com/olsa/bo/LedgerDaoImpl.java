@@ -122,11 +122,20 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				
 				db.updateOne(searchQuery,update);
 				
-				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
+				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class);
+				Counter seqObj =null;
+						
+				if(code.getCodeName().toUpperCase().startsWith("INC")) {
+					 countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME),
+							Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+							new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+					
+				}else if(code.getCodeName().toUpperCase().startsWith("EXP")) {
+					countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.EXPN_SUB_CODE_SEQ_NAME),
+							Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+							new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+				}
 				
-				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME),
-						Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
-						new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
 				
 				response = "Successfully saved Subcode details.";
 			} else {
@@ -244,7 +253,10 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     				dpstSmry.setBalance(Double.valueOf(result.get("balance").toString()));
     				response.setObject3(dpstSmry.getBalance());
     			}
-    			}	
+    		}	
+    		if(response.getObject3()==null) {
+    			response.setObject3(0.0);
+    		}
     		cursor= null;
     		Date startDate= summaryDate;
     		Date endDate= DateUtility.atEndOfDay(summaryDate);
@@ -280,7 +292,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     		response.setObject4(incomeWrapper);
     		
     		BalanceSummaryWrapper expenseWrapper= new BalanceSummaryWrapper();
-    		expenseWrapper.setAmount(expenseCnt);
+    		expenseWrapper.setAmount(expenseAmt);
     		expenseWrapper.setHeadType("expense");
     		expenseWrapper.setCount(expenseCnt);
     		response.setObject5(expenseWrapper);

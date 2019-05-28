@@ -14,7 +14,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
-import com.mongodb.util.JSON;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
@@ -245,8 +244,7 @@ public void getNextSubCode() throws IOException {
 		logger.info("Inside getNextSubCode() Action");
 		try {
 		
-			PrintWriter writer = getResponse().getWriter();
-			ObjectMapper mapper = new ObjectMapper();
+			
 			String codeType = getRequest().getParameter("codeType");
 			
 
