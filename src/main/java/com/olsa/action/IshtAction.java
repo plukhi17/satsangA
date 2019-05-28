@@ -1,30 +1,20 @@
 package com.olsa.action;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParser.Feature;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.itextpdf.text.pdf.OutputStreamCounter;
 import com.olsa.bo.BaseDao;
-import com.olsa.bo.SQLTemplate;
 import com.olsa.bo.TransReportDTO;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
