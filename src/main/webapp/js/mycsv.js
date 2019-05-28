@@ -17,32 +17,35 @@ var app = angular.module('myApp', []);
              filename: "report.xls"
          });
 	}
-	$scope.getReceipt= function(trnId){
-			var contextPath = "downloadReceipt.do";
-		alert(trnId);
+	$scope.getReceipt= function(receiptNo){
+			var contextPath = "downloadReceipt.do?receiptNo="+receiptNo;
+		
 		$http({
-				 method : "POST",
+				 method : "GET",
 				 url : contextPath,
-				 data:{
-					 "trnNO":trnId,
-					
-				 },
-				 headers: {'Content-Type': 'application/json'}
+				 responseType: 'arraybuffer',
+				 headers: {'Content-Type': 'application/json' ,'responseType':'arraybuffer'},
+				
 			 }).then(function mySucces(data) {
 				 $scope.json = angular.toJson(data.data);
 				  var obj = JSON.parse($scope.json);
 				  var call = null;
-				  var fileName = "file_name.pdf";
+				  var fileName = receiptNo+".pdf";
 		            var a = document.createElement("a");
 		            document.body.appendChild(a);
-		     
-		                var file = new Blob([result.data], {type: 'application/pdf'});
+		    
+		             
+		                
+		                var byteArray = new Uint8Array(data.data);
+		                
+		                file = new Blob([data.data], {type: 'application/pdf'});
 		                var fileURL = window.URL.createObjectURL(file);
 		                a.href = fileURL;
 		                a.download = fileName;
-		                a.click();
-		        
-				  
+		               a.click();
+		               
+		              
+		              
 			 },function myError(d) {
 				 alert("fail  "+  d);
 			 });
@@ -76,7 +79,7 @@ var app = angular.module('myApp', []);
 					  "<td scope='row'>"+(obj[i].stTrnNo!=undefined ? obj[i].stTrnNo : '-') +"</td>"+
 					  "<td scope='row'>"+(obj[i].stBankName!=undefined ? obj[i].stBankName : '-') +"</td>"+
 					  "<td scope='row'>"+obj[i].total +"</td>"+
-					  "<td scope='row'><i id='"+obj[i].stTrnNo+"' class='fa fa-file-pdf-o cursror-pointer' onClick='getReceipt(this)'></i></td>";
+					  "<td scope='row'><i id='"+obj[i].receiptNo+"' class='fa fa-file-pdf-o cursror-pointer' onClick='getReceipt(this)'></i></td>";
 					  $('#reportTBody').append('<tr align="center">' + call + '</tr>');
 					  call = null;
 				 

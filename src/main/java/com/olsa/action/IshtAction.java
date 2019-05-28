@@ -1,7 +1,10 @@
 package com.olsa.action;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.itextpdf.text.pdf.OutputStreamCounter;
 import com.olsa.bo.BaseDao;
 import com.olsa.bo.SQLTemplate;
 import com.olsa.bo.TransReportDTO;
@@ -657,17 +661,28 @@ public class IshtAction extends BaseAction {
 	}
 	
 	public void  downloadReceipt() throws IOException {
-		PrintWriter writer = getResponse().getWriter();
+		//PrintWriter writer = getResponse().getWriter();
+		
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
-		TransReportDTO  reportDTO= null;
+		TransReportDTO  reportDTO= new TransReportDTO();
 		RootMDB rootMdb = (RootMDB) getRequest().getSession().getAttribute("userBean");
 		String phoneNo = rootMdb.getPhoneNo();
 		try {
-			reportDTO = mapper.readValue(getRequest().getReader().readLine(), TransReportDTO.class);
+			//reportDTO = mapper.readValue(getRequest().getReader().readLine(), TransReportDTO.class);
+			String receiptNo = getRequest().getParameter(("receiptNo"));
 			reportDTO.setPhoneNo(phoneNo);
-			ResultObject result = ishtService.downLoadReceipt(reportDTO);
-			writer.append(mapper.writeValueAsString(result));
+			reportDTO.setReceiptNo(receiptNo);
+			ResultObject result = ishtService.downLoadReceipt(reportDTO,rootMdb);
+			
+			//writer.println(new String((byte[]) result.getObject1(), Charset.defaultCharset()));
+			//writer.flush();
+			getResponse().setContentType("application/pdf");
+			OutputStream out = getResponse().getOutputStream();
+			out.write((byte[])result.getObject1());
+			out.flush();
+		
+		
 			}catch(IOException io) {
 				io.printStackTrace();
 				throw io;

@@ -549,5 +549,80 @@ public class IshtMDBDao extends MongoBaseDao {
     	return response;
     
 	}
+
+	public ResultObject getIshtTranByTran1(ResultObject response) {
+
+    	
+    	try {
+
+    		String phoneNo= (String)response.getObject1();
+    		logger.info(" Inside the getIshtTran , trnDetails : "+phoneNo);
+
+    		MongoCursor<Document> cursor= null;
+    		List<IshtMDB> listIshtMDB = new ArrayList<IshtMDB>();
+
+    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(OnlineSAConstants.ISHT_COLLECTION).find(Filters.and(Filters.eq("trnDetails", phoneNo))).iterator();
+    		if(cursor!=null){
+    			while(cursor.hasNext()){
+    				Document result = cursor.next();
+    				IshtMDB ishtMDB = new IshtMDB();
+    				if(result.get("collectedOn")!=null) {
+    					logger.info("Collected On : "+result.get("collectedOn").toString());
+        				ishtMDB.setCollectedOn(formatDate((result.get("collectedOn").toString())));
+        				
+    				}else {
+    					//ishtMDB.setCollectedOn(formatDate((result.get("submittedOn").toString())));
+    				}
+    				if(result.get("trnDetails")!=null) {
+        				ishtMDB.setTrnDetails(result.get("trnDetails").toString());
+        				
+        				
+    				}
+    				if(result.get("chequeIssueBank")!=null) {
+    					ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString().toUpperCase());
+    				}
+    				
+    				ishtMDB.setFamilyID(result.get("familyID").toString());
+    				ishtMDB.setChecqDate((Date)result.get("checqDate"));
+    				ishtMDB.setChecqNo(result.get("checqNo").toString());
+    				//ishtMDB.setChecqNo(result.get("checqNo").toString());
+    				ishtMDB.setTotal((Double) result.get("total"));
+    				ishtMDB.setIssuedFlag(result.get("issuedFlag").toString());
+    				ishtMDB.setReceiptNo(result.get("receiptNo").toString());
+    				listIshtMDB.add(ishtMDB);
+    			}
+
+    		}	
+    		IshtMDB i = new IshtMDB();
+    		i.setTrnList(listIshtMDB);
+    		logger.info("list size " + listIshtMDB.size());
+    		response.setObject1(i);
+
+    		response.setSuccess(true);
+
+    	}
+    	catch(Exception ex) {
+    		ex.printStackTrace();
+    		logger.info("Exception in getIshtTranAdmin  :"+ex);
+    	}
+    	
+    	return response;
+    }
+	
+	
+public IshtMDB getIshtTranByTran(ResultObject response) {
+
+
+		IshtMDB ishtMdb = null;
+		try {	
+			 ishtMdb = fetchIshtDocument(response.getObject1().toString());}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			logger.info("Exception in getIshtTranAdmin  :"+ex);
+		}
+		
+		return ishtMdb;
+
+	}	
 	
 }

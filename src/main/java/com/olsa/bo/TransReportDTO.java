@@ -21,6 +21,8 @@ public class TransReportDTO implements Serializable {
 	
 	private String familyId;
 	
+	private String receiptNo;
+	
 	/**
 	 * @return the trnNO
 	 */
@@ -78,6 +80,24 @@ public class TransReportDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "ReportDTO [trnNO=" + trnNO + "]";
+	}
+
+
+
+	/**
+	 * @return the receiptNo
+	 */
+	public String getReceiptNo() {
+		return receiptNo;
+	}
+
+
+
+	/**
+	 * @param receiptNo the receiptNo to set
+	 */
+	public void setReceiptNo(String receiptNo) {
+		this.receiptNo = receiptNo;
 	}
 	
 

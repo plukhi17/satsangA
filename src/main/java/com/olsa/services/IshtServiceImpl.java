@@ -62,21 +62,22 @@ public class IshtServiceImpl implements IshtService{
 		}
 		return result;
 	}
-	public ResultObject downLoadReceipt(TransReportDTO reportDto) {
+	public ResultObject downLoadReceipt(TransReportDTO reportDto,RootMDB root) {
 		ResultObject result = new ResultObject();
 		
-		result = getUserIshtObjectJSON(reportDto.getPhoneNo());
+		result = getIshtTranByReceipt(reportDto.getReceiptNo());
+		IshtMDB isht= ((IshtMDB) result.getObject1());
 		ByteArrayOutputStream outputStream = null;
 		if (result.isSuccess()) {
 			
-			String input_family_code=((RootMDB) result.getObject2()).getFamilyID() ,input_month_year=((IshtMDB) result.getObject1()).getMonthYear();
+			String input_family_code=root.getFamilyID() ,input_month_year=isht.getMonthYear();
         	String filename="ARGHYA_PRASWASTI_"+input_family_code+"_"+""+input_month_year+".pdf"; 
         	       	
         	 //now write the PDF content to the output stream
              outputStream = new ByteArrayOutputStream();
             CreateNSendArghyaPraswasti createAP = new CreateNSendArghyaPraswasti();
             try {
-				createAP.buildArghyaPraswasti(outputStream,null,(IshtMDB)result.getObject1(),(RootMDB)result.getObject2());
+				createAP.buildArghyaPraswasti(outputStream,null,isht,root);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -91,6 +92,13 @@ public class IshtServiceImpl implements IshtService{
 		ResultObject response = new ResultObject();
 		response.setObject1(ishtMDB);
 		response = ishtMDBDao.saveIshtJSONObject(response);
+		return response;
+	}
+	
+	public ResultObject getIshtTranByReceipt(String receiptNo) {
+		ResultObject response = new ResultObject();
+		response.setObject1(receiptNo);
+		response.setObject1(ishtMDBDao.getIshtTranByTran(response));
 		return response;
 	}
 
