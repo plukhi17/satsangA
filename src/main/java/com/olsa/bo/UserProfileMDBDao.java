@@ -520,7 +520,22 @@ public class UserProfileMDBDao extends MongoBaseDao {
 				up=db.updateOne(query, updateObj);
 			}
 	}
-    
-    
-    
+
+	public boolean ifExistEmail(String email) {
+		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.ROOT_COLLECTION);
+		//.getCollection("CardDetails");
+		boolean flag = false;
+		Document document = new Document();
+		document.put("email",email.toString());
+		
+		FindIterable<Document> result = db.find(document);
+		for (Document doc : result) {
+			if (doc.get("email") != null) {
+				return true;
+			}
+		}
+		return flag;
+	}
 }
+    
+

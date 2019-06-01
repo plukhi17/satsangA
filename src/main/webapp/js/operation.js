@@ -615,6 +615,7 @@ function cardNameChacking(num) {
 	courseApp.controller('ishtCtrl',['$scope','$http','$filter','$compile',
 		function($scope, $http, $filter,$compile) {
 		 $scope.checkTrNoRes="Transaction No is already submitted.";
+		 $scope.checkEmailRes="Email address is already submitted.";
 		 $scope.allStates = [
 				{StateName:"Alabama",StateCode:"AL" },
 				{StateName:"Alaska",StateCode:"AK" },

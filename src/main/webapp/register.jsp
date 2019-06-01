@@ -300,13 +300,18 @@ response.setDateHeader ("Expires", 0);
                               <!--  Member Contact Detail   -->
                                 <div class="form-group ">
                                     <label class="control-label col-md-12">Contact Informations:</label>
+                                  
                                     <div class="col-md-8 row-group">
                                              <input id="txtPhoneNo" name="txtPhoneNo" placeholder="Phone Number (XXX)XXX-XXXX *"  ng-model="txtPhoneNo" class="form-control input-sm required" 
                                              onkeydown="javascript:backspacerDOWN(this,event);" onkeyup="javascript:backspacerUP(this,event);" required>
                                     </div>
                                     <div class="col-md-8">
-                                           <input id="txtEmailId" name="txtEmailId" style="text-transform:uppercase;" placeholder="someid@mail.com *" type="email" ng-model = "txtEmailId" class="form-control input-sm required" required>
+                                           <input id="txtEmailId" name="txtEmailId" style="text-transform:uppercase;" placeholder="someid@mail.com *" type="email" ng-model = "txtEmailId" ng-blur="checkEmailExist()" class="form-control input-sm required" required>
+                                    <div id="dvEmailAlert" class="alert-danger-text" style="display:none">
+											<p><strong>{{checkEmailRes}}</strong> 
+									 </div>
                                     </div>
+                                   	
                                     <div class="col-md-8">
                                       <label class="control-label" for="stPassword">Create Password:</label>
                                      <input id="stPassword" name="stPassword" placeholder="create password *" type="password" ng-model="stPassword"  type="password" class="form-control input-sm required" required>

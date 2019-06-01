@@ -1003,3 +1003,7 @@ background-image: radial-gradient(red 20%, transparent 25%);
 	margin: 0px 10px;
 	
 }
+.alert-danger-text p{
+	color:red;
+	font-weight:bold;
+}
