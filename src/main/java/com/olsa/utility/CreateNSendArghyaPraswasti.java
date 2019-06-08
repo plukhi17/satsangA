@@ -762,9 +762,9 @@ public class CreateNSendArghyaPraswasti {
 
 			List<IshtLineMDB> ishtlineMdblist = ishtMDB.getLine();
 
-			logger.info("Size of the ishtlineMdblist.size() " + ishtlineMdblist.size());
+			logger.info("Size of the ishtlineMdblist.size() " + (ishtlineMdblist !=null ? ishtlineMdblist.size(): ""));
 
-			for (int i = 0; i < ishtlineMdblist.size(); i++) {
+			for (int i = 0;ishtlineMdblist!=null &&  i < ishtlineMdblist.size(); i++) {
 
 				IshtLineMDB lineMdb = ishtlineMdblist.get(i);
 
@@ -780,7 +780,7 @@ public class CreateNSendArghyaPraswasti {
 				double TOTAL_AMT = lineMdb.getTotal();
 
 				String FIRST_NAME = lineMdb.getName();
-				String RITWIK_NAME = root.getRitvikName();
+				String RITWIK_NAME = root.getrName();
 				// String MIDDLE_NAME = root.getMiddleName();
 				String EMAIL_ID = root.getEmail();
 
@@ -1307,8 +1307,8 @@ public class CreateNSendArghyaPraswasti {
 			logger.info(" After conversion str_COLLECTED_ON : " + str_COLLECTED_ON);
 
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			Date convertedDate = formatter.parse(str_COLLECTED_ON);
-			logger.info("convertedDate String in Java : " + convertedDate.toString());
+		
+			
 
 			str_CHEQUE_DATE = cheque_Date;
 

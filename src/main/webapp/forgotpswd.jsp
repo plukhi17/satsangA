@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="com.olsa.pojo.RootMDB"%>
+<%@ page session="true" %>
 <%@ page errorPage="error.jsp" %>  
 <html>
 
@@ -179,6 +181,7 @@
 </head>
 
 <%
+RootMDB root = (RootMDB)session.getAttribute("userBean");
 	response.setHeader("Cache-Control","no-cache");
 	response.setHeader("Cache-Control","no-store");
 	response.setHeader("Pragma","no-cache");
@@ -193,7 +196,7 @@
 				<div class="panel-heading">Ishtavrity - Forgot Password</div>
 				<div class="panel-body" id="forgotPasswordBody">
                    <!--  <div id="dvAlertErr" class="alert-common bg-danger" role="alert">Invalid User ID / Password</div> -->
-                    <div id="dvAlertWarning" class="alert-common" role="alert">
+                    <div id="dvAlertWarning" class="alert-common bg-success" role="alert">
                     A Verification Code will be sent out to your below registered email id and Phone Number.<br></div>
                     <br>
 					<form role="form">
@@ -201,7 +204,7 @@
                             <div class="form-group has-error">
                                 <!--<label class="control-label" for="txtFamilyCode">User ID:</label>-->
                                 <input class="form-control" placeholder="Enter your email id (someone@mail.com)"
-                                 id="txtEmailId" name="txtEmailId" value="" required="required">
+                                 id="txtEmailId" name="txtEmailId" value="<%= root!=null?root.getEmail():"" %>" required="required" <%if (root !=null) {%> disabled="true"/> <%}else{%>/><%}%>
                             </div>
 							<a href="#"  onclick="return forgotPassword()" class="btn btn-primary">Submit</a>
                             <span class="pull-right">Go back to <a href="/OnlineSA">Login</a></span>

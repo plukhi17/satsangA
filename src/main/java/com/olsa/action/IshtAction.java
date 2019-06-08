@@ -1,25 +1,21 @@
 package com.olsa.action;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParser.Feature;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.olsa.bo.BaseDao;
-import com.olsa.bo.SQLTemplate;
+import com.olsa.bo.TransReportDTO;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
 import com.olsa.pojo.ResultObject;
@@ -173,6 +169,35 @@ public class IshtAction extends BaseAction {
 				JSONObject userJSONObject = new JSONObject(i);
 				logger.info(userJSONObject);
 				responseObject.put(USER_JSON_OBJECT, userJSONObject);
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+
+		}
+	}
+	
+	
+
+	/***
+	 * this method will load tran details for individual user
+	 */
+	public void loadIshtProp() {
+
+	
+		logger.info("Inside loadIshtProp() Action");
+		try {
+			ResultObject result = new ResultObject();
+			result = getIshtService().loadIshtProp(OnlineSAConstants.ISHT_PROP);
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (result.isSuccess()) {
+				logger.info("inside sucess");
+				responseObject.put("returnCode", "success");
+			
+				responseObject.put(ISHT_REF_OBJECT, result.getObject1());
 			} else {
 				logger.info("inside failuer");
 				responseObject.put(RETURN_CODE, ERROR_FLAG);
@@ -624,5 +649,37 @@ public class IshtAction extends BaseAction {
 			throw io;
 		}
 	}
-
+	
+	public void  downloadReceipt() throws IOException {
+		//PrintWriter writer = getResponse().getWriter();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+		TransReportDTO  reportDTO= new TransReportDTO();
+		RootMDB rootMdb = (RootMDB) getRequest().getSession().getAttribute("userBean");
+		String phoneNo = rootMdb.getPhoneNo();
+		try {
+			//reportDTO = mapper.readValue(getRequest().getReader().readLine(), TransReportDTO.class);
+			String receiptNo = getRequest().getParameter(("receiptNo"));
+			reportDTO.setPhoneNo(phoneNo);
+			reportDTO.setReceiptNo(receiptNo);
+			ResultObject result = ishtService.downLoadReceipt(reportDTO,rootMdb);
+			
+			//writer.println(new String((byte[]) result.getObject1(), Charset.defaultCharset()));
+			//writer.flush();
+			getResponse().setContentType("application/pdf");
+			OutputStream out = getResponse().getOutputStream();
+			out.write((byte[])result.getObject1());
+			out.flush();
+		
+		
+			}catch(IOException io) {
+				io.printStackTrace();
+				throw io;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		
+	}
+	
 }

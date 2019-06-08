@@ -1,5 +1,6 @@
 package com.olsa.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -44,6 +45,11 @@ public class LedgerServiceImpl implements LedgerService{
 	
 	@Override
 	public String saveLedger(SAArghyaDpsitSmmaryMDB ledger) {
+		if(ledger.getHeadType().toLowerCase().equals("income")) {
+			ledger.setBalance(ledger.getBalance()+ledger.getAmount());
+		}else if(ledger.getHeadType().toLowerCase().equals("expense")) {
+			ledger.setBalance(ledger.getBalance()-ledger.getAmount());
+		}
 		return ledgerDao1.saveLedger(ledger);
 	}
 	
@@ -62,6 +68,13 @@ public class LedgerServiceImpl implements LedgerService{
 	
 		response = ledgerDao1.getLedgerEntries(response);
 		return response;
+	}
+	
+	public ResultObject getBalanceSummary(Date sDate) {
+		
+	
+		return ledgerDao1.getBalanceSummary(sDate);
+		
 	}
 
 	@Override

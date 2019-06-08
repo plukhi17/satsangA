@@ -213,7 +213,65 @@ response.setDateHeader ("Expires", 0);
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    <div class="col-md-12 ledgerWrapper">
+                                        <div class="panel panel-default">
+                                       
+    									
+                                            <div class="panel-body">
+                                                <div id="ledgerBalSheetWrap"  >
+                                                    <div class="row cBeginning">
+                                                	<div class="col-md-1">
+                                                		Summary
+								    				</div>
+								    				
+                                                </div>
+                                                <div class="row ">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-4 cBeginning cFooterLine">
+								    					Beginning Balance
+                                                	</div>
+                                                	<div class="col-md-2 cBeginning cFooterLine cTextAmount">
+								    					{{depSmrBal1}}
+                                                	</div>
+                                                </div>
+                                                 <div class="row">
+                                                 	
+                                                 </div>
+                                                 <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-4">
+								    					Income Balance
+                                                	</div>
+                                                	<div class="col-md-2 cTextAmount">
+								    					{{incomeBalWrapper.amount}}
+                                                	</div>
+                                                </div>
+                                            	  <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-4 cFooterLine">
+								    					Expense Balance
+                                                	</div>
+                                                	<div class="col-md-2 cTextAmount cFooterLine">
+								    					{{expenseBalWrapper.amount}}
+                                                	</div>
+                                                </div>
+                                                  <div class="row">
+                                                	<div class="col-md-1">
+								    				</div>
+								    				<div class="col-md-4 cBeginning">
+								    					Ending Balance
+                                                	</div>
+                                                	<div class="col-md-2 cTextAmount cBeginning ">
+								    					{{depSmrBal1 + incomeBalWrapper.amount - expenseBalWrapper.amount}}
+                                                	</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
             
 								<!-- Income Modal -->
 								<div id="myModal" class="codeWrapper col-md-12"  >
@@ -327,7 +385,7 @@ response.setDateHeader ("Expires", 0);
                                                         <i class="glyphicon glyphicon-remove"></i> Delete
                                                     </button>-->
                                                      <form id="addSubFrm" class="form-inline">
-                                                  
+                                                  	<label class="res-info">{{saveLedgerRes}} </label> 
                                                      <div class="row ledger-row">
                                                   
 										    	 	  <div class="form-group">
@@ -375,7 +433,7 @@ response.setDateHeader ("Expires", 0);
                                                         <div class="form-group" >
 															<div>	
 																	<button class="btn btn-info btn-md form-control" ng-click="addLedger()"> Add </button>
-																	<label class="res-info">{{saveLedgerRes}} </label> 
+																
 																  
 															</div>
 													  	</div>

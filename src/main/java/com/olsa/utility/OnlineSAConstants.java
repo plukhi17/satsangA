@@ -8,6 +8,10 @@ public interface OnlineSAConstants {
 	String USER_JSON = "userJSON";
 	String USER_JSON_OBJECT = "userJSONObject";
 	String DPST_SMRY_OBJECT = "depositSmryJSONObject";
+	String ISHT_REF_OBJECT = "ishtRefValObject";
+	String DPST_SMRY_BAL = "depositSmryBal";
+	String INC_BAL_WRAPPER = "incomeBalWrapper";
+	String EXP_BAL_WRAPPER = "expenseBalWrapper";
 	String RITVIK_JSON_OBJECT = "ritvikJSONObject";
 	String USER_NAME = "userName";
 	String ISHT_TRAN_OBJECT = "ishtTranObject";
@@ -17,6 +21,7 @@ public interface OnlineSAConstants {
 	String SUCCESS_FLAG = "success";
 	String ROOT_COLLECTION= "Root";
 	String ISHT_COLLECTION= "Isht";
+	String ISHT_REF_VAL= "IshtRefVal";
 	String RITVIK_COLLECTION= "Ritvik";
 	String DATE_TIME_FORMAT_MONGO = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 	String DATE_FORMAT_MONGO = "MM/dd/yyyy";
@@ -55,6 +60,7 @@ public interface OnlineSAConstants {
 	final String SQL_DB_LOCAL_USER = "root";
 	final String SQL_DB_LOCAL_PASS = "!stavrity$";
 	
+	final String ISHT_PROP="ishtProp";
 
 	
 	public static final HashMap<String, JSONObject> ritvikHashMapCache = new HashMap<String, JSONObject>();

@@ -24,4 +24,5 @@ public interface UserService {
 	OTPResponse verifyOTP(String email, String otpNum,String currentDate);
 	ForgotPasswordResponse reSendOTP(String email, String date);
 	ForgotPasswordResponse updateNewPassword(String mobileNumber, String newPassword);
+	String checkEmailExists(String email);
 }

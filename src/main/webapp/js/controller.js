@@ -6,8 +6,8 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		$scope.isEdit = true;    	
 	   	$scope.country = {};
 	    $scope.state = {};
-	    $scope.chkNotInit=true;
-
+	    $scope.chkNotInit=false;
+	    $scope.checkEmailRes="Email address is submitted already.";
 	    var allCountries = [{
 	        Id: "US",
 	        CountryName: "USA"
@@ -171,8 +171,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
                  });
   		  	    
   		  	 $scope.validateUser = function() {
-  				 var userDetails ={
-  					   userName:$scope.userName,
+  		  		 var userName=$scope.userName.replace(/[^a-zA-Z0-9.]/g, '');
+  		  		 var userDetails ={
+  					   userName:userName,
   					   password:$scope.password
   					   };
   		 		   var contextPath = "validateUser.do"+"?userDetails="+ JSON.stringify(userDetails);
@@ -189,6 +190,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   								 if(returnObject.data.userJSONObject.firstLogin && returnObject.data.userJSONObject.migrated){
   									window.location = 'forgotpswd.jsp';
   								 }else{
+  									$scope.userName=userName;
   									window.location = 'index.jsp';
   								 }
   								 
@@ -429,6 +431,36 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 						 });
 		  			};
 		  			
+					//Check if transaction no exist for the manual ref
+					$scope.checkEmailExist=function(){
+					
+						
+							var contextPath = "checkEmailExists.do?email="
+								+angular.uppercase( $scope.txtEmailId);
+							$http({
+								 method : "POST",
+								 url : contextPath,
+							
+								 headers: {'Content-Type': 'application/json'}
+							 }).then(function mySucces(data) {
+								  $scope.json = angular.toJson(data.data);
+								  var obj = JSON.parse($scope.json);
+								 if(obj.responseMsg=='true'){
+									// alert("Transaction No is already submitted.");
+									
+									 $scope.txtEmailId="";
+									 $scope.checkEmailRes="Email Address is already submitted.";
+									 $("#dvEmailAlert").show(); 
+								 }else{
+									 $("#dvEmailAlert").hide(); 
+									
+								 }
+								  
+							 },function myError(d) {
+								 console.log("Error:    "+d);
+							 });
+						
+					}//checkTrNoExist
 		  			$scope.removeAdminAccess = function() {
   		  			 	var istPhone = $('#phoneNo').val();
   		  			 	var applicationFlow = $('#applicationFlow').val();
@@ -839,3 +871,5 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 				
 				
 		});
+
+

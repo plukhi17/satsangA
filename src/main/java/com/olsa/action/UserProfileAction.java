@@ -5,8 +5,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -514,4 +517,14 @@ public class UserProfileAction extends BaseAction {
 		PrintWriter writer = getResponse().getWriter();
 		writer.append(mapper.writeValueAsString(respons));
 	}
+	
+	public void checkEmailExists() throws JsonParseException, JsonMappingException, IOException {
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		String email = getRequest().getParameter("email");
+		Map<String,String> response=new HashMap<String,String>();
+		response.put("responseMsg", userService.checkEmailExists(email));
+		writer.append(mapper.writeValueAsString(response));
+	}
+	
 }

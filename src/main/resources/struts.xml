@@ -14,7 +14,7 @@
 		<action name ="validateUser" method = "validateUser" class="userProfileAction">
 			<result name="success">register.jsp</result>
 		</action>
-		
+		<action name="checkEmailExists" method="checkEmailExists" class="userProfileAction"></action>
 		<action name ="addPrimaryUser" method = "addPrimaryUser" class="userProfileAction"></action>
 		<action name ="addFamilyUser" method = "addFamilyUser" class="userProfileAction"></action>
 		<action name ="getUserJSONObject" method = "getUserJSONObject" class="userProfileAction"></action>
@@ -30,8 +30,11 @@
 		<action name="newpassword" method="newPassword" class="userProfileAction"></action>
 
 		<action name ="reports" method = "report" class="ishtAction"></action>
+		<action name="downloadReceipt" method="downloadReceipt" class="ishtAction"></action>
 		
 		<action name ="getIshtJSONObject" method = "getIshtJSONObject" class="ishtAction"></action>
+		<action name ="loadIshtProp" method = "loadIshtProp" class="ishtAction"></action>
+		
 		<action name ="saveIshtJSONData" method = "saveIshtJSONData" class="ishtAction"></action>
 		<action name ="getIshtTran" method = "getIshtTran" class="ishtAction"></action>
 		<action name ="getIshtTranAdmin" method = "getIshtTranAdmin" class="ishtAction"></action>
@@ -55,6 +58,7 @@
 		<action name="viewACHs" method="viewACH" class="checkoutAction"></action>
 		<action name="getClientToken" method="getClientToken" class="checkoutAction"></action>
 		<action name="checkTrNoExist" method="checkTrNoExist" class="checkoutAction"></action>
+	
 		
 		<action name="transactionsuccess" method="transactionsuccess" class="checkoutAction">
 			<result name="success">ishtpayconfirm.jsp</result>
@@ -69,6 +73,7 @@
 		<action name="getNextExpCode" method="getNextExpCode" class="ledgerAction"></action>
 		<action name="getNextSubCode" method="getNextSubCode" class="ledgerAction"></action>
 		<action name="getSubCodeByCode" method="getSubCodeByCode" class="ledgerAction"></action>
+		<action name="getBalanceSummary" method="getBalanceSummary" class="ledgerAction"></action>
 		
 
     </package>

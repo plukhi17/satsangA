@@ -983,3 +983,27 @@ background-image: radial-gradient(red 20%, transparent 25%);
     content: " *";
     color: red;  
 }
+.cBeginning{
+	
+	font-weight: bold;
+	font-size: 16px;
+}
+.cFooterLine{
+	
+	border-bottom: 1px solid;
+}
+.cTextAmount{
+	
+	text-align: right;
+}
+
+.processfee-info{
+	
+	color:blue;
+	margin: 0px 10px;
+	
+}
+.alert-danger-text p{
+	color:red;
+	font-weight:bold;
+}

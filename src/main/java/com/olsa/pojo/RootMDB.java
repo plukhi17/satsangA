@@ -27,7 +27,7 @@ public class RootMDB
     private String userRole;
 	private String rName;
     private String pprFlag;
-    private String pseronalize;
+    private String personalize;
     private String indfamilyCode;
     private boolean migrated;
     private boolean firstLogin;
@@ -42,10 +42,10 @@ public class RootMDB
 		this.indfamilyCode = indfamilyCode;
 	}
 	public String getPseronalize() {
-		return pseronalize;
+		return personalize;
 	}
 	public void setPseronalize(String pseronalize) {
-		this.pseronalize = pseronalize;
+		this.personalize = pseronalize;
 	}
 	public String getPprFlag() {
 		return pprFlag;
@@ -119,14 +119,7 @@ public class RootMDB
     public String getRitwikID(){
         return this.ritwikID;
     }
-    
-    public void setRitvikName(String rName){
-        this.rName = rName;
-    }
-    public String getRitvikName(){
-        return this.rName;
-    }
-    
+
     
     
     
@@ -190,7 +183,7 @@ public class RootMDB
 					+ ", ritwikID=" + ritwikID + ", ritwikStatus=" + ritwikStatus + ", active=" + active
 					+ ", createdOn=" + createdOn + ", lastUpdatedOn=" + lastUpdatedOn + ", userType=" + userType
 					+ ", userName=" + userName + ", userRole=" + userRole + ", rName=" + rName + ", pprFlag=" + pprFlag
-					+ ", pseronalize=" + pseronalize + ", indfamilyCode=" + indfamilyCode + "]";
+					+ ", pseronalize=" + personalize + ", indfamilyCode=" + indfamilyCode + "]";
 		}
 		/**
 		 * @return the migrated

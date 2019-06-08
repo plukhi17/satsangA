@@ -1,7 +1,15 @@
 package com.olsa.bo;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.mongodb.BasicDBList;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.bson.Document;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -11,32 +19,16 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
-import com.olsa.pojo.IshtMDB;
+import com.mongodb.operation.OrderBy;
 import com.olsa.pojo.ResultObject;
-import com.olsa.pojo.RootMDB;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
-import com.olsa.utility.ACHDetailsDTO;
-import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.Code;
 import com.olsa.utility.Counter;
 import com.olsa.utility.DateUtility;
 import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.MongoConstants;
 import com.olsa.utility.OnlineSAConstants;
-import com.olsa.utility.PaymentACHUtils;
-import com.olsa.utility.PaymentUtils;
 import com.olsa.utility.SubCode;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.bson.Document;
-import org.json.JSONObject;
 
 public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 	static final Logger logger = Logger.getLogger(LedgerDaoImpl.class);
@@ -130,11 +122,20 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				
 				db.updateOne(searchQuery,update);
 				
-				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class); 
+				MongoCollection<Counter> countDb = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.COUNTER,Counter.class);
+				Counter seqObj =null;
+						
+				if(code.getCodeName().toUpperCase().startsWith("INC")) {
+					 countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME),
+							Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+							new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+					
+				}else if(code.getCodeName().toUpperCase().startsWith("EXP")) {
+					countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.EXPN_SUB_CODE_SEQ_NAME),
+							Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
+							new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
+				}
 				
-				Counter seqObj = countDb.findOneAndUpdate(Filters.eq(MongoConstants.CNT_SEQ_NAME, OnlineSAConstants.INCOME_SUB_CODE_SEQ_NAME),
-						Updates.inc(MongoConstants.CNT_SEQ_COUNTER, 1),
-						new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER).upsert(true));
 				
 				response = "Successfully saved Subcode details.";
 			} else {
@@ -159,9 +160,11 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.SA_ARGHYA_DEPPOSIT_SUMMARY);
 						//.getCollection("CardDetails");
+				
 				Document document = new Document().append("amount", ledger.getAmount())
 						.append("headType", ledger.getHeadType())
-						.append("headCodeName", ledger.getHeadCode())
+						.append("headCodeName", ledger.getHeadCode())	
+						.append("balance", ledger.getBalance())
 						.append("headCodeDesc", ledger.getHeadCodeDesc())
 						.append("headSubCodeName", ledger.getHeadSubCode())
 						.append("headSubCodeDesc", ledger.getHeadSubCodeDesc())
@@ -187,9 +190,6 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 
     	
     	try {
-
-    	
-
     		MongoCursor<Document> cursor= null;
     		List<SAArghyaDpsitSmmaryMDB> listDpstSmry = new ArrayList<SAArghyaDpsitSmmaryMDB>();
 
@@ -201,26 +201,102 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     				if(result.get("amount")!=null) {
     					logger.info("Amount : "+result.get("amount").toString());
         				dpstSmry.setAmount((Double) result.get("amount"));
-        				
-    				}
+        			}
     			
-    				dpstSmry.setAmountDesc(result.get("amountDesc").toString());
+    				dpstSmry.setAmountDesc(result.get("amountDesc")!=null?result.get("amountDesc").toString():"");
 
     				//ishtMDB.setChecqNo(result.get("checqNo").toString());
     				dpstSmry.setHeadType((String) result.get("headType"));
     				dpstSmry.setHeadCode(result.get("headCodeName").toString());
+    				dpstSmry.setBalance(Double.valueOf(result.get("balance").toString()));
     				dpstSmry.setHeadCodeDesc(result.get("headCodeDesc").toString());
     				dpstSmry.setHeadSubCode(result.get("headSubCodeName").toString());
     				dpstSmry.setHeadSubCodeDesc(result.get("headSubCodeDesc").toString());
     				dpstSmry.setSubmittedOn(DateUtility.formateDate1((Date)result.get("createdDt")));
+    				response.setObject2(dpstSmry.getBalance());
     				listDpstSmry.add(dpstSmry);
     			}
 
     		}	
-    		
-    		
     		response.setObject1(listDpstSmry);
-
+    		
+    		response.setSuccess(true);
+    	}
+    	catch(Exception ex) {
+    		ex.printStackTrace();
+    		logger.info("Exception in getIshtTranAdmin   :"+ex);
+    	}
+    	
+    	return response;
+    
+	}
+	
+	public ResultObject getBalanceSummary(Date summaryDate)
+	{
+		ResultObject response = new ResultObject();
+    	try {
+    		MongoCursor<Document> cursor= null;
+    		
+    		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+    				.getCollection(MongoConstants.SA_ARGHYA_DEPPOSIT_SUMMARY);
+    		summaryDate=DateUtility.atStartOfDay(summaryDate);
+    		 BasicDBObject getQuery = new BasicDBObject();
+		    getQuery.put("createdDt", new BasicDBObject("$lt", summaryDate));
+    		
+    		List<SAArghyaDpsitSmmaryMDB> listDpstSmry = new ArrayList<SAArghyaDpsitSmmaryMDB>();
+    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.SA_ARGHYA_DEPPOSIT_SUMMARY).find(getQuery).
+    				sort(new BasicDBObject("createdDt", OrderBy.DESC.getIntRepresentation())).limit(1).iterator();
+    		if(cursor!=null){
+    			while(cursor.hasNext()){
+    				Document result = cursor.next();
+    				SAArghyaDpsitSmmaryMDB dpstSmry = new SAArghyaDpsitSmmaryMDB();
+    				dpstSmry.setBalance(Double.valueOf(result.get("balance").toString()));
+    				response.setObject3(dpstSmry.getBalance());
+    			}
+    		}	
+    		if(response.getObject3()==null) {
+    			response.setObject3(0.0);
+    		}
+    		cursor= null;
+    		Date startDate= summaryDate;
+    		Date endDate= DateUtility.atEndOfDay(summaryDate);
+    		getQuery = new BasicDBObject();
+		    getQuery.put("createdDt", new BasicDBObject("$lt", endDate).append("$gte",startDate));
+    		
+    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.SA_ARGHYA_DEPPOSIT_SUMMARY).find(getQuery).
+    				iterator();
+    		
+    		double incomeAmt=0,expenseAmt=0;
+    		int incomeCnt = 0,expenseCnt=0;
+    	
+    		if(cursor!=null){
+    			while(cursor.hasNext()){
+    				Document result = cursor.next();
+    				SAArghyaDpsitSmmaryMDB dpstSmry = new SAArghyaDpsitSmmaryMDB();
+    				if(result.get("headType").toString().equals("income")) {
+    					incomeAmt=incomeAmt+(double) result.get("amount");
+    					incomeCnt++;
+    				}else if(result.get("headType").toString().equals("expense")) {
+    					expenseAmt=expenseAmt+(double) result.get("amount");
+    					expenseCnt++;
+    				}
+    		
+    				listDpstSmry.add(dpstSmry);
+    			 }
+    			}	
+    		
+    		BalanceSummaryWrapper incomeWrapper= new BalanceSummaryWrapper();
+    		incomeWrapper.setAmount(incomeAmt);
+    		incomeWrapper.setHeadType("income");
+    		incomeWrapper.setCount(incomeCnt);
+    		response.setObject4(incomeWrapper);
+    		
+    		BalanceSummaryWrapper expenseWrapper= new BalanceSummaryWrapper();
+    		expenseWrapper.setAmount(expenseAmt);
+    		expenseWrapper.setHeadType("expense");
+    		expenseWrapper.setCount(expenseCnt);
+    		response.setObject5(expenseWrapper);
+    		
     		response.setSuccess(true);
 
     	}
@@ -232,7 +308,7 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
     	return response;
     
 	}
-
+	
 	
 	boolean ifExistSubCode(String subCode) {
 
@@ -388,6 +464,8 @@ public class LedgerDaoImpl extends MongoBaseDao implements LedgerDao {
 		
 		return seqCode;
 	}
+
+
 	
 	
 }

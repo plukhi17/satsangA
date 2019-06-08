@@ -17,7 +17,40 @@ var app = angular.module('myApp', []);
              filename: "report.xls"
          });
 	}
-	
+	$scope.getReceipt= function(receiptNo){
+			var contextPath = "downloadReceipt.do?receiptNo="+receiptNo;
+		
+		$http({
+				 method : "GET",
+				 url : contextPath,
+				 responseType: 'arraybuffer',
+				 headers: {'Content-Type': 'application/json' ,'responseType':'arraybuffer'},
+				
+			 }).then(function mySucces(data) {
+				 $scope.json = angular.toJson(data.data);
+				  var obj = JSON.parse($scope.json);
+				  var call = null;
+				  var fileName = receiptNo+".pdf";
+		            var a = document.createElement("a");
+		            document.body.appendChild(a);
+		    
+		             
+		                
+		                var byteArray = new Uint8Array(data.data);
+		                
+		                file = new Blob([data.data], {type: 'application/pdf'});
+		                var fileURL = window.URL.createObjectURL(file);
+		                a.href = fileURL;
+		                a.download = fileName;
+		               a.click();
+		               
+		              
+		              
+			 },function myError(d) {
+				 alert("fail  "+  d);
+			 });
+		
+	} 
 	$scope.myReport=function(){
 		var removeTBody = document.getElementById("reportTBody");
 		removeTBody.innerHTML = "";
@@ -45,7 +78,8 @@ var app = angular.module('myApp', []);
 					  "<td scope='row'>"+(obj[i].dtIshtDate!=undefined ? obj[i].dtIshtDate : '-') +"</td>"+
 					  "<td scope='row'>"+(obj[i].stTrnNo!=undefined ? obj[i].stTrnNo : '-') +"</td>"+
 					  "<td scope='row'>"+(obj[i].stBankName!=undefined ? obj[i].stBankName : '-') +"</td>"+
-					  "<td scope='row'>"+obj[i].total +"</td>";
+					  "<td scope='row'>"+obj[i].total +"</td>"+
+					  "<td scope='row'><i id='"+obj[i].receiptNo+"' class='fa fa-file-pdf-o cursror-pointer' onClick='getReceipt(this)'></i></td>";
 					  $('#reportTBody').append('<tr align="center">' + call + '</tr>');
 					  call = null;
 				 
@@ -67,7 +101,7 @@ var app = angular.module('myApp', []);
 	};//repoort method
 	
 	
-	
+
 	
 	
 	   $scope.download = function() {
@@ -250,3 +284,12 @@ function dataValidationReport(){
 		return false;
 	}
 }*/
+			
+function getReceipt(trnObj){
+	
+	var scope = angular.element('[ng-controller=appCtrl]').scope();
+    scope.$apply(function () {
+	   
+	    scope.getReceipt(trnObj.id);
+    });
+}

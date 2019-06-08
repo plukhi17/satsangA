@@ -2,6 +2,7 @@ package com.olsa.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RootMDB;
 import com.olsa.pojo.SAArghyaDpsitSmmaryMDB;
@@ -114,7 +116,7 @@ public class LedgerAction extends BaseAction {
 			if (result.isSuccess()) {
 				logger.info("inside sucess");
 				responseObject.put("returnCode", "success");
-			
+				responseObject.put(DPST_SMRY_BAL,  result.getObject2());
 				responseObject.put(DPST_SMRY_OBJECT,  result.getObject1());
 			} else {
 				logger.info("inside failuer");
@@ -123,6 +125,32 @@ public class LedgerAction extends BaseAction {
 			responseObject.write(getResponse().getWriter());
 		} catch (Exception e) {
 
+		}
+	}
+	
+	public void getBalanceSummary() throws IOException {
+
+		
+		logger.info("Inside getBalanceSummary() Action");
+		try {
+			ResultObject result = new ResultObject();
+			String summaryDate = getRequest().getParameter("summaryDate");
+			result = ledgerServic.getBalanceSummary(new Date());
+			getResponse().setContentType("text/json;charset=utf-8");
+			JSONObject responseObject = new JSONObject();
+			if (result.isSuccess()) {
+				logger.info("inside sucess");
+				responseObject.put("returnCode", "success");
+				responseObject.put(DPST_SMRY_BAL,  result.getObject3());
+				responseObject.put(INC_BAL_WRAPPER,new Gson().toJson(result.getObject4()));
+				responseObject.put(EXP_BAL_WRAPPER,  new Gson().toJson(result.getObject5()));
+			} else {
+				logger.info("inside failuer");
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+			}
+			responseObject.write(getResponse().getWriter());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -216,8 +244,7 @@ public void getNextSubCode() throws IOException {
 		logger.info("Inside getNextSubCode() Action");
 		try {
 		
-			PrintWriter writer = getResponse().getWriter();
-			ObjectMapper mapper = new ObjectMapper();
+			
 			String codeType = getRequest().getParameter("codeType");
 			
 

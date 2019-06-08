@@ -136,6 +136,12 @@ public class UserServiceImpl implements UserService {
 		return resultObject;
 	}
 
+	
+	@Override
+	public String checkEmailExists(String email) {
+		return String.valueOf(getUserProfileMDBDao().ifExistEmail(email));
+	}
+	
 	public ResultObject getSearchUserObject(String inputValue, String inputParam) {
 		ResultObject resultObject = new ResultObject();
 		// RootMDB userJSONObject =
@@ -275,6 +281,9 @@ public class UserServiceImpl implements UserService {
 			return response;
 		}
 	}
+	
+	
+	
 	
 	 private boolean sendOTPToEmailId(ForgotPasswordResponse resObj, Integer OtPnum){
 			

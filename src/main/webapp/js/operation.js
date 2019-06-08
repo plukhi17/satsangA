@@ -615,6 +615,7 @@ function cardNameChacking(num) {
 	courseApp.controller('ishtCtrl',['$scope','$http','$filter','$compile',
 		function($scope, $http, $filter,$compile) {
 		 $scope.checkTrNoRes="Transaction No is already submitted.";
+		 $scope.checkEmailRes="Email address is already submitted.";
 		 $scope.allStates = [
 				{StateName:"Alabama",StateCode:"AL" },
 				{StateName:"Alaska",StateCode:"AK" },
@@ -674,15 +675,52 @@ function cardNameChacking(num) {
 				{StateName:"United States Minor Outlying Islands",StateCode:"IL" },
 				{StateName:"Virgin Islands",StateCode:"VI" }
 			];
-		   
-		   $scope.cars = [
+		 	$scope.ishtTooltips=[];
+		 	
+		 	$scope.loadIshtProp = function() {
+			
+				var contextPath = "loadIshtProp.do";
+						
+				$http({
+					method : "POST",
+					url : contextPath
+				})
+						.then(
+								function mySucces(data) {
+									var returnObject = eval(data); // Parse Return Data
+									
+									if (returnObject.data.returnCode == 'error') {
+										$scope.PostDataResponse = returnObject.data.returnMessage;
+									} else {
+										$scope.ishtTooltips = returnObject.data.ishtRefValObject;
+										var obj = {};
+										 angular.forEach($scope.ishtTooltips, function(item){
+							                    
+							                    var valObj = {};
+
+							                    valObj.key = item.key;
+							                    valObj.value = item.value;
+							                    valObj.domain = item.domain;
+
+							                    obj[item.key.toLowerCase()] = valObj;
+							                    $scope.ishtTooltips=obj;
+							                });
+									}
+								},
+								function myError(d) {
+									alert("failed to load");
+								});
+			};
+		 	$scope.loadIshtProp();
+			
+		    $scope.cars = [
 			   {model : "Ford Mustang", color : "red"},
 			   {model : "Fiat 500", color : "white"},
 			   {model : "Volvo XC90", color : "black"}
 			 ];
 								$scope.spinerFlag=false;
 								$scope.cardList;
-								$scope.achList;
+								$scope.achList;	
 								$scope.termcb=false;
 								/* 
 								$scope.afterTransactionSuccess=function(id){
@@ -819,75 +857,7 @@ function cardNameChacking(num) {
 											 alert("save failed");
 										 });
 							    	  };
-//								$scope.submitManual=function(){
-//									alert ('Something wrong happend');
-//									removePNode();
-//									var res=$scope.parmentForm();
-//									if(res!=undefined && res.toString()=='false'){
-//										alert("Fill this required field.");
-//									}else{
-//										$scope.spinerFlag=true;
-//										var manPayObj = {
-//												 "amount":document.getElementById("GTotalPre").value,
-//												 "familyCode":document.getElementById("familyCode").value,
-//												 "contact":document.getElementById("contact").value,
-//												 "paymentMode":$scope.selPmtMethod,
-//												 
-//											 };
-//										var contextPath = "manualTransactions.do"+"?manualPayDetails="+ JSON.stringify(manPayObj);
-//					  					
-//										$http({
-//											 method : "POST",
-//											 url : contextPath,
-//											
-//											 headers: {'Content-Type': 'application/json'}
-//											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-//										 }).then(function mySucces(data) {
-//											 $scope.spinerFlag=false;
-//											  $scope.json = angular.toJson(data.data);
-//											  var obj = JSON.parse($scope.json);
-//											  $scope.cardList=obj;
-//											  	if(obj.status.toString()=="false"){
-//											  		var node = document.createElement("P");
-//											  		var failedTxt = document.createTextNode("Failed transaction");
-//										  			node.appendChild(failedTxt); 
-//											  		for(var i=0;i<obj.errorValidations.length;i++){
-//											  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
-//											  		    node.appendChild(textnode);
-//											  			node.style.color = "red";
-//											  			node.style.margin="22px";
-//											  		    document.getElementById("paymentResponse").appendChild(node);
-//											  		  $scope.spinerFlag=false;
-//											  		  
-//											  		}
-//											  	}else{
-//											  		/* var node = document.createElement("P");
-//											  		var seccussTxt = document.createTextNode("Transaction ");
-//										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
-//										  			
-//										  		    node.appendChild(seccussTxt); 
-//										  		 	node.appendChild(textnode);
-//										  		  
-//										  			node.style.color = "green";
-//										  			node.style.margin="22px";
-//										  		    document.getElementById("paymentResponse").appendChild(node); */
-//											  		
-//										  		  $scope.spinerFlag=false;
-//										  		//$scope.afterTransactionSuccess(obj.trasactionId);
-//										  		
-//										  		sessionStorage.setItem("transactionId", obj.trasactionId);
-//										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotalPre").value);
-//										  		//alert(sessionStorage.getItem("transactionId"));
-//										  		window.location = 'ishtpayconfirm.jsp';
-//											  	}
-//											  $scope.spinerFlag=false;
-//										 },function myError(d) {
-//											 console.log("Error:    "+d);
-//											 alert("fail");
-//											 $scope.spinerFlag=false;
-//										 });
-//									}
-//								};
+
 								$scope.paymentFun=function(){
 									removePNode();
 									var res;
@@ -1718,7 +1688,7 @@ function cardNameChacking(num) {
 											.then(
 													function mySucces(data) {
 														var returnObject = eval(data); // Parse Return Data
-														alert(returnObject.data.returnCode);
+														
 														if (returnObject.data.returnCode == 'error') {
 															$scope.PostDataResponse = returnObject.data.returnMessage;
 														} else {
@@ -1788,7 +1758,7 @@ $(document).ready(function() {
 	$('.achForm').hide();
 	
 	$("dtChqDate").focus(function() {
-		//alert('Hi');
+
 		var dtToday = new Date();
 		var month = dtToday.getMonth() + 1;
 		var day = dtToday.getDate();
@@ -1818,26 +1788,18 @@ function checkDate() {
 	var selectedText = document.getElementById('dtChqDate').value;
 	var selectedDate = new Date(selectedText);
 
-   // alert("selectedDate :"+selectedDate);
+
     
 	var selYear = selectedDate.getFullYear().toString();
 	var salMonth = (selectedDate.getMonth() + 101).toString().substring(1);
 	var salDay = (selectedDate.getDate() + 100).toString().substring(1);
 
-	//alert("selYear :"+selYear);
-	//alert("salMonth :"+salMonth);
-	//alert("salDay :"+salDay);
-	
 	var now = new Date();
 
 	var nowYear = now.getFullYear().toString();
 	var nowMonth = (now.getMonth() + 101).toString().substring(1);
 	var nowDay = (now.getDate() + 100).toString().substring(1);
 
-	//alert("nowYear :"+nowYear);
-	//alert("nowMonth :"+nowMonth);
-	//alert("nowDay :"+nowDay);
-	
 	if( (selYear>=nowYear)&&(salMonth>=nowMonth)&&(salDay>=nowDay) ){
 		alert("Transaction date should not be later than today's date.");
 		document.getElementById("dtChqDate").value = "DD-MM-YYYY";

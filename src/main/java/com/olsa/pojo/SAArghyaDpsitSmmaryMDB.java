@@ -39,6 +39,9 @@ public class SAArghyaDpsitSmmaryMDB {
     @JsonProperty("submittedOn")
     private String submittedOn;
     
+    @JsonProperty("balance")
+    private Double balance= new Double(0);
+    
     
     private Date createdDt;
     
@@ -243,6 +246,22 @@ public class SAArghyaDpsitSmmaryMDB {
 	public void setSubmittedOn(String submittedOn) {
 		this.submittedOn = submittedOn;
 	}
+
+	/**
+	 * @return the balance
+	 */
+	public Double getBalance() {
+		return balance;
+	}
+
+	/**
+	 * @param balance the balance to set
+	 */
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+
+
 
 
     
