@@ -8,6 +8,8 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import com.itextpdf.text.log.SysoCounter;
+
 public class DateUtility {
 	static final Logger logger = Logger.getLogger(DateUtility.class);
 	
@@ -135,7 +137,27 @@ public class DateUtility {
 			return formatedDate;
 	    }
 
-
+	public static Date formateDate2(String  dt) {
+		  DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+	      //Desired format: 24 hour format: Change the pattern as per the need
+	      DateFormat outputformat = new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO);
+	      Date date = null;
+	      String output = null;
+	      try{
+	         //Converting the input String to Date
+	    	 date= df.parse(dt);
+	         //Changing the format of date and storing it in String
+	    	 output = outputformat.format(date);
+	         //Displaying the date
+	    	 //System.out.println(output);
+	    	 date=outputformat.parse(output);
+	      }catch(ParseException pe){
+	         pe.printStackTrace();
+	       }
+	      return date;
+	}
+	
+	
 
 	public static String formateDate1(Date date) throws ParseException {
 		SimpleDateFormat writeFormat = new SimpleDateFormat(OnlineSAConstants.DATE_FORMAT_MONGO);
@@ -143,6 +165,15 @@ public class DateUtility {
 		
 		return dateStr;
 	}
+	
+
+	public static String formateDate3(String date) throws ParseException {
+		SimpleDateFormat writeFormat = new SimpleDateFormat(OnlineSAConstants.DATE_FORMAT_MONGO1);
+		String dateStr = writeFormat.format(date);
+		
+		return dateStr;
+	}
+	
 	
 	public static Date atEndOfDay(Date date) {
 	    Calendar calendar = Calendar.getInstance();
@@ -162,5 +193,17 @@ public class DateUtility {
 	    calendar.set(Calendar.SECOND, 0);
 	    calendar.set(Calendar.MILLISECOND, 0);
 	    return calendar.getTime();
+	}
+	
+	public static void main(String[] arg) {
+		
+		System.out.println(formateDate2("30-04-2019"));
+	}
+
+
+
+	public static String formateDate4(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -25,6 +25,7 @@ public interface OnlineSAConstants {
 	String RITVIK_COLLECTION= "Ritvik";
 	String DATE_TIME_FORMAT_MONGO = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 	String DATE_FORMAT_MONGO = "MM/dd/yyyy";
+	String DATE_FORMAT_MONGO1 = "MM-dd-yyyy";
 	String APPLICATION_FLOW = "applicationFlow";
 	String USER_TYPE= "userType";
 	String ADMIN_USER = "adminUser";
