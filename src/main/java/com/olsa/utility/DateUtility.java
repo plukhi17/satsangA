@@ -137,7 +137,7 @@ public class DateUtility {
 			return formatedDate;
 	    }
 
-	public static Date formateDate2(String  dt) {
+	public static Date formateDate2(String  dt) throws ParseException {
 		  DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 	      //Desired format: 24 hour format: Change the pattern as per the need
 	      DateFormat outputformat = new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO);
@@ -152,7 +152,10 @@ public class DateUtility {
 	    	 //System.out.println(output);
 	    	 date=outputformat.parse(output);
 	      }catch(ParseException pe){
+	    	  System.out.println("=============="+dt);
 	         pe.printStackTrace();
+	         throw pe;
+	         
 	       }
 	      return date;
 	}
@@ -195,7 +198,7 @@ public class DateUtility {
 	    return calendar.getTime();
 	}
 	
-	public static void main(String[] arg) {
+	public static void main(String[] arg) throws ParseException {
 		
 		System.out.println(formateDate2("30-04-2019"));
 	}

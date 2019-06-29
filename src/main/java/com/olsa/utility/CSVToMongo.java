@@ -1,7 +1,8 @@
 package com.olsa.utility;
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,16 +21,15 @@ import com.olsa.pojo.AddressMDB;
 import com.olsa.pojo.FamilyMDB;
 import com.olsa.pojo.IshtLineMDB;
 import com.olsa.pojo.IshtMDB;
-import com.olsa.pojo.IstavritySummaryObject;
 import com.olsa.pojo.RootMDB;
 
 public class CSVToMongo {
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
-		//List<RootMDB> books = readRootFromCSV("R://root.csv"); // let's print all the person read from CSV file for (Book b : books) { System.out.println(b); }
-		List<IshtMDB> ishts = readIshtFromCSV("P://isht1.csv");
-	
+		//List<RootMDB> books = readRootFromCSV("P://ghana//parth12.csv"); // let's print all the person read from CSV file for (Book b : books) { System.out.println(b); }
+		List<IshtMDB> ishts = readIshtFromCSV("P://ghana//ist1.csv");
+		
 	}
 	
 	private static List<IshtMDB> readIshtFromCSV(String fileName) {
@@ -38,7 +38,7 @@ public class CSVToMongo {
 		Path pathToFile = Paths.get(fileName);
 		
 		try (BufferedReader br = Files.newBufferedReader(pathToFile,
-                StandardCharsets.US_ASCII)) {
+                StandardCharsets.UTF_8)) {
 			// read the first line from the text file
 				String line = br.readLine(); 
 				int linecount=0;
@@ -81,26 +81,34 @@ public class CSVToMongo {
 			e.printStackTrace();
 		}
 		ObjectMapper mapper = new ObjectMapper();
+		DateFormat df = new SimpleDateFormat(OnlineSAConstants.DATE_TIME_FORMAT_MONGO);
+		mapper.setDateFormat(df);
 		String jsonString="";
 		try {
-			jsonString = mapper.writeValueAsString(ishts);
-			System.out.println(jsonString);
+			//jsonString = mapper.writeValueAsString(ishts);
+			String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ishts);
+			try (FileWriter file = new FileWriter("P://ghana//Resist11.json")) {
+				file.write(indented);
+				System.out.println("Successfully Copied JSON Object to File...");
+				}
+				
+
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch(IOException io) {
+			io.printStackTrace();
 		}
 		
-		   
 		return ishts;
 	
 	}
 
 	private static IshtMDB createIsht(final String[] arg, List<IshtMDB> ishts) throws ParseException {
-		
-
-	
 		Double total=0.0;
 		IshtMDB isht=null;
+	
+		
 			if (! ishts.stream().anyMatch(new Predicate<IshtMDB>() {
 				@Override
 				public boolean test(IshtMDB t) {
@@ -109,24 +117,51 @@ public class CSVToMongo {
 				isht=new IshtMDB();
 				isht.setFamilyID(arg[1]);
 				isht.setMonthYear(arg[4]);
-			
-				isht.setCollectedBy(arg[17]);
+				isht.setCollectedBy(arg[17].toUpperCase());
 				isht.setCollectedOn(arg[16]);
-				isht.setPaymentMethod(arg[18]);
+				
 				isht.setChecqNo(arg[19]);
 				isht.setChequeIssueBank(arg[20]);
-				isht.setChecqDate(DateUtility.formateDate2(arg[21]));
-				isht.setIssuedFlag(arg[22]);
+				try {
+					if(arg[21]!=null ) {
+						isht.setChecqDate(DateUtility.formateDate2(arg[21]));
+					}
+					
+				}catch(Exception e) {
+					
+					System.out.println("Exception "+arg[0]);
+					e.printStackTrace();
+					
+				}
+				
+				isht.setIssuedFlag((arg[22]!=null && arg[22].equals("YES"))?"Y":"N");
 				isht.setReceiptNo(arg[23]);
 				isht.setReceiptDate(arg[24]);
 				isht.setActive("Y");
 				if(arg[18].equals("E TRANSFER")) {
 					isht.setApprovedBy("SYSTEM");
 					isht.setApprovedOn(arg[24]);
+					isht.setPaymentMethod("AUTO");
+					isht.setSubmittedOn(isht.getChecqDate());
+					
+					
+				}else {
+					//isht.setApprovedBy("SYSTEM");
+					isht.setApprovedOn(arg[24]);
+					isht.setPaymentMethod("MANUAL");
 				}
 				
 				List<IshtLineMDB> lineLst= new ArrayList<IshtLineMDB>();
 				IshtLineMDB line=null;
+				try {
+					if(arg[2].split("-")[1].equals("01")){
+						
+					}
+				}
+				catch(Exception e) {
+					System.out.println("----------------"+arg[1]);
+					System.out.println("whatsthe mater");
+				}
 				if(arg[2].split("-")[1].equals("01")) {
 					line= new IshtLineMDB();
 					line.setId(arg[2]);
@@ -146,8 +181,6 @@ public class CSVToMongo {
 				isht.setLine(lineLst);
 				isht.setTotal(total);
 			}else {
-				
-
 				Iterator<IshtMDB> ishtItr= ishts.iterator();
 				IshtLineMDB line=null;
 			   while(ishtItr.hasNext()){
@@ -167,28 +200,19 @@ public class CSVToMongo {
 						line.setRitwiki(Double.valueOf( arg[14]));
 						line.setTotal(Double.valueOf( arg[15]));
 						parent.setTotal(parent.getTotal()+Double.valueOf( arg[15]));
-						
 						parent.getLine().add(line);
-						
-					   
 				   }
-				
 			   }
-			
-				
 			}
 			return isht;
-			}
+	}
 		
 
-
-	@SuppressWarnings("unused")
 	private static List<RootMDB> readRootFromCSV(String fileName) {
 		List<RootMDB> roots = new ArrayList<>();
 		Path pathToFile = Paths.get(fileName);
 		
-		try (BufferedReader br = Files.newBufferedReader(pathToFile,
-                StandardCharsets.US_ASCII)) {
+		try (BufferedReader br = Files.newBufferedReader(pathToFile,  Charset.defaultCharset())) {
 			// read the first line from the text file
 				String line = br.readLine(); 
 				int linecount=0;
@@ -224,11 +248,19 @@ public class CSVToMongo {
 		String jsonString="";
 		try {
 			jsonString = mapper.writeValueAsString(roots);
+			String indented = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(roots);
+			try (FileWriter file = new FileWriter("P://ghana//Resroot11.json")) {
+				file.write(indented);
+				System.out.println("Successfully Copied JSON Object to File...");
+				}
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException ie) {
+			// TODO Auto-generated catch block
+			ie.printStackTrace();
 		}
-		System.out.println(jsonString);
+		
 		   
 		return roots;
 	}
@@ -252,7 +284,10 @@ public class CSVToMongo {
 			root.setFirstName(arg[3]);
 			root.setMiddleName(arg[4]);
 			root.setLastName(arg[5]);
-			root.setRitwikStatus(arg[6]=="LATE"?false:true);
+			if(arg[6]!=null) {
+				root.setRitwikStatus(arg[6]=="LATE"?false:true);
+			}
+			
 			root.setrName(arg[7] +" " +arg[8] +" " +arg[9] );
 			AddressMDB add=new AddressMDB();
 			add.setAddressLine1(arg[10]);
@@ -262,13 +297,41 @@ public class CSVToMongo {
 			add.setState(arg[15]);
 		
 			add.setCountry(arg[17]);
-			add.setZipCode(Long.valueOf( arg[18]));
 			
+			
+			try {
+				if(!arg[18].equals("") && arg[18]!=null) {
+					add.setZipCode(Long.valueOf(arg[18]));
+				}
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println(arg[1]);
+			}
 			
 			root.setAddress(add);
-			root.setEmail(arg[20]);
-			root.setPhoneNo(arg[21].replaceAll("\\s+", ""));
-			root.setPseronalize(arg[22]);
+			try {
+			
+				root.setEmail(arg[20]!= null?arg[20]:"");
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println(arg[1]);
+			}
+			
+			try {
+				root.setPhoneNo(arg[21]!=null?arg[21].replaceAll("\\s+", ""):"");
+			}catch(Exception e) {
+				System.out.println(arg[1]);
+			}
+			
+			//root.setPseronalize(arg[22]);
+			try {
+				root.setPseronalize(arg[22]!=null?arg[22]:"");
+			}catch(Exception e) {
+				System.out.println(arg[1]);
+			}
 			root.setPassword("Pz9cQmdxSj8/Vj8/Pz88KQ==,-1246001394");
 			root.setMigrated(true);
 			root.setFirstLogin(true);
