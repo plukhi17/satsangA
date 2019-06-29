@@ -510,9 +510,12 @@ public class UserProfileAction extends BaseAction {
 	
 	
 	public void newPassword() throws IOException {
-		String mobileNumber=getRequest().getParameter("mobileNumber");
+		
+		
+		
 		String newPassword=getRequest().getParameter("newPassword");
-		ForgotPasswordResponse respons=userService.updateNewPassword(mobileNumber,newPassword);
+		String familyId=getRequest().getParameter("familyId");
+		ForgotPasswordResponse respons=userService.updateNewPassword(familyId,newPassword);
 		ObjectMapper mapper = new ObjectMapper();
 		PrintWriter writer = getResponse().getWriter();
 		writer.append(mapper.writeValueAsString(respons));

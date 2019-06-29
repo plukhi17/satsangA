@@ -30,7 +30,7 @@
 		//$('#resendOTPId').hide();
 	function newPasswordReset(){
 		 document.getElementById('txtNewPassword').value="";
-		 document.getElementById('txtMobileNumber').value="";
+		 //document.getElementById('txtMobileNumber').value="";
 	}
 		
 	function forOTPNumber(event) {
@@ -146,13 +146,13 @@
 	}// close reSendOTP function 	
 	
 	function newPassword(){
-		var mobileNumber = document.getElementById('txtMobileNumber').value;
+		//var mobileNumber = document.getElementById('txtMobileNumber').value;
 		var newPassword = document.getElementById('txtNewPassword').value;
-		if(mobileNumber.trim().length > 0){
-		}else{
-			alert("Mobile number required");
-			return false;
-		}
+		//if(mobileNumber.trim().length > 0){
+		//}else{
+			//alert("Mobile number required");
+			//return false;
+		//}
 		if(newPassword.trim().length > 0){
 			
 			var xhttp = new XMLHttpRequest();
@@ -162,12 +162,17 @@
 					//alert("sssssssssssssss"+this.responseText);
 					 if(obj.status=="true"){//responseMsg
 						 document.getElementById("responseNewPassword").innerHTML=obj.responseMsg;
+						 document.getElementById("newPwdSubmit").disabled =true;
 					}else{
 						 document.getElementById("responseNewPassword").innerHTML=obj.responseMsg;
 					} 
 				}
 			};
-			xhttp.open("GET", "/OnlineSA/newpassword.do?mobileNumber="+mobileNumber+"&newPassword="+newPassword, true);//
+			var familyId = document.getElementById('familyId').value;
+			//alert(familyId);
+			//xhttp.open("GET", "/OnlineSA/newpassword.do?mobileNumber="+mobileNumber+"&newPassword="+newPassword, true);//
+			xhttp.open("GET", "/OnlineSA/newpassword.do?familyId="+familyId+"&newPassword="+newPassword, true);//
+			//xhttp.open("GET", "/OnlineSA/newpassword.do?newPassword="+newPassword, true);//
 			xhttp.send();
 			
 			return true;
@@ -225,6 +230,7 @@ RootMDB root = (RootMDB)session.getAttribute("userBean");
 									 class="form-control" id="txtOTPNum" type="text" style="font-size:30px;">
 								
 									 <input type="hidden" id="hidenEmail">
+									  <input type="hidden" id="familyId" value="<%= root!=null?root.getFamilyID():"" %>">
 									 <input type="hidden" id="hideDate">
 									 
 								</div>
@@ -252,14 +258,14 @@ RootMDB root = (RootMDB)session.getAttribute("userBean");
 							<p style="color: green;"><span id="responseNewPassword" ></span></p>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-xs-12 col-sm-4 col-md-4">
 									<label class="cardinfo-label" for="cvv">Mobile Number:</label>
 								</div>
 								<div class="col-xs-12 col-sm-8 col-md-8">
 									<input type="text" id="txtMobileNumber" class="form-control">
 								</div>
-							</div>
+							</div> -->
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px;">
 							<div class="row">
@@ -275,7 +281,7 @@ RootMDB root = (RootMDB)session.getAttribute("userBean");
 							<div class="row">
 								<div class="col-xs-12 col-sm-2 col-md-2"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4">
-									<button type="submit" style="font-size:20px;" onclick="return newPassword()"
+									<button type="submit" style="font-size:20px;" onclick="return newPassword()" id="newPwdSubmit"
 										class="btn btn-success">Submit
 									</button>
 			

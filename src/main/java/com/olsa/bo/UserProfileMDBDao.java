@@ -499,11 +499,11 @@ public class UserProfileMDBDao extends MongoBaseDao {
 		return true;
 	}
 
-	public void updatePassword(String mobileNumber, String newPassword) {
+	public void updatePassword(String familyId, String newPassword) {
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
 				.getCollection("Root");
 		  	BasicDBObject query = new BasicDBObject();
-			query.put("phoneNo", mobileNumber);
+			query.put("familyID", familyId);
 			String passwordHash = makePasswordHash(newPassword, Integer.toString(getRandom().nextInt()));
 			BasicDBObject newDocument = new BasicDBObject();
 			newDocument.put("password",passwordHash);
@@ -512,7 +512,7 @@ public class UserProfileMDBDao extends MongoBaseDao {
 			UpdateResult up=db.updateOne(query, updateObj);
 			if(up.getModifiedCount()>0){
 				query=new BasicDBObject();
-				query.put("phoneNo", mobileNumber);
+				query.put("familyID", familyId);
 				 newDocument = new BasicDBObject();
 				newDocument.put("firstLogin",false);
 				 updateObj = new BasicDBObject();

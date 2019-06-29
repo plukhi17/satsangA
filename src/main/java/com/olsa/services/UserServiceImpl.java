@@ -265,21 +265,16 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	@Override
-	public ForgotPasswordResponse updateNewPassword(String mobileNumber, String newPassword) {
+	public ForgotPasswordResponse updateNewPassword(String familId, String newPassword) {
 		ForgotPasswordResponse response=new ForgotPasswordResponse();
-		boolean flag = userProfileMDBDao.ifExistMobileNumber(mobileNumber);
-		if(flag==true) {
-			userProfileMDBDao.updatePassword(mobileNumber,newPassword);
+		//boolean flag = userProfileMDBDao.ifExistMobileNumber(mobileNumber);
+	
+			userProfileMDBDao.updatePassword(familId,newPassword);
 			response.setResponseMsg("Successfully updated password");
 			response.setStatus("true");
 			logger.info("Successfully updated new password");
 			return response;
-		}else {
-			logger.info("Not match mobile number, Please try valied mobile Number:"+mobileNumber);
-			response.setResponseMsg("Not match mobile number, Please try valied mobile Number");
-			response.setStatus("false");
-			return response;
-		}
+		
 	}
 	
 	

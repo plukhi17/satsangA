@@ -46,9 +46,10 @@ public class IstavrityExcelToJsonConverter {
 	//private static final String fileName="C://SRI SRI THAKUR//SATSANG_AMERICA//SATSANG_AMERICA_ISTAVRITY//sa_family_master_latest_dec_04.xlsx";
 	//private static final String JsonFileName="C://SRI SRI THAKUR//SATSANG_AMERICA//SATSANG_AMERICA_ISTAVRITY//sa_family_master.json";
 	
-	private static final String fileName="C://SRI SRI THAKUR//SATSANG_AMERICA//SATSANG_AMERICA_ISTAVRITY//istavrity_deposit_summary_jan_2018.xlsx";
-	private static final String JsonFileName="C://SRI SRI THAKUR//SATSANG_AMERICA//SATSANG_AMERICA_ISTAVRITY//istavrity_deposit_summary_jan_2018.json";
-	
+	//private static final String fileName="C://SRI SRI THAKUR//SATSANG_AMERICA//SATSANG_AMERICA_ISTAVRITY//istavrity_deposit_summary_jan_2018.xlsx";
+	//private static final String JsonFileName="C://SRI SRI THAKUR//SATSANG_AMERICA//SATSANG_AMERICA_ISTAVRITY//istavrity_deposit_summary_jan_2018.json";
+	private static final String JsonFileName="P://sample1.json";
+	private static final String fileName="P://sample.xlsx";
 	
 	public static void main(String [] args ) {
 		
@@ -222,7 +223,7 @@ public class IstavrityExcelToJsonConverter {
 			} //end of row
 
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			logger.info(e);
 			throw new Exception("UPLOAD_EXCEPTION :"+e);
 		}
