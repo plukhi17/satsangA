@@ -1676,14 +1676,15 @@ function cardNameChacking(num) {
 
 								$scope.loadUser = function() {
 									var istPhone = $('#phoneNo').val();
-									var istFamily= $('familyCode').val();
+									var istFamily= $('#familyCode').val();
+									
 									var applicationFlow = $(
 											'#txtApplicationFlow').val();
 									var contextPath = "getIshtJSONObject.do"
-											+ "?phoneNo="
-											+ istPhone
-											+ "&applicationFlow="
-											+ applicationFlow;
+										+ "?familyID="
+										+ istFamily
+										+ "&applicationFlow="
+										+ applicationFlow;
 									$http({
 										method : "POST",
 										url : contextPath
