@@ -102,9 +102,9 @@ public class IshtServiceImpl implements IshtService{
 		return response;
 	}
 
-	public ResultObject getIshtTran(String phoneNo) {
+	public ResultObject getIshtTran(String familyId) {
 		ResultObject response = new ResultObject();
-		response.setObject1(phoneNo);
+		response.setObject1(familyId);
 		response = ishtMDBDao.getIshtTran(response);
 		return response;
 	}
@@ -116,9 +116,9 @@ public class IshtServiceImpl implements IshtService{
 		return response;
 	}
 
-	public ResultObject getIshtTranAdmin(String phoneNo) {
+	public ResultObject getIshtTranAdmin(String familyId) {
 		ResultObject response = new ResultObject();
-		response.setObject1(phoneNo);
+		response.setObject1(familyId);
 		response = ishtMDBDao.getIshtTranAdmin(response);
 		return response;
 	}

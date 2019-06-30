@@ -262,13 +262,13 @@ public class IshtMDBDao extends MongoBaseDao {
     	
     	try {
 
-    		String phoneNo= (String)response.getObject1();
-    		logger.info(" Inside the getIshtTran , PhoneNo : "+phoneNo);
+    		String familyId= (String)response.getObject1();
+    		logger.info(" Inside the getIshtTran , familyId : "+familyId);
 
     		MongoCursor<Document> cursor= null;
     		List<IshtMDB> listIshtMDB = new ArrayList<IshtMDB>();
 
-    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(OnlineSAConstants.ISHT_COLLECTION).find(Filters.and(Filters.eq("phoneNo", phoneNo))).iterator();
+    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(OnlineSAConstants.ISHT_COLLECTION).find(Filters.and(Filters.eq("familyID", familyId))).iterator();
     		if(cursor!=null){
     			while(cursor.hasNext()){
     				Document result = cursor.next();
@@ -319,8 +319,8 @@ public class IshtMDBDao extends MongoBaseDao {
     	
     	try {
     		logger.info("Inside Admin.. ishtMDBDao");
-    		String phoneNo= (String)response.getObject1();
-    		logger.info("Phone No :"+phoneNo);
+    		String familyId= (String)response.getObject1();
+    		logger.info("FamilyId :"+familyId);
 
     		MongoCursor<Document> cursor= null;
     		List<IshtMDB> listIshtMDB = new ArrayList<IshtMDB>();
@@ -337,10 +337,10 @@ public class IshtMDBDao extends MongoBaseDao {
     					logger.info("Exception getIshtTranAdmin :"+e);
     				}
     				ishtMDB.setFamilyID(result.getString("familyID").toString());
-    				ishtMDB.setName(result.get("name").toString());
-    				ishtMDB.setTrnDetails(result.get("trnDetails").toString());
+    				ishtMDB.setName(result.get("name")!=null?result.get("name").toString():"");
+    				ishtMDB.setTrnDetails(result.get("trnDetails")!=null?result.get("trnDetails").toString():"");
     				//ishtMDB.setChecqNo(result.get("checqNo").toString());
-    				ishtMDB.setChequeIssueBank(result.get("chequeIssueBank").toString());
+    				ishtMDB.setChequeIssueBank(result.get("chequeIssueBank")!=null?result.get("chequeIssueBank").toString():"");
     				ishtMDB.setTotal((Double) result.get("total"));
     				ishtMDB.setIssuedFlag(result.get("issuedFlag").toString());
     				ishtMDB.setReceiptNo(result.get("receiptNo").toString());
@@ -359,7 +359,7 @@ public class IshtMDBDao extends MongoBaseDao {
 
     	}
     	catch(Exception ex) {
-    		
+    		ex.printStackTrace();
     		logger.info("Exception in getIshtTranAdmin  :"+ex);
     	}
     

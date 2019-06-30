@@ -506,7 +506,8 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			
 		  			$scope.loadIshtTran = function() {
   		  			 	var istPhone = $('#phoneNo').val();
-  		  			 	var contextPath = "getIshtTran.do"+"?phoneNo="+ istPhone;
+  		  			var familyId = $('#familyId').val();
+  		  			 	var contextPath = "getIshtTran.do"+"?familyId="+ familyId;
   	  				 	var $table = $("#tblIshtTran");
   	  				 	$table.bootstrapTable({
   	  		            columns: [
@@ -583,9 +584,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			};
 
 		  			$scope.loadIshtTranAdmin = function() {
-		  				var istPhone = $('#phoneNo').val();
+		  				var familyId = $('#familyId').val();
 		  				var userRole = $('#userRole').val();
-		  				var contextPath = "getIshtTranAdmin.do"+"?phoneNo="+ istPhone;
+		  				var contextPath = "getIshtTranAdmin.do"+"?familyId="+ familyId;
 		  				var $table = $("#tblIshtTran");
 		  				
 		  			if (userRole=='superUserRole'){

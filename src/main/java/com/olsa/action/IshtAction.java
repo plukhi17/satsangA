@@ -155,11 +155,11 @@ public class IshtAction extends BaseAction {
 	 */
 	public void getIshtTran() {
 
-		String phoneNo = getRequest().getParameter(("phoneNo"));
+		String familyId = getRequest().getParameter(("familyId"));
 		logger.info("Inside getIshtTran() Action");
 		try {
 			ResultObject result = new ResultObject();
-			result = getIshtService().getIshtTran(phoneNo);
+			result = getIshtService().getIshtTran(familyId);
 			getResponse().setContentType("text/json;charset=utf-8");
 			JSONObject responseObject = new JSONObject();
 			if (result.isSuccess()) {
@@ -212,11 +212,11 @@ public class IshtAction extends BaseAction {
 	 * this method will load tran details for admin user to approve reject tran.
 	 */
 	public void getIshtTranAdmin() {
-		String phoneNo = getRequest().getParameter(("phoneNo"));
+		String familyId = getRequest().getParameter(("familyId"));
 		logger.info("Inside getIshtTran() Action");
 		try {
 			ResultObject result = new ResultObject();
-			result = getIshtService().getIshtTranAdmin(phoneNo);
+			result = getIshtService().getIshtTranAdmin(familyId);
 			getResponse().setContentType("text/json;charset=utf-8");
 			JSONObject responseObject = new JSONObject();
 			if (result.isSuccess()) {
