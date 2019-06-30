@@ -1410,6 +1410,8 @@ function cardNameChacking(num) {
 								}
 								
 
+						
+								
 								
 								$scope.parmentForm= function () {
 									var amount=document.getElementById("GTotal").value;
@@ -1435,15 +1437,15 @@ function cardNameChacking(num) {
 												
 												function() {
 												
-													var istPhone = $(
-															'#phoneNo')
-															.val();
+													var istPhone = $('#phoneNo').val();
+													var istFamily= $('#familyCode').val();
+													//alert(istFamily);
 													var applicationFlow = $(
 															'#txtApplicationFlow')
 															.val();
 													var contextPath = "getIshtJSONObject.do"
-															+ "?phoneNo="
-															+ istPhone
+															+ "?familyID="
+															+ istFamily
 															+ "&applicationFlow="
 															+ applicationFlow;
 													//var contextPath = "getIshtJSONObject.do"+"?phoneNo="+ istPhone;
@@ -1674,6 +1676,7 @@ function cardNameChacking(num) {
 
 								$scope.loadUser = function() {
 									var istPhone = $('#phoneNo').val();
+									var istFamily= $('familyCode').val();
 									var applicationFlow = $(
 											'#txtApplicationFlow').val();
 									var contextPath = "getIshtJSONObject.do"

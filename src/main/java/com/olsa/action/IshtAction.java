@@ -92,19 +92,19 @@ public class IshtAction extends BaseAction {
 
 		try {
 
-			String phoneNo = getRequest().getParameter(("phoneNo"));
+			String familyId = getRequest().getParameter(("familyID"));
 
 			if (getRequest().getParameter("applicationFlow") != null)
 				;
 			String applicationFlow = getRequest().getParameter(("applicationFlow"));
 
 			logger.info(
-					"inside getIshtJSONObject 1 : Phone no  :" + phoneNo + "applicationFlow : " + applicationFlow);
+					"inside getIshtJSONObject 1 : familyId no  :" + familyId + "applicationFlow : " + applicationFlow);
 
 			if (!OnlineSAConstants.ADMIN_FLOW.equalsIgnoreCase(applicationFlow)) {
 				RootMDB rootMdb = (RootMDB) getRequest().getSession().getAttribute("userBean");
-				phoneNo = rootMdb.getPhoneNo();
-				logger.info("Getting Root Object  :" + phoneNo + "applicationFlow : " + applicationFlow);
+				familyId = rootMdb.getFamilyID();
+				logger.info("Getting Root Object  :" + familyId + "applicationFlow : " + applicationFlow);
 			}
 
 			// logger.info("inside getIshtJSONObject 2: Phone no :" + phoneNo
@@ -113,7 +113,7 @@ public class IshtAction extends BaseAction {
 			JSONObject responseObject = new JSONObject();
 
 			ResultObject result = new ResultObject();
-			result = getIshtService().getUserIshtObjectJSON(phoneNo);
+			result = getIshtService().getUserIshtObjectJSON(familyId);
 			logger.info("getIshtJSONObject Action sucess flag " + result.isSuccess());
 			if (result.isSuccess()) {
 				RootMDB root = (RootMDB) result.getObject2();

@@ -218,12 +218,12 @@ public class MongoBaseDao extends BaseDao {
 	}
 
 	
- public List<IshtLineMDB> fetchIshtLines(final String phoneNo) {
+ public List<IshtLineMDB> fetchIshtLines(final String familyId) {
 
-            if (phoneNo != null) {
+            if (familyId != null) {
 		                final Document doc = this.getMongoClient().getDatabase(this.getMongoDbName())
 		                        .getCollection(OnlineSAConstants.ISHT_COLLECTION, IshtMDB.class)
-		                        .find(eq("phoneNo", phoneNo), Document.class)
+		                        .find(eq("familyID", familyId), Document.class)
 		                        .projection(include("line")).sort(Sorts.descending("_id")).first();
 		                if (doc != null) {
 		                    final List<IshtLineMDB> lines = com.olsa.utility.MongoUtil.documentListToObjectList((List<Document>) doc

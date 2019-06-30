@@ -78,7 +78,7 @@ public class IshtMDBDao extends MongoBaseDao {
     		isht.setFamilyID(root.getFamilyID());
     		isht.setAddress(root.getAddress());
 
-    		List<IshtLineMDB> list = this.fetchIshtLines(root.getPhoneNo());
+    		List<IshtLineMDB> list = this.fetchIshtLines(root.getFamilyID());
 
     		logger.info("Size of list before if : "+list);
 
