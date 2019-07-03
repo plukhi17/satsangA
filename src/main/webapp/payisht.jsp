@@ -42,12 +42,12 @@
 
 
 <link
-	href="http://vitalets.github.io/angular-xeditable/dist/css/xeditable.css"
+	href="https://vitalets.github.io/angular-xeditable/dist/css/xeditable.css"
 	rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script
-	src="http://vitalets.github.io/angular-xeditable/dist/js/xeditable.js"></script>
+	src="https://vitalets.github.io/angular-xeditable/dist/js/xeditable.js"></script>
 <script src="https://code.angularjs.org/1.0.8/angular-mocks.js"></script>
 <script src="js/lumino.glyphs.js"></script>
 <link href="css/styles.css" rel="stylesheet">
@@ -55,13 +55,13 @@
 
 <script src="js/operation.js"></script>
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.css">
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.js"></script>
 
 <!-- Latest compiled and minified Locales -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <%
 
