@@ -1,7 +1,10 @@
 /**
  */
 
-var app = angular.module('onlineSA', []);
+var app = angular.module('onlineSA', []).config(function($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.withCredentials = true;
+});;
 app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		$scope.isEdit = true;    	
 	   	$scope.country = {};
