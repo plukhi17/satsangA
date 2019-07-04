@@ -1,13 +1,12 @@
 /**
  */
 
-var app = angular.module('onlineSA', []).config(function($httpProvider) {
-    $httpProvider.defaults.useXDomain = true;
-    $httpProvider.defaults.withCredentials = true;
-});;
+var app = angular.module('onlineSA', []);
 app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		$scope.isEdit = true;    	
 	   	$scope.country = {};
+	   	$scope.baseURL ="https://satsangamerica.com";
+	   	// 	$scope.baseURL ="http://localhost:8080";
 	    $scope.state = {};
 	    $scope.chkNotInit=false;
 	    $scope.checkEmailRes="Email address is submitted already.";
@@ -490,7 +489,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  				
 		  			$scope.loadAllRitvik = function() {
 		  				//alert('loadAllRitvik');
-  		  			 	var contextPath = "getAllRitvik.do";
+  		  			 	var contextPath = 	$scope.baseURL+"/getAllRitvik.do";
   	  				$http({
 							 method : "POST",
 							 url : contextPath
@@ -589,7 +588,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
 		  			$scope.loadIshtTranAdmin = function() {
 		  				var familyId = $('#familyId').val();
 		  				var userRole = $('#userRole').val();
-		  				var contextPath = "getIshtTranAdmin.do"+"?familyId="+ familyId;
+		  				var contextPath = $scope.baseURL+"/getIshtTranAdmin.do"+"?familyId="+ familyId;
 		  				var $table = $("#tblIshtTran");
 		  				
 		  			if (userRole=='superUserRole'){
