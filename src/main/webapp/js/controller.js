@@ -148,7 +148,7 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   					   rActive:$scope.chkIsDecessed,
   					   };
   		 		  var applicationFlow = $('#txtApplicationFlow').val();
-  		 		   var contextPath = "addFamilyUser.do"+"?familyUserDetails="+ JSON.stringify(familyUserDetails)+"&applicationFlow="+applicationFlow;
+  		 		   var contextPath = $scope.baseURL+"/addFamilyUser.do"+"?familyUserDetails="+ JSON.stringify(familyUserDetails)+"&applicationFlow="+applicationFlow;
   		 		  // alert(contextPath);
   						$http({
   							 method : "POST",
