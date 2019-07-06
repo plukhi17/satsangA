@@ -22,6 +22,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.operation.OrderBy;
 import com.olsa.mongo.OsMongoClient;
 import com.olsa.pojo.FamilyMDB;
 import com.olsa.pojo.IshtLineMDB;
@@ -268,7 +269,8 @@ public class IshtMDBDao extends MongoBaseDao {
     		MongoCursor<Document> cursor= null;
     		List<IshtMDB> listIshtMDB = new ArrayList<IshtMDB>();
 
-    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(OnlineSAConstants.ISHT_COLLECTION).find(Filters.and(Filters.eq("familyID", familyId))).iterator();
+    		cursor = getMongoClient().getDatabase(getMongoDbName()).getCollection(OnlineSAConstants.ISHT_COLLECTION)
+    				.find(Filters.and(Filters.eq("familyID", familyId))).sort(new BasicDBObject("checqDate", OrderBy.DESC.getIntRepresentation())).iterator();
     		if(cursor!=null){
     			while(cursor.hasNext()){
     				Document result = cursor.next();
