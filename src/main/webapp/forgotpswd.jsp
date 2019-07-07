@@ -57,7 +57,7 @@
 	function backOTPBtn(){
 		$('#otpPasswordBody').hide();
 		$('#forgotPasswordBody').show();
-		 $('#newPasswordBody').hide();
+		 $('#Body').hide();
 		 document.getElementById("responseMsg").innerHTML="";
 		 document.getElementById("responseEmailId").innerHTML="";
 		 document.getElementById('txtOTPNum').value="";
@@ -148,11 +148,12 @@
 	function newPassword(){
 		//var mobileNumber = document.getElementById('txtMobileNumber').value;
 		var newPassword = document.getElementById('txtNewPassword').value;
-		//if(mobileNumber.trim().length > 0){
-		//}else{
-			//alert("Mobile number required");
-			//return false;
-		//}
+		var confPassword = document.getElementById('txtconfPassword').value;
+		if(newPassword.trim().length > 0 && confPassword.trim().length > 0 && newPassword == confPassword){
+		}else{
+			alert("Password and Confirm Password is not matching.");
+			return false;
+		}
 		if(newPassword.trim().length > 0){
 			
 			var xhttp = new XMLHttpRequest();
@@ -257,23 +258,24 @@ RootMDB root = (RootMDB)session.getAttribute("userBean");
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<p style="color: green;"><span id="responseNewPassword" ></span></p>
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<!-- <div class="row">
-								<div class="col-xs-12 col-sm-4 col-md-4">
-									<label class="cardinfo-label" for="cvv">Mobile Number:</label>
-								</div>
-								<div class="col-xs-12 col-sm-8 col-md-8">
-									<input type="text" id="txtMobileNumber" class="form-control">
-								</div>
-							</div> -->
-						</div>
+				
 						<div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px;">
 							<div class="row">
 								<div class="col-xs-12 col-sm-4 col-md-4">
-									<label class="cardinfo-label" for="cvv">New Password:</label>
+									<label class="cardinfo-label" for="txtNewPassword">New Password:</label>
 								</div>
 								<div class="col-xs-12 col-sm-8 col-md-8">
 									<input type="password" id="txtNewPassword" class="form-control"> 
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 10px;">
+							 <div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4">
+									<label class="cardinfo-label" for="txtconfPassword">Confirm Password:</label>
+								</div>
+								<div class="col-xs-12 col-sm-8 col-md-8">
+									<input type="password" id="txtconfPassword" class="form-control">
 								</div>
 							</div>
 						</div>
