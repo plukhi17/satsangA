@@ -65,7 +65,7 @@
 							<input class="btn btn-primary" type="submit" ng-click="loginForm.$valid && validateUser($event)" value="Sign In" />
                             <a href="register.jsp" class="btn btn-primary pull-right">Register User</a>
                             
-                              <a style="margin-left: 10px;"  href="forgotpswd.jsp">Forgot Password</a>
+                              <a style="margin-left: 10px;cursor:pointer" ng-click="validateForgetUser($event)" >Forgot Password</a>
 						</fieldset>
 					</form>
 				</div>

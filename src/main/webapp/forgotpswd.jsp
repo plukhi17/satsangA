@@ -43,7 +43,6 @@
 			if(event.target.value.length>5){
 				return false;
 			}else{
-				
 				if(event.target.value.length==5){
 					//$('#submitOTPId').show();
 					document.getElementById("submitOTPId").disabled = false;
@@ -210,7 +209,7 @@ RootMDB root = (RootMDB)session.getAttribute("userBean");
                             <div class="form-group has-error">
                                 <!--<label class="control-label" for="txtFamilyCode">User ID:</label>-->
                                 <input class="form-control" placeholder="Enter your email id (someone@mail.com)"
-                                 id="txtEmailId" name="txtEmailId" value="<%= root!=null?root.getEmail():"" %>" required="required" <%if (root !=null) {%> disabled="true"/> <%}else{%>/><%}%>
+                                 id="txtEmailId" name="txtEmailId" value="<%= root!=null?root.getEmail():"" %>" required="required"  disabled="true"/> 
                             </div>
 							<a href="#"  onclick="return forgotPassword()" class="btn btn-primary">Submit</a>
                             <span class="pull-right">Go back to <a href="/OnlineSA">Login</a></span>

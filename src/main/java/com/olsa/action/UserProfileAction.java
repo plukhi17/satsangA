@@ -230,7 +230,61 @@ public class UserProfileAction extends BaseAction {
 			e1.printStackTrace();
 		}
 	}
+	
+	/**
+	 * This method will with validate the user. validation will validate if user
+	 * exists or not if user exists, it will store the user in session to reuse the
+	 * user during is session.
+	 */
+	public void validateForgetUser() {
+		String loginUserDetails = getRequest().getParameter(("userDetails"));
+		boolean result = true;
+		RootMDB root = null;
+		HashMap<String, String> error = null;
+		try {
+			
+			logger.info("inside  validateUser");
+			ResultObject resultObject = getUserService().validateUserEmail(loginUserDetails);
+			if (resultObject.getObject1() != null) {
+				root = (RootMDB) resultObject.getObject1();
 
+			} else {
+				error = resultObject.getErrors();
+				logger.info(error.size());
+				result = false;
+			}
+
+			try {
+				getResponse().setContentType("text/json;charset=utf-8");
+				JSONObject responseObject = new JSONObject();
+				if (result) {
+					JSONObject userJSONObject = new JSONObject(root);
+					responseObject.put("returnCode", "success");
+					responseObject.put("userObject", root);
+					responseObject.put(USER_JSON_OBJECT, userJSONObject);
+					logger.info(userJSONObject);
+					getRequest().getSession().setAttribute("userBean", root);
+
+				} else {
+					responseObject.put(RETURN_CODE, ERROR_FLAG);
+					if (error.get("password") != null) {
+						responseObject.put(RETURN_MESSAGE, error.get("password"));
+						logger.info(responseObject);
+					} else {
+						responseObject.put(RETURN_MESSAGE, error.get("userName"));
+					}
+				}
+				responseObject.write(getResponse().getWriter());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	
 	public void getUserJSONObject() {
 		try {
 

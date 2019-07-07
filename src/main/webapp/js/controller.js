@@ -204,6 +204,37 @@ app.controller('onlineSAController', function($scope,$http,$rootScope) {
   		  			
   		  			
   		  			
+  		  		 $scope.validateForgetUser = function() {
+  		  			 
+  		  			 if(!$scope.userName){
+  		  				 alert("Please provide Family Id");
+	  		  			 return false;
+	  		  		 }
+  		  			 
+  	  		  		 var userName=$scope.userName.replace(/[^a-zA-Z0-9.]/g, '');
+  	  		  		
+  	  		  		 var userDetails ={
+  	  					   userName:userName,
+  	  					};
+  	  		 		   var contextPath = "validateForgetUser.do"+"?userDetails="+ JSON.stringify(userDetails);
+  	  						$http({
+  	  							 method : "POST",
+  	  							 url : contextPath
+  	  						 }).then(function mySucces(data) {
+  	  							var returnObject = eval(data); // Parse Return Data
+  	  							if(returnObject.data.returnCode=='error') {
+  	  	 		  	        		 $scope.PostDataResponse = returnObject.data.returnMessage;
+  	  	 		  	        		 $("#dvErrAlert").show();
+  	  							 }else{
+  	  								 	window.location = 'forgotpswd.jsp';
+  	  							 }
+  	  						 },function myError(d) {
+  	  							 alert("fail");
+  	  						 });
+  	  		  			};
+  		  			
+  		  			
+  		  			
   		  		$scope.searchUser = function() {	
   		  			
   		  			  var istPhone = $('#phoneNo').val();

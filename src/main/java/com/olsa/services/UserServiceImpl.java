@@ -114,6 +114,27 @@ public class UserServiceImpl implements UserService {
 		}
 		return resultObject;
 	}
+	
+	public ResultObject validateUserEmail(String loginDetails) {
+		logger.info("inide validateLogin");
+		String primaryUserDetailsJSON = loginDetails;
+		ResultObject resultObject = null;
+		JSONObject obj = new JSONObject(loginDetails);
+		if (obj.getString("userName").equalsIgnoreCase("admin")
+				&& obj.getString("password").equalsIgnoreCase("admin")) {
+			resultObject = new ResultObject();
+			RootMDB root = new RootMDB();
+			root.setFirstName("Admin");
+			root.setLastName("User");
+			root.setUserType(OnlineSAConstants.ADMIN_USER);
+			resultObject.setObject1(root);
+		} else {
+			resultObject = getUserProfileMDBDao().validateForgetUser(obj.getString("userName"));
+		}
+		return resultObject;
+	}
+	
+	
 
 	public ResultObject addFamilyUserDetails(String familyUserDetails, RootMDB userSession) {
 		logger.info("inside addFamilyUserDetails");

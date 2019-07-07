@@ -14,6 +14,8 @@
 		<action name ="validateUser" method = "validateUser" class="userProfileAction">
 			<result name="success">register.jsp</result>
 		</action>
+				
+		<action name ="validateForgetUser" method = "validateForgetUser" class="userProfileAction">	</action>
 		<action name="checkEmailExists" method="checkEmailExists" class="userProfileAction"></action>
 		<action name ="addPrimaryUser" method = "addPrimaryUser" class="userProfileAction"></action>
 		<action name ="addFamilyUser" method = "addFamilyUser" class="userProfileAction"></action>

@@ -293,7 +293,26 @@ public class UserProfileMDBDao extends MongoBaseDao {
         return resultObject;
         
     }
+    
+public ResultObject validateForgetUser(String username) {
+    	
+    	ResultObject resultObject = new ResultObject();
+        HashMap<String, String> error = new HashMap<String, String>();
+        RootMDB getRoot = fetchRootDocument(username);
+                
+        if (getRoot == null) {
+            error.put("userName", "User Not Exist");
+            resultObject.setErrors(error);
+            return resultObject; 
+        }
 
+       
+        
+        resultObject.setObject1(getRoot);
+        return resultObject;
+        
+    }
+    
     public void getRitvikData(){
 	    	List<RitvikMDB> ritvikList = fetchRitvikCollection()
 				.find()

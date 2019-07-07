@@ -25,4 +25,5 @@ public interface UserService {
 	ForgotPasswordResponse reSendOTP(String email, String date);
 	ForgotPasswordResponse updateNewPassword(String mobileNumber, String newPassword);
 	String checkEmailExists(String email);
+	ResultObject validateUserEmail(String loginUserDetails);
 }
