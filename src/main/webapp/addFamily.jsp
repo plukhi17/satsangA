@@ -1,5 +1,6 @@
 <%@page import="com.olsa.utility.OnlineSAConstants"%>
 <%@page import="com.olsa.pojo.RootMDB"%>
+<%@page import="com.olsa.pojo.FamilyMDB"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -58,10 +59,26 @@ response.setHeader("Cache-Control","no-cache");
 response.setHeader("Cache-Control","no-store");
 response.setHeader("Pragma","no-cache");
 response.setDateHeader ("Expires", 0);
-
+String familyId=request.getParameter("famId");
+List<FamilyMDB> familyList = root.getFamily();
+boolean mod=false;
     if(session.getAttribute("userBean")==null){
-   		response.sendRedirect(request.getContextPath() + "/");
+    	response.sendRedirect(request.getContextPath() + "/");
+	}else{
+		if(familyId!=null){
+			String rootFam=familyId.split("-")[0];
+			
+	    	System.out.println("rootFam: "+rootFam);
+	    	if(rootFam!=null && !rootFam.equals(root.getFamilyID())){
+	    		response.sendRedirect(request.getContextPath() + "/");
+	    	}else{
+	    		mod=true;
+	    	}
+		}
+		
 	}
+    
+ 
 %>
 <body ng-app="onlineSA">
    <div ng-controller="onlineSAController">
@@ -211,18 +228,33 @@ response.setDateHeader ("Expires", 0);
                                     </div>
                                 </div>
 
+							<%
+							String famFirstName="";
+							String famLastName="";
+							String famMiddleName="";
+					    	if (familyList!=null){
+					    		for(int i=0; i<familyList.size();i++){
+					    			if(mod && familyId.equals(familyList.get(i).getPersonalID())){
+					    				famFirstName=familyList.get(i).getFirstName();
+					    				famMiddleName=familyList.get(i).getMiddleName();
+					    				famLastName=familyList.get(i).getLastName();
+					    			}
+					      		}
+					    	}
+					      	%>
                                 
 								 <div class="form-group ">
                                     <label class="control-label col-md-12" for="txtFirstName">Name:</label>
                                     <div class="col-md-4">
-                                            <input id="txtFirstName" name="txtFirstName" type="text" style="text-transform:uppercase;" class="form-control" ng-model="txtFirstName" placeholder="First Name *" required>
+                                  
+                                            <input id="txtFirstName" name="txtFirstName" type="text" style="text-transform:uppercase;"  class="form-control" ng-model="txtFirstName" placeholder="First Name *"   required>
                                     </div>
                                     
                                     <div class="col-md-4">
-                                            <input id="txtMiddleName" name="txtMiddleName" type="text" style="text-transform:uppercase;" class="form-control" ng-model="txtMiddleName" placeholder="Middle Name">
+                                            <input id="txtMiddleName" name="txtMiddleName" type="text" style="text-transform:uppercase;" class="form-control" ng-model="txtMiddleName" placeholder="Middle Name"  >
                                     </div>
                                     <div class="col-md-4">
-                                            <input id="txtLastName" name="txtLastName" type="text"  style="text-transform:uppercase;" class="form-control" ng-model="txtLastName" placeholder="Last Name *" required>
+                                            <input id="txtLastName" name="txtLastName" type="text"  style="text-transform:uppercase;" class="form-control" ng-model="txtLastName" placeholder="Last Name *"   required>
                                     </div>
                                 </div>
                                     
@@ -248,10 +280,13 @@ response.setDateHeader ("Expires", 0);
                                         </label>
                                     </div>
                                 </div>
-                                
-                                
+                                 <input type="hidden" id="familyModify" />
+                                  <input type="hidden" id="famLastName" />
+                 				 <input type="hidden" id="famFirstName" />
+                 				  <input type="hidden" id="famMiddleName" />
+                 				 
                                 <div class="form-group col-md-12">
-                                    <input class="btn btn-primary" type="submit" ng-click="familyRegistrationForm.$valid && registerFamilyUser($event)" value="Add Member" ng-disabled="familyRegistrationForm.$invalid" />
+                                    <input class="btn btn-primary" type="submit" ng-click="familyRegistrationForm.$valid && registerFamilyUser($event)" value="{{addFamilyButton}}" ng-disabled="familyRegistrationForm.$invalid" />
                                     <input type="hidden" id="txtApplicationFlow" value="<%=applciationFlow%>" >
                                 </div>
 
@@ -311,6 +346,15 @@ response.setDateHeader ("Expires", 0);
                 $("#dvPermanentAdd").removeClass("hidden");
             }
         }
+      
+        var data = '<%= mod%>';
+        document.getElementById("familyModify").value = data;
+        document.getElementById("famFirstName").value = '<%= famFirstName%>';
+        document.getElementById("famMiddleName").value = '<%= famMiddleName%>';
+        document.getElementById("famLastName").value = '<%= famLastName%>';
+        
+   		//alert(data);
+    
 	</script>
 	</div>
 </body>

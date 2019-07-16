@@ -21,6 +21,7 @@
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
 	<script src="js/angular.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--Icons-->
 	<script src="js/lumino.glyphs.js"></script>
@@ -207,11 +208,13 @@ response.setDateHeader ("Expires", 0);
 						    <tr>
 						        <th>Name</th>
 						        <th>Personal ID</th>
+					         	<th></th>
 						    </tr>
 						    </thead>
 						    <tr>
 							    <td><%= root.getFirstName() +" "+ root.getLastName() %> *</td>
 							    <td><%= root.getFamilyID() %></td>
+						      	<td> <i id="<%= root.getFamilyID() %>" class="fa fa-edit cursror-pointer" onClick="modifyFamily(this)"></i></td>
 						    </tr>
 						   <%
 					    	if (familyList!=null){
@@ -219,7 +222,8 @@ response.setDateHeader ("Expires", 0);
 					    	%>
 					        <tr>
 					            <td><%= familyList.get(i).getFirstName()+"  "+familyList.get(i).getLastName()%></td>  
-					            <td><%= familyList.get(i).getPersonalID() %></td>  
+					            <td><%= familyList.get(i).getPersonalID() %></td>
+			                 	<td> <i id="<%= familyList.get(i).getPersonalID() %>" class="fa fa-edit cursror-pointer" onClick="modifyFamily(this)"></i></td>  
 					        </tr>
 					      	<%
 					      		}}
@@ -267,6 +271,17 @@ response.setDateHeader ("Expires", 0);
 		$(window).on('resize', function () {
 		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 		})
+		
+		function modifyFamily(event){
+			if(event.id !=null){
+			
+		  		window.location.href = "addFamily.jsp?famId="+event.id; 
+			}
+			
+			
+      
+			  
+		}
 	</script>
 </body>
 

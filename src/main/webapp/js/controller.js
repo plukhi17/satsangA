@@ -2,19 +2,39 @@
  */
 
 var app = angular.module('onlineSA', []);
-app.controller('onlineSAController', function($scope,$http,$rootScope) {
+app.controller('onlineSAController', function($scope,$http,$rootScope,$document) {
 		$scope.isEdit = true;    	
 	   	$scope.country = {};
-	   	$scope.baseURL ="https://satsangamerica.com";
-	   	// 	$scope.baseURL ="http://localhost:8080";
+	   //	$scope.baseURL ="https://satsangamerica.com";
+	   //	$scope.baseURL ="http://localhost:8080";
 	    $scope.state = {};
 	    $scope.chkNotInit=false;
+	    $scope.modifyFlow=false;
+	    $scope.addFamilyButton = 'Add Member';
 	    $scope.checkEmailRes="Email address is submitted already.";
 	    var allCountries = [{
 	        Id: "US",
 	        CountryName: "USA"
 	    }];
-	  
+	    
+	 
+	    angular.element(document).ready(function () {
+	    	
+	    	$scope.$apply(function() {
+	    		$scope.modifyFlow= ($document[0].getElementById("familyModify")!=null) ? $document[0].getElementById("familyModify").value:null;
+	    		if($scope.modifyFlow){
+	   			 $scope.addFamilyButton="Modify";
+	   		 	}else{
+	   		 		$scope.addFamilyButton = 'Add Member';
+	   		 	}
+	    		 $scope.txtFirstName= ($document[0].getElementById("famFirstName")!=null) ? $document[0].getElementById("famFirstName").value:null;
+		         $scope.txtLastName= ($document[0].getElementById("famLastName")!=null) ? $document[0].getElementById("famLastName").value:null;
+		         $scope.txtMiddleName= ($document[0].getElementById("famMiddleName")!=null) ? $document[0].getElementById("famMiddleName").value:null;
+
+	    	});
+	    		         
+	    });
+	    
 	    $scope.countries = allCountries;
 	    
 	    var allStates = [
