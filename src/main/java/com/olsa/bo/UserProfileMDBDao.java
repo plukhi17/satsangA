@@ -592,7 +592,7 @@ public ResultObject validateForgetUser(String username) {
 			  BasicDBObject searchQuery = new BasicDBObject();
 
 			    List<BasicDBObject> andQuery = new ArrayList<BasicDBObject>();
-			    andQuery.add(new BasicDBObject("familyId", userSession.getFamilyID().toString()));
+			    andQuery.add(new BasicDBObject("familyID", userSession.getFamilyID().toString()));
 			    andQuery.add(new BasicDBObject("family.personalID", root.getPersonalId()));
 
 			    searchQuery.put("$and", andQuery);
@@ -600,14 +600,14 @@ public ResultObject validateForgetUser(String username) {
 			    logger.info("executing :"+ searchQuery);
 				
 				
-				Document familyObject = new Document().append("firstName", root.getFirstName().toUpperCase())
-		        .append("middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():null)
-		        .append("lastName", root.getLastName().toUpperCase())
-				.append("rName", root.getrName()!=null?root.getrName().toUpperCase():null)
-				.append("saID", root.getRitwikID());
+				Document familyObject = new Document().append("family.$.firstName", root.getFirstName().toUpperCase())
+		        .append("family.$.middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():null)
+		        .append("family.$.lastName", root.getLastName().toUpperCase())
+				.append("family.$.rName", root.getrName()!=null?root.getrName().toUpperCase():null)
+				.append("family.$.saID", root.getRitwikID());
 				 
 				 fetchRootCollection().findOneAndUpdate(searchQuery,
-				 new Document("$set", new Document("family", familyObject)));
+				 new Document("$set", familyObject));
 								
 				RootMDB getUserBean = fetchRootDocument(userSession.getFamilyID().toString());
 				
