@@ -232,12 +232,18 @@ boolean mod=false;
 							String famFirstName="";
 							String famLastName="";
 							String famMiddleName="";
+							String rname="";
+							boolean isNotAlive=false;
 					    	if (familyList!=null){
 					    		for(int i=0; i<familyList.size();i++){
 					    			if(mod && familyId.equals(familyList.get(i).getPersonalID())){
 					    				famFirstName=familyList.get(i).getFirstName();
 					    				famMiddleName=familyList.get(i).getMiddleName();
 					    				famLastName=familyList.get(i).getLastName();
+					    				rname=familyList.get(i).getrName() + '|'+ familyList.get(i).getRitwikID();
+					    				isNotAlive=familyList.get(i).isRitwikStatus();
+					    				
+
 					    			}
 					      		}
 					    	}
@@ -281,10 +287,13 @@ boolean mod=false;
                                     </div>
                                 </div>
                                  <input type="hidden" id="familyModify" />
+                                 <input type="hidden" id="familyId" />
+                                 
                                   <input type="hidden" id="famLastName" />
                  				 <input type="hidden" id="famFirstName" />
                  				  <input type="hidden" id="famMiddleName" />
-                 				 
+                 				   <input type="hidden" id="rname" />
+                 				    <input type="hidden" id="isNotAlive" />
                                 <div class="form-group col-md-12">
                                     <input class="btn btn-primary" type="submit" ng-click="familyRegistrationForm.$valid && registerFamilyUser($event)" value="{{addFamilyButton}}" ng-disabled="familyRegistrationForm.$invalid" />
                                     <input type="hidden" id="txtApplicationFlow" value="<%=applciationFlow%>" >
@@ -352,7 +361,13 @@ boolean mod=false;
         document.getElementById("famFirstName").value = '<%= famFirstName%>';
         document.getElementById("famMiddleName").value = '<%= famMiddleName%>';
         document.getElementById("famLastName").value = '<%= famLastName%>';
+        document.getElementById("familyId").value = '<%= familyId%>';
+           
+        document.getElementById("rname").value = '<%= rname%>';
+        document.getElementById("isNotAlive").value = '<%= isNotAlive%>';
         
+        
+ 
    		//alert(data);
     
 	</script>

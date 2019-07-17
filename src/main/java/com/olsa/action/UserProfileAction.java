@@ -177,6 +177,59 @@ public class UserProfileAction extends BaseAction {
 		}
 
 	}
+	
+	/**
+	 * this method will modify family member to the primary member account.
+	 * 
+	 */
+
+	public void modifyFamliyUser() throws IOException {
+
+		String familyUserDetails = getRequest().getParameter(("familyUserDetails"));
+
+		if (getRequest().getParameter("applicationFlow") != null)
+			;
+		String applicationFlow = getRequest().getParameter(("applicationFlow"));
+		logger.info("inside addFamilyUser applicationFlow : " + applicationFlow);
+		RootMDB userSession;
+		if (!OnlineSAConstants.ADMIN_FLOW.equalsIgnoreCase(applicationFlow)) {
+			userSession = (RootMDB) getRequest().getSession().getAttribute("userBean");
+			logger.info("Session in user phone no " + userSession.getPhoneNo());
+		} else {
+			userSession = (RootMDB) getRequest().getSession().getAttribute(OnlineSAConstants.USER_ROLE_SUPER_USER);
+			logger.info("Session else user phone no " + userSession.getPhoneNo());
+		}
+
+		getResponse().setContentType("text/json;charset=utf-8");
+		JSONObject responseObject = new JSONObject();
+
+		try {
+			logger.info("inside  addfamilyUser");
+			ResultObject resultObject = getUserService().modifyFamilyUserDetails(familyUserDetails, userSession);
+
+			if (resultObject.isSuccess()) {
+				logger.info("inside sucess");
+				RootMDB root = (RootMDB) resultObject.getObject1();
+				getRequest().getSession().setAttribute("userBean", root);
+			} else {
+				HashMap errorMap = resultObject.getErrors();
+				logger.info("inside error block for user" + errorMap.get("errorMessage"));
+				responseObject.put(RETURN_CODE, ERROR_FLAG);
+				responseObject.put(RETURN_MESSAGE, errorMap.get("errorMessage"));
+				try {
+					responseObject.write(getResponse().getWriter());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					responseObject.put(RETURN_CODE, ERROR_FLAG);
+					responseObject.put(RETURN_MESSAGE, errorMap.get("errorMessage"));
+				}
+			}
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+
+	}
 
 	/**
 	 * This method will with validate the user. validation will validate if user

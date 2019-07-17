@@ -555,6 +555,81 @@ public ResultObject validateForgetUser(String username) {
 		}
 		return flag;
 	}
+
+	public ResultObject modifyFamilyUserDetails(String familyUserDetails, RootMDB userSession) {
+    	logger.info("inside modifyFamilyUserDetails : "+familyUserDetails);
+    	ResultObject resultObject = new ResultObject();
+    	HashMap<String , String> errorMap = new HashMap<String, String>();
+    	String familyUserDetailsJSON = familyUserDetails;
+    	int familyID = 0;
+    	RootMDB root = new RootMDB();
+
+    	try{
+	    	JSONObject obj = new JSONObject(familyUserDetailsJSON);
+	    	
+			root.setFirstName(obj.getString("firstName").toUpperCase());
+			
+			if(obj.has(("middleName")))
+				root.setMiddleName(obj.getString("middleName").toUpperCase());
+			
+			if(obj.has("lastName"))
+				root.setLastName(obj.getString("lastName").toUpperCase());
+			 root.setFamilyID(userSession.getFamilyID());
+			 root.setPersonalId(obj.getString("personalfamilyId"));
+			
+			 if(obj.has("rName")){
+					StringTokenizer st = new StringTokenizer(obj.get(("rName")).toString(),"|");
+					while (st.hasMoreElements()) {
+						String rName= st.nextElement().toString();
+						String saID = st.nextElement().toString();
+						root.setrName(rName.toUpperCase());
+						root.setRitwikID(saID);
+					}
+				}
+			 
+		
+					
+			  BasicDBObject searchQuery = new BasicDBObject();
+
+			    List<BasicDBObject> andQuery = new ArrayList<BasicDBObject>();
+			    andQuery.add(new BasicDBObject("familyId", userSession.getFamilyID().toString()));
+			    andQuery.add(new BasicDBObject("family.personalID", root.getPersonalId()));
+
+			    searchQuery.put("$and", andQuery);
+
+			    logger.info("executing :"+ searchQuery);
+				
+				
+				Document familyObject = new Document().append("firstName", root.getFirstName().toUpperCase())
+		        .append("middleName", root.getMiddleName()!=null?root.getMiddleName().toUpperCase():null)
+		        .append("lastName", root.getLastName().toUpperCase())
+				.append("rName", root.getrName()!=null?root.getrName().toUpperCase():null)
+				.append("saID", root.getRitwikID());
+				 
+				 fetchRootCollection().findOneAndUpdate(searchQuery,
+				 new Document("$set", new Document("family", familyObject)));
+								
+				RootMDB getUserBean = fetchRootDocument(userSession.getFamilyID().toString());
+				
+				List<FamilyMDB> arryList = getUserBean.getFamily();
+				for(int i = 0 ; i< arryList.size();i++){
+					logger.info(arryList.get(i).getFirstName());
+				}
+				
+				logger.info("Newly inserted User Data " +getUserBean.getFirstName());
+				resultObject.setObject1(getUserBean);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error("Exception occure in :"+ e.getMessage());
+			resultObject.setSuccess(false);
+			errorMap.put("errorCode", "unknown");
+			errorMap.put("errorMessage", "Some error occured , Please contact site admin");
+			resultObject.setErrors(errorMap);
+		}
+		return resultObject; 
+    }
 }
     
 

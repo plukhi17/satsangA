@@ -214,7 +214,7 @@ response.setDateHeader ("Expires", 0);
 						    <tr>
 							    <td><%= root.getFirstName() +" "+ root.getLastName() %> *</td>
 							    <td><%= root.getFamilyID() %></td>
-						      	<td> <i id="<%= root.getFamilyID() %>" class="fa fa-edit cursror-pointer" onClick="modifyFamily(this)"></i></td>
+						      	<%-- <td> <i id="<%= root.getFamilyID() %>" class="fa fa-edit cursror-pointer" onClick="modifyFamily(this)"></i></td> --%>
 						    </tr>
 						   <%
 					    	if (familyList!=null){

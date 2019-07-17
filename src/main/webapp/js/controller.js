@@ -22,7 +22,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope,$document)
 	    	
 	    	$scope.$apply(function() {
 	    		$scope.modifyFlow= ($document[0].getElementById("familyModify")!=null) ? $document[0].getElementById("familyModify").value:null;
-	    		if($scope.modifyFlow){
+			
+	    		if($scope.modifyFlow=='true'){
+	    
 	   			 $scope.addFamilyButton="Modify";
 	   		 	}else{
 	   		 		$scope.addFamilyButton = 'Add Member';
@@ -30,6 +32,9 @@ app.controller('onlineSAController', function($scope,$http,$rootScope,$document)
 	    		 $scope.txtFirstName= ($document[0].getElementById("famFirstName")!=null) ? $document[0].getElementById("famFirstName").value:null;
 		         $scope.txtLastName= ($document[0].getElementById("famLastName")!=null) ? $document[0].getElementById("famLastName").value:null;
 		         $scope.txtMiddleName= ($document[0].getElementById("famMiddleName")!=null) ? $document[0].getElementById("famMiddleName").value:null;
+		         $scope.txtRitvikName= ($document[0].getElementById("rname")!=null) ? $document[0].getElementById("rname").value:null;
+		         $scope.chkIsDecessed= ($document[0].getElementById("isNotAlive")!=null && $document[0].getElementById("isNotAlive")=='true') ? true:false;
+		         $scope.familyId=($document[0].getElementById("familyId")!=null) ? $document[0].getElementById("familyId").value:null;
 
 	    	});
 	    		         
@@ -166,9 +171,19 @@ app.controller('onlineSAController', function($scope,$http,$rootScope,$document)
   					   lastName:$scope.txtLastName,
   					   rName:$scope.txtRitvikName,
   					   rActive:$scope.chkIsDecessed,
+  					   personalfamilyId:$scope.familyId
   					   };
   		 		  var applicationFlow = $('#txtApplicationFlow').val();
-  		 		   var contextPath = $scope.baseURL+"/addFamilyUser.do"+"?familyUserDetails="+ JSON.stringify(familyUserDetails)+"&applicationFlow="+applicationFlow;
+
+  	    		if($scope.modifyFlow=='true'){
+  	    
+  	    			var contextPath = $scope.baseURL+"/modifyFamliyUser.do"+"?familyUserDetails="+ JSON.stringify(familyUserDetails)+"&applicationFlow="+applicationFlow;
+  	   		 	}else{
+  	   		 	var contextPath = $scope.baseURL+"/addFamilyUser.do"+"?familyUserDetails="+ JSON.stringify(familyUserDetails)+"&applicationFlow="+applicationFlow;
+  	   		 	}
+  		 		   
+  		 		   
+  		 		
   		 		  // alert(contextPath);
   						$http({
   							 method : "POST",

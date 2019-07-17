@@ -141,7 +141,11 @@ public class UserServiceImpl implements UserService {
 		ResultObject resultObject = getUserProfileMDBDao().addFamilyUserDetails(familyUserDetails, userSession);
 		return resultObject;
 	}
-
+	public ResultObject modifyFamilyUserDetails(String familyUserDetails, RootMDB userSession) {
+		logger.info("inside modifyFamilyUserDetails");
+		ResultObject resultObject = getUserProfileMDBDao().modifyFamilyUserDetails(familyUserDetails, userSession);
+		return resultObject;
+	}
 	public ResultObject getUserObjectJSON(String phoneNo) {
 		ResultObject resultObject = new ResultObject();
 		RootMDB userJSONObject = getUserProfileMDBDao().fetchRootDocument(phoneNo);

@@ -19,6 +19,8 @@
 		<action name="checkEmailExists" method="checkEmailExists" class="userProfileAction"></action>
 		<action name ="addPrimaryUser" method = "addPrimaryUser" class="userProfileAction"></action>
 		<action name ="addFamilyUser" method = "addFamilyUser" class="userProfileAction"></action>
+		<action name ="modifyFamliyUser" method = "modifyFamliyUser" class="userProfileAction"></action>
+		
 		<action name ="getUserJSONObject" method = "getUserJSONObject" class="userProfileAction"></action>
 		<action name ="getSearchUserObject" method = "getSearchUserObject" class="userProfileAction"></action>
 

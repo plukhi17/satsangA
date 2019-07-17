@@ -26,4 +26,5 @@ public interface UserService {
 	ForgotPasswordResponse updateNewPassword(String mobileNumber, String newPassword);
 	String checkEmailExists(String email);
 	ResultObject validateUserEmail(String loginUserDetails);
+	ResultObject modifyFamilyUserDetails(String familyUserDetails, RootMDB userSession);
 }
