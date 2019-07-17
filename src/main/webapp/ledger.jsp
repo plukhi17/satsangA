@@ -12,7 +12,7 @@
     <title>Satsang America - Istavrity</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--<link href="css/datepicker3.css" rel="stylesheet">-->
     <link href="css/styles.css" rel="stylesheet">
      <link href="css/apps.css" rel="stylesheet">
@@ -21,6 +21,7 @@
     <script src="js/lumino.glyphs.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.css">
     <script src="js/ledger.js"></script>
 
     <!--[if lt IE 9]>
@@ -468,9 +469,19 @@ response.setDateHeader ("Expires", 0);
 
 
 
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-table.js"></script>
+ <!--    <script src="js/jquery-1.11.1.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap-table.js"></script> -->
+    <!-- Latest compiled and minified CSS -->
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/bootstrap-table.min.js"></script>
+
+<!-- Latest compiled and minified Locales -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/locale/bootstrap-table-zh-CN.min.js"></script>
   
 </body>
 
