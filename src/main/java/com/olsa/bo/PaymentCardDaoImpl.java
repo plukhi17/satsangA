@@ -241,18 +241,19 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	}
 
 	@Override
-	public List<CardDetailsDTO> viewAllCard(String contact) {
+	public List<CardDetailsDTO> viewAllCard(String familyId) {
 		List<CardDetailsDTO> cardDetailsDTOs=new ArrayList<CardDetailsDTO>();
 		
 		MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName()).getCollection(MongoConstants.CARD_DETAILS);  
 		//.getCollection("CardDetails");
 		Document document = new Document();
-		document.put("userId", contact);
+		document.put("userId", familyId);
 		FindIterable<Document> result = db.find(document);
-		for (Document doc : result) {
+		List<CreditCard> cards= BraintreeUtility.getCrediCards(familyId);
+		for (CreditCard card : cards) {
 			CardDetailsDTO dto=new CardDetailsDTO();
-			dto.setCardNumber((String)doc.get("cardNumber"));
-			dto.setExpirationDate((String)doc.get("expiDate"));
+			dto.setCardNumber(card.getLast4());
+			dto.setExpirationDate(card.getExpirationDate()+"/"+card.getExpirationMonth());
 			cardDetailsDTOs.add(dto);
 		}
 		return cardDetailsDTOs;
