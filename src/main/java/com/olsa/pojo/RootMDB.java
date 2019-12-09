@@ -1,8 +1,11 @@
 package com.olsa.pojo;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+@JsonInclude(Include.NON_NULL)
 public class RootMDB
 
 {
@@ -16,6 +19,7 @@ public class RootMDB
     private String phoneNo;
     private String password;
     private AddressMDB address;
+  
     private List<FamilyMDB> family;
     private String ritwikID;
     private boolean ritwikStatus;

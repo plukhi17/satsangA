@@ -1,9 +1,12 @@
 package com.olsa.bo;
 
+import com.braintreegateway.CreditCard;
+import com.braintreegateway.Result;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.olsa.utility.ACHDetailsDTO;
+import com.olsa.utility.BraintreeUtility;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.ManualPaymentUtils;
 import com.olsa.utility.MongoConstants;
@@ -34,23 +37,35 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		String response = null;
 		try {
 			if (ifExistCardNumber(paymentUtils) != true) {
-				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
-						.getCollection(MongoConstants.CARD_DETAILS);
+				/*MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
+						.getCollection(MongoConstants.CARD_DETAILS);*/
 						//.getCollection("CardDetails");
-				Document document = new Document().append("userId", paymentUtils.getContact())
+			/*	Document document = new Document().append("userId", paymentUtils.getContact())
 						.append("familyCode", paymentUtils.getFamilyCode())
 						.append("cardNumber", paymentUtils.getCardNumber())
-						.append("expiDate", paymentUtils.getExpirationDate());
-				db.insertOne(document);
-				response = "Successfully saved card details";
+						.append("expiDate", paymentUtils.getExpirationDate());*/
+				//db.insertOne(document);
+				
+				Result<CreditCard> result= BraintreeUtility.createCreditCard(paymentUtils);
+				if(result.isSuccess()) {
+					response = "Successfully saved card details";
+				}else {
+					response = "Error while saving the card details";
+				}
+				
 			} else {
-				response = "All ready exist card details";
+				response = "Already exist card details";
 			}
+			
+	
+			
 		} catch (Exception e) {
 			logger.error("Exception occure while saving card details: " + e.getMessage());
 			response = "Try later";
 		}
 		return response;
+		
+		
 
 	}
 	

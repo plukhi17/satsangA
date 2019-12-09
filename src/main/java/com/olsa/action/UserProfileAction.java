@@ -15,12 +15,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.braintreegateway.Customer;
+import com.braintreegateway.Result;
 import com.mongodb.client.FindIterable;
 import com.olsa.pojo.ResultObject;
 import com.olsa.pojo.RitvikMDB;
 import com.olsa.pojo.RootMDB;
 import com.olsa.services.RitvikService;
 import com.olsa.services.UserService;
+import com.olsa.utility.BraintreeUtility;
 import com.olsa.utility.ForgotPasswordResponse;
 import com.olsa.utility.OTPResponse;
 import com.olsa.utility.OnlineSAConstants;
@@ -82,11 +85,18 @@ public class UserProfileAction extends BaseAction {
 		try {
 			logger.info("inside  addPrimaryUserDetails");
 			ResultObject resultObject = getUserService().addPrimaryUserDetails(primaryUserDetails);
+			
+		
+					
+					
 			RootMDB userSession = (RootMDB) getRequest().getSession().getAttribute("userBean");
 			HashMap errorMap = null;
 			if (resultObject.isSuccess()) {
 				logger.info("inside sucess");
 				RootMDB root = (RootMDB) resultObject.getObject1();
+				
+				Result<Customer> result =BraintreeUtility.createCustomer(root);
+				
 				JSONObject obj = new JSONObject(primaryUserDetails);
 				logger.info(obj);
 				// do not set user session if admin is adding user

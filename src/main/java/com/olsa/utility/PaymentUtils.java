@@ -16,6 +16,7 @@ public class PaymentUtils implements Serializable{
 	private String contact;
 	private String familyCode;
 	private Date transDate;
+	private String customerId;
 	
 	
 	
@@ -68,6 +69,21 @@ public class PaymentUtils implements Serializable{
 	 */
 	public void setTransDate(Date transDate) {
 		this.transDate = transDate;
+	}
+	
+	
+	
+	/**
+	 * @return the customerId
+	 */
+	public String getCustomerId() {
+		return customerId;
+	}
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	@Override
 	public String toString() {
