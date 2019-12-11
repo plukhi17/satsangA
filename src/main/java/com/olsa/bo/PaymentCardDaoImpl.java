@@ -1,24 +1,27 @@
 package com.olsa.bo;
 
-import com.braintreegateway.CreditCard;
-import com.braintreegateway.Result;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.olsa.utility.ACHDetailsDTO;
-import com.olsa.utility.BraintreeUtility;
-import com.olsa.utility.CardDetailsDTO;
-import com.olsa.utility.ManualPaymentUtils;
-import com.olsa.utility.MongoConstants;
-import com.olsa.utility.PaymentACHUtils;
-import com.olsa.utility.PaymentUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
+
+import com.braintreegateway.CreditCard;
+import com.braintreegateway.Customer;
+import com.braintreegateway.PaymentMethod;
+import com.braintreegateway.Result;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.olsa.pojo.RootMDB;
+import com.olsa.utility.ACHDetailsDTO;
+import com.olsa.utility.BraintreeUtil;
+import com.olsa.utility.CardDetailsDTO;
+import com.olsa.utility.ManualPaymentUtils;
+import com.olsa.utility.MongoConstants;
+import com.olsa.utility.PaymentACHUtils;
+import com.olsa.utility.PaymentUtils;
 
 public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	static final Logger logger = Logger.getLogger(PaymentCardDaoImpl.class);
@@ -33,10 +36,11 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 	}
 
 	@Override
-	public String saveCadeDetails(PaymentUtils paymentUtils) {
+	public String saveCadeDetails(PaymentUtils paymentUtils, RootMDB root) {
 		String response = null;
+		Customer customer=BraintreeUtil.findCustomer(paymentUtils.getFamilyCode());
 		try {
-			if (ifExistCardNumber(paymentUtils) != true) {
+	
 				/*MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.CARD_DETAILS);*/
 						//.getCollection("CardDetails");
@@ -45,18 +49,37 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 						.append("cardNumber", paymentUtils.getCardNumber())
 						.append("expiDate", paymentUtils.getExpirationDate());*/
 				//db.insertOne(document);
+				//Check whether customer exists or not
+		
 				
-				Result<CreditCard> result= BraintreeUtility.createCreditCard(paymentUtils);
-				if(result.isSuccess()) {
-					response = "Successfully saved card details";
-				}else {
-					response = "Error while saving the card details";
+				Result<? extends PaymentMethod> result;
+				if(customer==null) {
+				
+					if(BraintreeUtil.createCustomer(root).isSuccess()) {
+						logger.info("Customer Created Successfully ");
+					}
+					else {
+						throw new Exception("Error while saving card==> Saving customer details");
+					}
 				}
+	
+					result= BraintreeUtil.createCreditCard(paymentUtils);
+					if(result.isSuccess()) {
+						if(!ifExistCardNumber(((CreditCard)result.getTarget()).getUniqueNumberIdentifier(),customer)) {
+							response ="Card Added Succesfully";
+						}else {
+							removeCardDetails(((CreditCard)result.getTarget()).getToken());
+							response ="Card already exists";
+						}
+							
+						
+					}else {
+						
+						response = "Error while saving the card details :"+result.getMessage();
+					}
 				
-			} else {
-				response = "Already exist card details";
-			}
 			
+		
 	
 			
 		} catch (Exception e) {
@@ -69,19 +92,28 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 
 	}
 	
+	
+
 	@Override
-	public String removeCardDetails(PaymentUtils paymentUtils) {
+	public String removeCardDetails(String cToken) {
 		String response = null;
 		try {
 		
 				MongoCollection<Document> db = getMongoClient().getDatabase(getMongoDbName())
 						.getCollection(MongoConstants.CARD_DETAILS);
 						//.getCollection("CardDetails");
-			db.deleteOne(new Document("cardNumber",paymentUtils.getCardNumber()));
-				response = "Successfully removed card details";
+				//	db.deleteOne(new Document("cardNumber",paymentUtils.getCardNumber()));
+				//paymentUtils.getNonce()  is creditocken for this time.
+				boolean paymentMethod =BraintreeUtil.deleteCreditCard(cToken);
+				if(paymentMethod) {
+					response = "Successfully removed card details";
+				}else {
+					response = "Error removed card details";
+				}
+				
 			
 		} catch (Exception e) {
-			logger.error("Exception occure while saving card details: " + e.getMessage());
+			logger.error("Exception occure while removeCardDetails card details: " + e.getMessage());
 			response = "Try later";
 		}
 		return response;
@@ -150,6 +182,21 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		}
 		return flag;
 	}
+	
+	private boolean ifExistCardNumber(String unique, Customer customer) {
+			for(CreditCard card : customer.getCreditCards()) {
+				if(card.getUniqueNumberIdentifier().equals(unique)) {
+					return true;
+				}
+			}
+			return false;
+				
+
+			
+			
+			
+		}
+	
 	
 	@Override
 	public boolean ifExistTrNo(String trNo) {
@@ -249,13 +296,25 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		Document document = new Document();
 		document.put("userId", familyId);
 		FindIterable<Document> result = db.find(document);
-		List<CreditCard> cards= BraintreeUtility.getCrediCards(familyId);
-		for (CreditCard card : cards) {
-			CardDetailsDTO dto=new CardDetailsDTO();
-			dto.setCardNumber(card.getLast4());
-			dto.setExpirationDate(card.getExpirationDate()+"/"+card.getExpirationMonth());
-			cardDetailsDTOs.add(dto);
+		List<CreditCard> cards=null;
+		try {
+			cards= BraintreeUtil.getCrediCards(familyId);
+			if(cards!=null) {
+				for (CreditCard card : cards) {
+					CardDetailsDTO dto=new CardDetailsDTO();
+					dto.setCardNumber(card.getLast4());
+					dto.setCardType(card.getCardType());
+					dto.setcToken(card.getToken());
+					dto.setExpirationDate(card.getExpirationDate());
+					cardDetailsDTOs.add(dto);
+				}
+			}
+		
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+
+		
 		return cardDetailsDTOs;
 	}
 	
@@ -278,4 +337,5 @@ public class PaymentCardDaoImpl extends MongoBaseDao implements PaymentCardDao {
 		}
 		return cardDetailsDTOs;
 	}
+
 }

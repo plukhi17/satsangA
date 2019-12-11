@@ -21,7 +21,9 @@ import com.braintreegateway.TransactionRequest;
 import com.braintreegateway.ValidationError;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.olsa.bo.PaymentCardDao;
+import com.olsa.pojo.RootMDB;
 import com.olsa.utility.ACHDetailsDTO;
+import com.olsa.utility.BraintreeUtil;
 import com.olsa.utility.CardDetailsDTO;
 import com.olsa.utility.ErrorValidation;
 import com.olsa.utility.ManualPaymentUtils;
@@ -69,7 +71,20 @@ public String transactionGetToken() {
 		
 
 		}
+	public String transactionGetToken(String familyId) {
+		String token=null;
+		
+		try {
+			token= BraintreeUtil.getClientToken(familyId);
+			logger.error("generated Client Token : "+token);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	
+		return token;
+		
+	
+		}
 	
 	
 	public PaymentResponseUtils transaction(PaymentUtils paymentUtils) {
@@ -85,12 +100,17 @@ public String transactionGetToken() {
 			
 			return paymentResponseUtils;
 		} else {
-			TransactionRequest request = new TransactionRequest().creditCard().number(paymentUtils.getCardNumber())
-					//.expirationDate(paymentUtils.getExpirationDate())
-					.expirationMonth(paymentUtils.getExpirationDate().split("/")[0])
-				    .expirationYear(paymentUtils.getExpirationDate().split("/")[1])
-					.cvv(paymentUtils.getCvv()).done()
-					.amount(new BigDecimal(paymentUtils.getAmount())).paymentMethodNonce("fake-valid-nonce").options()
+			TransactionRequest request = new TransactionRequest();
+			if(paymentUtils.getCvv()!=null) {
+				request.creditCard().cvv(paymentUtils.getCvv());
+				request.paymentMethodToken(paymentUtils.getNonce());
+			}else {
+				request.paymentMethodNonce(paymentUtils.getNonce());
+			}
+				//CreditCard card= BraintreeUtil.findCreditCard(paymentUtils.getNonce());
+			
+					
+			request.amount(new BigDecimal(paymentUtils.getAmount())).options()
 					.submitForSettlement(true).done();
 		        	Result<Transaction> result = gateway.transaction().sale(request);
 			
@@ -289,7 +309,12 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	
 	@Override
 	public String addCard(PaymentUtils paymentUtils) {
-		return paymentCard.saveCadeDetails(paymentUtils);
+		return paymentCard.saveCadeDetails(paymentUtils,null);
+	}
+	
+	@Override
+	public String addCard(PaymentUtils paymentUtils, RootMDB root) {
+		return paymentCard.saveCadeDetails(paymentUtils,root);
 	}
 	
 	@Override
@@ -299,7 +324,7 @@ public PaymentResponseUtils transaction(ManualPaymentUtils paymentUtils) {
 	
 	@Override
 	public String removeCard(PaymentUtils paymentUtils) {
-		return paymentCard.removeCardDetails(paymentUtils);
+		return paymentCard.removeCardDetails(paymentUtils.getNonce());
 	}
 	@Override
 	public String removeACH(PaymentACHUtils paymentUtils) {

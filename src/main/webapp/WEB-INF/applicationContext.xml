@@ -67,6 +67,7 @@
 		<property name="gateway" ref="braintreeGateway"></property>
 		<property name="paymentCard" ref="paymentCardDao"></property>
 	</bean>
+	
  	<bean name="ledgerService" class="com.olsa.services.LedgerServiceImpl">
 		<property name="ledgerDao1" ref="ledgerDao"></property>
 	</bean>
@@ -105,12 +106,7 @@
 		
 	</bean>
 	
-	<bean name="sqlUtility" class="com.olsa.utility" scope="prototype">
-		<property name="SQLTemplate">
-			<ref bean="sqlTemplate"/>
-		</property>
 	
-	</bean>
 
 	<bean name="ishtService" class="com.olsa.services.IshtServiceImpl" scope="prototype">
 		<property name="MongoBaseDao">
@@ -150,7 +146,7 @@
 	<bean name="ishtMDBDao" parent="mongoBaseDao" class="com.olsa.bo.IshtMDBDao" scope="prototype" />
 	<bean name="ritvikMDBDao" parent="mongoBaseDao" class="com.olsa.bo.RitvikMDBDao" scope="prototype" />
 		
-	<bean name="user" class="com.olsa.pojo" scope="prototype"/>
+	<bean name="user" class="com.olsa.pojo.User" scope="prototype"/>
 
 	<bean name="contextApplicationContextProvider" class="com.olsa.utility.ApplicationContextProvider" />
 	

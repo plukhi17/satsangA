@@ -12,7 +12,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
-import com.olsa.pojo.IshtMDB;
+import com.olsa.pojo.RootMDB;
 import com.olsa.services.PaymentService;
 import com.olsa.utility.ACHDetailsDTO;
 import com.olsa.utility.CardDetailsDTO;
@@ -66,6 +66,15 @@ public class CheckoutAction extends BaseAction {
 		String token = paymentServic.transactionGetToken();
 		writer.append(token);
 	}
+	public void getClientNonce() throws IOException {
+		logger.info("Enter in  getClientNonce() CheckoutAction class");
+		PrintWriter writer = getResponse().getWriter();
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap map=mapper.readValue(getRequest().getReader().readLine(),HashMap.class);
+		String token = paymentServic.transactionGetToken(map.get("familyCode").toString());
+	
+		writer.append(token);
+	}
 	
 	public void achTransactions() throws IOException {
 		logger.info("Enter in  transaction() CheckoutAction class");
@@ -115,7 +124,9 @@ public class CheckoutAction extends BaseAction {
 		ObjectMapper mapper = new ObjectMapper();
 		PaymentUtils paymentUtils = mapper.readValue(getRequest().getReader().readLine(), PaymentUtils.class);
 		Map<String,String> response=new HashMap<String,String>();
-		response.put("responseMsg", paymentServic.addCard(paymentUtils));
+		RootMDB rootMdb = (com.olsa.pojo.RootMDB) getRequest().getSession().getAttribute("userBean");
+		
+		response.put("responseMsg", paymentServic.addCard(paymentUtils,rootMdb));
 		writer.append(mapper.writeValueAsString(response));
 	}
 	public void removeCard() throws JsonParseException, JsonMappingException, IOException {

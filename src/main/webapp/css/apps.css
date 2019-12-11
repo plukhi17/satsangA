@@ -10,6 +10,9 @@
  .paymentForm {
 	display: none;
 }
+ .paymentStoredForm {
+	display: none;
+}
 /*
 .cardDdetailsPage{
 	display: none;
@@ -123,7 +126,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     border: none;
     color: #3e7fe8;
-    /* z-index: 9; */
+     z-index: 99; 
     position: absolute;
     top: -22px;
     left: -5px;

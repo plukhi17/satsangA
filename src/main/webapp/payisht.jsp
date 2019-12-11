@@ -62,6 +62,8 @@
 
 <!-- Latest compiled and minified Locales -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.2/locale/bootstrap-table-zh-CN.min.js"></script>
+ <script src="https://js.braintreegateway.com/web/3.55.0/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.55.0/js/hosted-fields.min.js"></script>
 </head>
 <%
 
@@ -776,6 +778,9 @@ response.setDateHeader ("Expires", 0);
        					</a>
 					</div>
 					<div class="panel-body">
+					<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
+										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
+									</div>
 						<div class="paymentFormBody" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
 							<div class="col-xs-12 col-sm-2 col-md-2" >
 							</div>
@@ -786,27 +791,36 @@ response.setDateHeader ("Expires", 0);
 											<div class="form-group  has-feedback">
 											    <label class="cardinfo-label" for="card-number">Card
 													Number(no space or dashes)</label>
-											    <input type="text" id="cardNumber" ng-model="cardNumberText" onkeypress='return cardNumberFun(event)' class="form-control input-lg" placeholder="Card number">
-											      <span style=" font-size: 25px;" class="	fa fa-credit-card form-control-feedback"></span>
+											 <!--    <input type="text" id="cardNumber" ng-model="cardNumberText" onkeypress='return cardNumberFun(event)' class="form-control input-lg" placeholder="Card number">
+											      <span style=" font-size: 25px;" class="	fa fa-credit-card form-control-feedback"></span> -->
+									            <div id="card-number" class='input-wrapper' ></div>
+									             <div id="card-image"></div>
 										   </div>
 										</div>
 										<div  style="margin-top: 5px;">
 											<div class="row">
 												<div class="col-xs-12 col-sm-6 col-md-6">
-													<div class="cardinfo-exp-date">
-															<label class="cardinfo-label" for="expiration-date">Expiration</label>
-															<div id="expiration-date">
+												
+													<div class="cardinfo-wrapper">
+     													 <div class="cardinfo-exp-date">
+															<label class="cardinfo-label" for="expiration-date">Valid Thru</label>
+														<!-- 	<div id="expiration-date">
 																<input type="text" ng-model="expirationDateText" id="expirationDateId" class="form-control input" onkeyup="return expirationDateKeyUp(event)" onkeypress='return expirationDateFun(event)' placeholder="10 / 2018">
-															</div>
+															</div> -->
+															 <div id="expiration-date" class='input-wrapper' ></div>
+														 </div>
+															
 													</div>
 												</div>
 												<div class="col-xs-12 col-sm-6 col-md-6">
 													<div class="cardinfo-cvv" >
 														<label class="cardinfo-label" for="cvv">CVV</label>
-														<div id="cvv">
+														<!-- <div id="cvv">
 														<input type="text" id="cvvNum" ng-model="cvvText" class="form-control input" onkeypress='return cvvFun(event)'
 																placeholder="123" >
-														</div>
+														</div> -->
+														      <div id="cvv" class='input-wrapper' ></div>
+														 
 													</div>
 												</div>
 											</div>
@@ -815,13 +829,11 @@ response.setDateHeader ("Expires", 0);
 												<input id="payNowButton"  ng-click="paymentFun()"  onclick="return paymentIstarghya()" type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
 										</div>
 										<div style="margin-top: 10px">
-												<button class="btn btn-info btn-md" ng-click="addCard()"><i class="fa fa-plus"></i>&nbsp; Add Card</button>
+												<button class="btn btn-info btn-md"  id="addCardBtn" disabled><i class="fa fa-plus"></i>&nbsp; Add Card</button>
 												<!-- <button class="btn btn-info btn-md" ng-click="viewCard()"><i class="fa fa-eye"></i>&nbsp;View Card</button>		 -->								
 										</div>
 									</form>
-									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
-										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
-									</div>
+									
 								</div>
 							</div>
 							
@@ -868,6 +880,139 @@ response.setDateHeader ("Expires", 0);
 	</div>
 <!-- paymentForm Card  END -->
 
+
+<!-- Payment with stored card start  -->
+
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main paymentStoredForm">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="index.jsp"> <svg class="glyph stroked home">
+                            <use xlink:href="#stroked-home"></use>
+                        </svg>
+				</a></li>
+				<li class="active">ISTARGHYA PAYMENT FORM</li>
+			</ol>
+		</div>
+		<div class="row">
+			<div id="dvErrAlert" class="alert alert-danger" style="display: none">
+				<a class="close" href="#">�</a>
+				<p>
+			</div>
+			<div class="col-md-12">
+				<input type="hidden" id="phoneNo" value=<%= root.getPhoneNo()%>
+					name="phoneNo" placeholder="your phone no"><br> <input
+					id="txtApplicationFlow" name="txtApplicationFlow" type="hidden"
+					value=<%= applciationFlow %>> <br>
+				<div class="panel panel-default">
+					<div class="panel-heading" id="accordion">
+					<i class="fa fa-arrow-circle-left cursror-pointer back-wrap" onclick="goBackToCardDetails()"   title="Back"></i> 
+					ISTARGHYA PAYMENT METHOD
+					<!-- 	<button class="backButtonPayment" class="btn" onclick="goBackToCardDetails()" title="Back"><i class="fa fa-arrow-circle-left"></i> </button> -->
+					
+						<a  class="pull-right" href="#" title="Refresh">
+             				<i style="font-size:20x;" class="fa fa-refresh" onClick="window.location.reload()"></i>
+       					</a>
+					</div>
+					<div class="panel-body">
+					<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
+										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
+									</div>
+						<div class="paymentFormBody" id="paymentFormBodyId" class="col-xs-12 col-sm-12 col-md-12">
+							<div class="col-xs-12 col-sm-2 col-md-2" >
+							</div>
+							<div class="col-xs-10 col-sm-4 col-md-4" >
+								<div class="row" style="margin: 10px;">
+									<form id="paymentStoredForm" class="scale-down">
+										<div class="cardinfo-card-number">
+											<div class="form-group  has-feedback">
+											    <label class="cardinfo-label" for="card-number">Card
+													Number(no space or dashes)</label>
+											   <input type="text" disabled id="cardNumber" ng-model="cardNumberText" onkeypress='return cardNumberFun(event)' class="form-control input-lg" placeholder="Card number">
+											      <span style=" font-size: 25px;" class="	fa fa-credit-card form-control-feedback"></span>									           
+										   </div>
+										</div>
+										<div  style="margin-top: 5px;">
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-6">
+												
+													<div class="cardinfo-wrapper">
+     													 <div class="cardinfo-exp-date">
+															<label class="cardinfo-label" for="expiration-date">Valid Thru</label>
+															<div id="expiration-date">
+																<input type="text" disabled ng-model="expirationDateText" id="expirationDateId" class="form-control input" onkeyup="return expirationDateKeyUp(event)" onkeypress='return expirationDateFun(event)' placeholder="10 / 2018">
+															</div>
+															
+														 </div>
+															
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-6">
+													<div class="cardinfo-cvv" >
+														<label class="cardinfo-label" for="cvv">CVV</label>
+														<div id="cvv">
+														<input type="text" id="cvvNum" ng-model="cvvText" class="form-control input" onkeypress='return cvvFun(event)'
+																placeholder="123" >
+														</div> 
+														     
+														 
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="div-btn-paynow" style="margin-top: 18px;">
+												<input id="payNowStroedBtn"  ng-click="paymentSavedCard()"   type="submit" value="Pay Now" class="btn btn-success  btn-block payNowButtonCls">
+										</div>
+										
+									</form>
+									
+								</div>
+							</div>
+							
+							<div class="col-xs-12 col-sm-3 col-md-3">
+							
+								<div class="col-md-14">
+										<table id="grand_sum_table"
+											class="grand_sum_table table table-borderless">
+											<thead>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Ishtabhrity Amount</td>
+													<td  align = "right" style="border-top: none;">{{ishtAmount | number : 2}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+													<td  align = "right" style="border-top: none;">Processing Fee</td>
+													<td  align = "right" style="border-top: none;">{{processIng | number : 2}}</td>
+													</tr>
+													<tr ng-show="selPmtMethod == 'AUTO'">
+														<td  align = "right" style="">Grand Total : US $ </td>
+														<td  align = "right" style=""> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2}}</label></td>
+															
+													</tr>
+													
+													<tr ng-show="selPmtMethod == 'MANUAL'">
+														<td  align = "right" style="border-top: none;">Grand Total : US $ </td>
+														<td  align = "right" style="border-top: none;"> <label id="GTotal" value="grandTotal">{{grandTotal | number : 2 }}</label></td>
+															
+													</tr>
+											</thead>
+										</table>
+									</div>
+							</div>
+							
+							<div class="col-xs-12 col-sm-2 col-md-2" >
+								<div class="col-xs-12 col-sm-12 col-md-12" id="paymentStoredCard" style="font-size: 16px;">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!-- Payment with stored card end  -->
 
 <!-- ACH details  Start -->
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main achForm">
@@ -1181,7 +1326,7 @@ response.setDateHeader ("Expires", 0);
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-4 col-md-4" >
-								<div class="col-xs-12 col-sm-12 col-md-12" id="paymentResponse" style="font-size: 16px;">
+								<div class="col-xs-12 col-sm-12 col-md-12" id="removeCardRes" style="font-size: 16px;">
 									{{removeCardRes}}
 								</div>
 							</div>
@@ -1227,9 +1372,7 @@ response.setDateHeader ("Expires", 0);
 											</div>
 									</form>
 									
-									<div id="spinerId" class="spinerClass" ng-style="myObj"  ng-show="spinerFlag" >
-										<i class="fa fa-spinner fa-spin" style="font-size:98px;" ></i>
-									</div>
+								
 								</div>
 							</div>
 								

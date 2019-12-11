@@ -23,7 +23,7 @@ import com.olsa.pojo.RitvikMDB;
 import com.olsa.pojo.RootMDB;
 import com.olsa.services.RitvikService;
 import com.olsa.services.UserService;
-import com.olsa.utility.BraintreeUtility;
+import com.olsa.utility.BraintreeUtil;
 import com.olsa.utility.ForgotPasswordResponse;
 import com.olsa.utility.OTPResponse;
 import com.olsa.utility.OnlineSAConstants;
@@ -95,7 +95,7 @@ public class UserProfileAction extends BaseAction {
 				logger.info("inside sucess");
 				RootMDB root = (RootMDB) resultObject.getObject1();
 				
-				Result<Customer> result =BraintreeUtility.createCustomer(root);
+				Result<Customer> result =BraintreeUtil.createCustomer(root);
 				
 				JSONObject obj = new JSONObject(primaryUserDetails);
 				logger.info(obj);

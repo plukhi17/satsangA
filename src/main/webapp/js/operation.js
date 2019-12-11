@@ -1,12 +1,18 @@
 function goBack() {
 	$('.paymentForm').hide();
 	$('.cardDdetailsPage').hide();
+	$('.paymentStoredForm').hide();
 	$('.payReviewForm').show();
+
 }
 
 function addCardForm(){
+
 	$('.paymentForm').show();
+	$('.paymentForm').find('input:text').val('');
 	$('.cardDdetailsPage').hide();
+	removePNode();
+	
 }
 
 function addACHForm(){
@@ -16,18 +22,24 @@ function addACHForm(){
 function goBackFrmACH() {
 	$('.cardDdetailsPage').show();
 
-//	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
-//    scope.$apply(function () {
-//	    scope.viewACH();
-//	});
+	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+    scope.$apply(function () {
+
+	    scope.viewCard();
+	    
+    });
 	$('.achForm').hide();
 }
 function goBackToCardDetails(){
 	$('.cardDdetailsPage').show();
-//	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
-//    scope.$apply(function () {
-//	    scope.viewACH();
-//	});
+	
+	var scope = angular.element('[ng-controller=ishtCtrl]').scope();
+    scope.$apply(function () {
+    	scope.from="paymentForm";
+    	scope.viewCard();
+	    
+    });
+    $('.paymentStoredForm').hide();
 	$('.paymentForm').hide();
 	
 }
@@ -676,7 +688,7 @@ function cardNameChacking(num) {
 				{StateName:"Virgin Islands",StateCode:"VI" }
 			];
 		 	$scope.ishtTooltips=[];
-		 	
+		
 		 	$scope.loadIshtProp = function() {
 			
 				var contextPath = "loadIshtProp.do";
@@ -745,17 +757,9 @@ function cardNameChacking(num) {
 									$scope.processIng=0.0;
 									$scope.grandTotal=0.0;
 									
-									$scope.payByCardScope = function(myCard){
+								
 									
-										$scope.cardNumberText=myCard.cardNumber;
-										$scope.expirationDateText=myCard.expirationDate,
-										$scope.cvvText="";
-										//$scope.cvvText=myCard.cvv;
-										//$scope.paymentFun(); 
-										
-										addCardForm();
-										
-									}
+									
 									$scope.payByACHScope = function(myACH){
 										$scope.achName=myACH.accName;
 										$scope.bankRoutingNo=myACH.routingNo,
@@ -858,34 +862,8 @@ function cardNameChacking(num) {
 										 });
 							    	  };
 
-								$scope.paymentFun=function(){
-									removePNode();
-									var res;
-									
-										res=paymentIstarghya();
-										if(res!=undefined &&  res.toString()=='false'){
-											alert("Fill this required field.");
-											return;
-										}
-									
-										$scope.spinerFlag=true;
-										var contextPath = "transactions.do";
-										$http({
-											 method : "POST",
-											 url : contextPath,
-											 data:{
-												 "amount":document.getElementById("GTotal").value,
-												 "familyCode":document.getElementById("familyCode").value,
-												 "contact":document.getElementById("contact").value,
-												 "cardNumber":$scope.cardNumberText,
-												 "expirationDate":$scope.expirationDateText,
-												 "cvv":$scope.cvvText
-												 
-											 },
-											 headers: {'Content-Type': 'application/json'}
-											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-										 }).then(function mySucces(data) {
-											 $scope.spinerFlag=false;
+								$scope.paymentSuccess=function(data){
+										 $scope.spinerFlag=false;
 											  $scope.json = angular.toJson(data.data);
 											  var obj = JSON.parse($scope.json);
 											  //TODO: PARTH : Added ! below for testing else code block
@@ -927,6 +905,83 @@ function cardNameChacking(num) {
 											  		$scope.stTrnNo=obj.trasactionId;
 											  		$scope.dtChqDate=new Date(obj.transactionDate);
 											  	  $scope.ishtPay();
+										
+										  		//$scope.afterTransactionSuccess(obj.trasactionId);
+										  		 
+										  		sessionStorage.setItem("transactionId", obj.trasactionId);
+										  		sessionStorage.setItem("GradTotalAmount", document.getElementById("GTotal").value);
+										  		//alert(sessionStorage.getItem("transactionId"));
+										  
+										  		delete $scope.selectedCard;
+										  		//window.location = 'ishtpayconfirm.jsp';
+											  	}
+											  $scope.spinerFlag=false;
+										
+									
+								};
+								$scope.paymentSavedCard= function(){
+									var res=paymentIstarghya();
+									if(res!=undefined &&  res.toString()=='false'){
+										alert("Fill this required field.");
+										return;
+									}else{
+										$scope.spinerFlag=true;
+										var contextPath = "transactions.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "amount":document.getElementById("GTotal").value,
+												 "familyCode":document.getElementById("familyCode").value,
+												 "cvv":$scope.cvvText,
+												 "nonce":$scope.cToken,
+												 
+											 },
+											 headers: {'Content-Type': 'application/json'}
+											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+										 }).then(function mySucces(data) {
+											 
+											  $scope.json = angular.toJson(data.data);
+											  var obj = JSON.parse($scope.json);
+											  //TODO: PARTH : Added ! below for testing else code block
+											  
+											  	if(obj.status.toString()=="false"){
+											  		var node = document.createElement("P");
+											  		var failedTxt = document.createTextNode("Failed transaction");
+										  			node.appendChild(failedTxt); 
+											 
+											  		if(obj.errorValidations!=null){
+										  				for(var i=0;i<obj.errorValidations.length;i++){
+												  		    var textnode = document.createTextNode(", "+obj.errorValidations[i].error);
+												  		    node.appendChild(textnode);
+												  			node.style.color = "red";
+												  			node.style.margin="5px";
+												  		    document.getElementById("paymentStoredCard").appendChild(node);
+												  		 
+												  		  
+												  		}
+										  			}
+											  		if(obj.resMessage!=null){
+										  			    var textnode = document.createTextNode(", "+obj.resMessage);
+											  		    node.appendChild(textnode);
+											  			node.style.color = "red";
+														node.style.margin="5px";
+											  		    document.getElementById("paymentStoredCard").appendChild(node);
+										  			}
+											  	}else{
+											  		/* var node = document.createElement("P");
+											  		var seccussTxt = document.createTextNode("Transaction ");
+										  		    var textnode = document.createTextNode("succussfully, Id: "+obj.trasactionId);
+										  			
+										  		    node.appendChild(seccussTxt); 
+										  		 	node.appendChild(textnode);
+										  		  
+										  			node.style.color = "green";
+										  			node.style.margin="22px";
+										  		    document.getElementById("paymentResponse").appendChild(node); */
+											  		$scope.stTrnNo=obj.trasactionId;
+											  		$scope.dtChqDate=new Date(obj.transactionDate);
+											  	  $scope.ishtPay();
 										  		  $scope.spinerFlag=false;
 										  		//$scope.afterTransactionSuccess(obj.trasactionId);
 										  		 
@@ -945,9 +1000,14 @@ function cardNameChacking(num) {
 										 });
 									
 									
+										
+									}
 									
+								
+							
 								};
 								
+							
 								$scope.paymentAchFun=function(){
 									removeACHNode();
 									var res;
@@ -1109,22 +1169,8 @@ function cardNameChacking(num) {
 								
 								
 								
-								function removePNode(){
-									var length = document.getElementById("paymentResponse").childElementCount;
-									var childNodeEle = document.getElementById("paymentResponse");   
-									for(var i=0; i<length;i++){
-										childNodeEle.removeChild(childNodeEle.childNodes[i]);
-									}
-								}
 								
-								function removeACHNode(){
-									var length = document.getElementById("achADDResponse").childElementCount;
-									var childNodeEle = document.getElementById("achADDResponse");   
-									for(var i=0; i<length;i++){
-										childNodeEle.removeChild(childNodeEle.childNodes[i]);
-									}
-								}
-								
+								//AddACH
 								$scope.addACH=function(){
 									removeACHNode();
 									var res=paymentACHValidation();
@@ -1159,14 +1205,199 @@ function cardNameChacking(num) {
 											 alert("ACH details save failed");
 										 });
 									}//else
-								}//addCard
+								}//addACH
 								
+								$scope.generateHostedField=function generateHostedFieldunction(){
+									removePNode();
+									var form = document.querySelector('#paymentForm');
+								      var submit = document.querySelector('#addCardBtn'); 
+								      var payNowButton = document.querySelector('#payNowButton'); 
+								      var contextPath = "getClientToken.do";
+										$http({
+											 method : "POST",
+											 url : contextPath,
+											 data:{
+												 "familyId":document.getElementById("familyCode").value,
+											 },
+											 headers: {'Content-Type': 'application/json'}
+										}).then(function mySucces(data) {
+										
+											$scope.token=data.data;
+											console.log('Token is '+$scope.token);
+											
+											braintree.client.create({
+										        authorization: $scope.token
+										      }, function (clientErr, clientInstance) {
+										        if (clientErr) {
+										          console.error(clientErr);
+										          return;
+										        }
+
+										        // This example shows Hosted Fiesubmitlds, but you can also use this
+										        // client instance to create additional components here, such as
+										        // PayPal or Data Collector.
+
+										        braintree.hostedFields.create({
+										          client: clientInstance,
+										          styles: {
+										        	  'input': {
+										        	        'color': '#282c37',
+										        	        'font-size': '16px',
+										        	        'transition': 'color 0.1s',
+										        	        'line-height': '3'
+										        	      },
+										            'input.invalid': {
+										            	 'color': '#E53A40'
+										            },
+										            'input.valid': {
+										              'color': 'green'
+										            },
+										         // placeholder styles need to be individually adjusted
+										            '::-webkit-input-placeholder': {
+										              'color': 'rgba(0,0,0,0.6)'
+										            },
+										            ':-moz-placeholder': {
+										              'color': 'rgba(0,0,0,0.6)'
+										            },
+										            '::-moz-placeholder': {
+										              'color': 'rgba(0,0,0,0.6)'
+										            },
+										            ':-ms-input-placeholder': {
+										              'color': 'rgba(0,0,0,0.6)'
+										            }
+										          },
+										          fields: {
+										            number: {
+										              selector: '#card-number',
+										              placeholder: '4111 1111 1111 1111'
+										            },
+										            cvv: {
+										              selector: '#cvv',
+										              placeholder: '123'
+										            },
+										            expirationDate: {
+										              selector: '#expiration-date',
+										              placeholder: '10/2019'
+										            }
+										          }
+										        }, function (hostedFieldsErr, hostedFieldsInstance) {
+										          if (hostedFieldsErr) {
+										            console.error(hostedFieldsErr);
+										            return;
+										          }
+										          hostedFieldsInstance.on('validityChange', function (event) {
+										              // Check if all fields are valid, then show submit button
+										              var formValid = Object.keys(event.fields).every(function (key) {
+										                return event.fields[key].isValid;
+										            });
+									              if (formValid) {
+									                  $('#payNowButton').addClass('show-button');
+									                  submit.disabled=false;
+									                } else {
+									                  $('#payNowButton').removeClass('show-button');
+									                }
+									          
+
+									              });
+
+										          hostedFieldsInstance.on('cardTypeChange', function (event) {
+										              // Change card bg depending on card type
+										              if (event.cards.length === 1) {
+										                $(form).removeClass().addClass(event.cards[0].type);
+										                $('#card-image').removeClass().addClass(event.cards[0].type);
+										                $('header').addClass('header-slide');
+										                
+										                // Change the CVV length for AmericanExpress cards
+										                if (event.cards[0].code.size === 4) {
+										                  hostedFieldsInstance.setAttribute({
+										                    field: 'cvv',
+										                    attribute: 'placeholder',
+										                    value: '1234'
+										                  });
+										                } 
+										              } else {
+										                hostedFieldsInstance.setAttribute({
+										                  field: 'cvv',
+										                  attribute: 'placeholder',
+										                  value: '123'
+										                });
+										              }
+										            });
+										          submit.addEventListener('click', function (event) {
+										            event.preventDefault();
+
+										            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+										              if (tokenizeErr) {
+										                console.error(tokenizeErr);
+										                return;
+										              }
+
+										              // If this was a real integration, this is where you would
+										              // send the nonce to your server.
+										             // console.log('Got a nonce: ' + payload.nonce);
+										              $scope.addCardNonce=payload.nonce;
+										              $scope.addCard();
+										              
+										            });
+										          }, false);
+										          
+										          payNowButton.addEventListener('click', function (event) {
+											            event.preventDefault();
+
+											            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+											              if (tokenizeErr) {
+											                console.error(tokenizeErr);
+											                return;
+											              }
+
+											              // If this was a real integration, this is where you would
+											              // send the nonce to your server.
+											             // console.log('Got a nonce: ' + payload.nonce);
+											              $scope.payNonce=payload.nonce;
+											              var contextPath = "transactions.do";
+															$http({
+																 method : "POST",
+																 url : contextPath,
+																 data:{
+																	 "amount":document.getElementById("GTotal").value,
+																	 "nonce":$scope.payNonce,
+																 },
+																 headers: {'Content-Type': 'application/json'}
+															 }).then(function mySucces(data)  {
+													              // Tear down the Hosted Fields form
+															
+													            $scope.paymentSuccess(data);
+															 },function myError(d) {
+																 console.log("Error:    "+d);
+																 alert("Credit card pay");
+															 });
+										           
+											              
+											            });
+											          }, false);
+										        });
+										      });	
+											
+										
+										},function myError(d) {
+											 console.log("Error:    "+d);
+											 alert("fail");
+											 $scope.spinerFlag=false;
+										 });
+										
+									
+									
+								}
+								
+								 $scope.generateHostedField();
 								$scope.addCard=function(){
 									removePNode();
-									var res=paymentIstarghya();
-									if(res.toString()=='false'){
+									//var res=paymentIstarghya();
+									if(false){
 										alert("Fill this required field.");
 									}else{
+										//var nonce=$scope.generateNonce();
+										
 										var contextPath = "addcards.do";
 										$http({
 											 method : "POST",
@@ -1176,6 +1407,7 @@ function cardNameChacking(num) {
 												 "contact":document.getElementById("contact").value,
 												 "cardNumber":$scope.cardNumberText,
 												 "expirationDate":$scope.expirationDateText,
+												 "nonce":$scope.addCardNonce,
 												 
 											 },
 											 headers: {'Content-Type': 'application/json'}
@@ -1188,7 +1420,7 @@ function cardNameChacking(num) {
 									  			node.style.color = "green";
 									  			node.style.margin="20px";
 									  		    document.getElementById("paymentResponse").appendChild(node);
-											  
+									  		    document.querySelector('#addCardBtn').disabled=true;
 										 },function myError(d) {
 											 console.log("Error:    "+d);
 										 });
@@ -1228,11 +1460,13 @@ function cardNameChacking(num) {
 
 									var contextPath = "removeCard.do";
 									$scope.removedCard=myCard;
+									//alert(document.getElementById("familyCode").value);
 									$http({
 										 method : "POST",
 										 url : contextPath,
 										 data:{
-											"cardNumber":myCard.cardNumber,
+											"familyCode":document.getElementById("familyCode").value,
+											 "nonce":myCard.cToken,
 										},
 										 headers: {'Content-Type': 'application/json'}
 									 }).then(function mySucces(data) {
@@ -1240,13 +1474,13 @@ function cardNameChacking(num) {
 										  var obj = JSON.parse($scope.json);
 										  var node = document.createElement("P");
 										  $scope.removeCardRes=obj.responseMsg;
-										  $scope.removeByAttr($scope.cardList,'cardNumber', $scope.removedCard.cardNumber);
+										  $scope.removeByAttr($scope.cardList,'cToken', $scope.removedCard.cToken);
 										  $scope.populateCard($scope.cardList);
 								  		   var textnode = document.createTextNode(obj.responseMsg);
 								  		    node.appendChild(textnode);
 								  			node.style.color = "green";
 								  			node.style.margin="20px";
-								  		    document.getElementById("paymentResponse").appendChild(node);
+								  		   // document.getElementById("removeCardRes").appendChild(node);
 										  
 									 },function myError(d) {
 										 console.log("Error:    "+d);
@@ -1307,7 +1541,7 @@ function cardNameChacking(num) {
 											 method : "POST",
 											 url : contextPath,
 											 data:{
-												 "contact":document.getElementById("contact").value,
+												 "contact":document.getElementById("familyCode").value,
 											 },
 											 headers: {'Content-Type': 'application/json'}
 											 //headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -1319,12 +1553,27 @@ function cardNameChacking(num) {
 											 
 											  //$compile($('#cardDetailsTBody'))($scope);
 											$('.paymentForm').hide();
+											removePNode();
 											if(obj.length>0){
 												$('.cardDdetailsPage').show();
 												$scope.viewACH();
+												$('.payReviewForm').hide();
 											}else{
-												$('.paymentForm').show();
+												//$scope.generateHostedField();
+												if($scope.from=="paymentForm"){
+													$('.cardDdetailsPage').hide();
+													$('.payReviewForm').show();
+													
+												}else{
+													$('.cardDdetailsPage').hide();
+													$('.paymentForm').show()
+													$('.payReviewForm').hide();
+													
+												}
+											
+											
 											}
+											delete $scope.from;
 											
 										 },function myError(d) {
 											 console.log("Error:    "+d);
@@ -1337,16 +1586,17 @@ function cardNameChacking(num) {
 									  var call = null;
 									  for(var i=0;i<obj.length;i++){
 										 var cardJson= JSON.stringify(obj[i]);
-										  var cardType= creditCardTypeFromNumber(obj[i].cardNumber);
+										  //var cardType= creditCardTypeFromNumber(obj[i].cardType);
+										 var cardType= obj[i].cardType;
 										  var imageName='images/'+cardType.toLowerCase()+'.jpg';
-										  var cardDescription= cardType +' ending in '+obj[i].cardNumber.substr(obj[i].cardNumber.length - 4); 
+										  var cardDescription= cardType +' ending in '+obj[i].cardNumber; 
 										  call=
 											
 											'<td scope="row"><img  src="'+imageName+'" class="card-img">'+cardDescription +'</td>'+
 											'<td scope="row">'+obj[i].expirationDate +'</td>'+
 //											"<td scope='row'>"+obj[i].cvv +"</td>"+
-											'<td scope="row"><a class="link-text" id="'+obj[i].cardNumber+'" onClick="payByCard(this)">Pay</a></td>'+
-											'<td scope="row"><a class="link-text"  id="'+obj[i].cardNumber+'-r"   onClick="removeCard(this)">Remove</a></td>';
+											'<td scope="row"><a class="link-text" id="'+obj[i].cToken+'" onClick="payByCard(this)">Pay</a></td>'+
+											'<td scope="row"><a class="link-text"  id="'+obj[i].cToken+'-r"   onClick="removeCard(this)">Remove</a></td>';
 											
 										  $('#cardDetailsTBody').append('<tr >' + call + '</tr>');
 										 
@@ -1409,7 +1659,17 @@ function cardNameChacking(num) {
 									$scope.ishtAmount=0.0;
 								}
 								
-
+								$scope.payByCardScope = function(myCard){
+									
+									$scope.cardNumberText="Ending with " + myCard.cardNumber;
+									$scope.expirationDateText=myCard.expirationDate,
+									$scope.cvvText="";
+									$scope.cToken=myCard.cToken;
+									$('.paymentStoredForm').show();
+									$('.cardDdetailsPage').hide();
+									
+									
+								};
 						
 								
 								
@@ -1427,11 +1687,39 @@ function cardNameChacking(num) {
 
 									if(paymenType=='AUTO'){
 										//$('.paymentForm').show();
-										$('.payReviewForm').hide();
+										
 										$scope.viewCard();
 										}
 									
 								}
+								
+								
+								//generate nonce
+								$scope.generateClientToken=function(){
+									var contextPath = "getClientToken.do";
+									$http({
+										 method : "POST",
+										 url : contextPath,
+										 data:{
+											 "familyId":document.getElementById("familyCode").value,
+										 },
+										 headers: {'Content-Type': 'application/json'}
+									}).then(function mySucces(data) {
+									
+										$scope.token=data.data;
+										console.log('Token is '+$scope.token);
+										$scope.token=data.data;
+									
+										
+									
+									},function myError(d) {
+										 console.log("Error:    "+d);
+										 alert("fail");
+										 $scope.spinerFlag=false;
+									 });
+									return $scope.token;
+								}//generate nonce
+								
 								$(document)
 										.ready(
 												
@@ -1824,26 +2112,28 @@ function checkDate() {
 
 function creditCardTypeFromNumber(num) {
 	   // first, sanitize the number by removing all non-digit characters.
-		if(num!=null){
+//		if(num!=null){
+//	
+//			   num = num.replace(/[^\d]/g,'');
+//			   // now test the number against some regexes to figure out the card type.
+//			   if (num.match(/^5[1-5]\d{14}$/)) {
+//			     return 'MasterCard';
+//			   } else if (num.match(/^4\d{15}/) || num.match(/^4\d{12}/)) {
+//			     return 'Visa';
+//			   } else if (num.match(/^3[47]\d{13}/)) {
+//			     return 'AmEx';
+//			   } else if (num.match(/^6011\d{12}/)) {
+//			     return 'Discover';
+//			   }else if (num.match(/^3[47][0-9]{13}/))  {
+//				     return 'American';
+//			   }else if (num.match(/^3(?:0[0-5]|[68][0-9])[0-9]{11}/)){
+//				     return 'Diners';
+//			   }else if (num.match(/^(?:2131|1800|35\d{3})\d{11}/))  {
+//				     return 'JCB';
+//			   }
+//		}
 	
-			   num = num.replace(/[^\d]/g,'');
-			   // now test the number against some regexes to figure out the card type.
-			   if (num.match(/^5[1-5]\d{14}$/)) {
-			     return 'MasterCard';
-			   } else if (num.match(/^4\d{15}/) || num.match(/^4\d{12}/)) {
-			     return 'Visa';
-			   } else if (num.match(/^3[47]\d{13}/)) {
-			     return 'AmEx';
-			   } else if (num.match(/^6011\d{12}/)) {
-			     return 'Discover';
-			   }else if (num.match(/^3[47][0-9]{13}/))  {
-				     return 'American';
-			   }else if (num.match(/^3(?:0[0-5]|[68][0-9])[0-9]{11}/)){
-				     return 'Diners';
-			   }else if (num.match(/^(?:2131|1800|35\d{3})\d{11}/))  {
-				     return 'JCB';
-			   }
-		}
+
 	   return 'UNKNOWN';
 	 }
 
@@ -1884,6 +2174,7 @@ function removeACH(achObj){
 	    var selectedACH=searchACH(achObj.id.split("-")[0],scope.achList);
 	    scope.selectedACH=selectedACH;
 	    scope.removeACHScope(selectedACH);
+	    
     });
 }
 
@@ -1891,7 +2182,7 @@ function removeACH(achObj){
 
 function searchCardNumber(nameKey, myArray){
     for (var i=0; i < myArray.length; i++) {
-        if (myArray[i].cardNumber  === nameKey) {
+        if (myArray[i].cToken  === nameKey) {
             return myArray[i];
         }
     }
@@ -1903,4 +2194,25 @@ function searchACH(nameKey, myArray){
             return myArray[i];
         }
     }
+}
+
+function removePNode(){
+	var length = document.getElementById("paymentResponse").childElementCount;
+	var childNodeEle = document.getElementById("paymentResponse");   
+	for(var i=0; i<length;i++){
+		childNodeEle.removeChild(childNodeEle.childNodes[i]);
+	}
+	var length = document.getElementById("removeCardRes").childElementCount;
+	var childNodeEle = document.getElementById("removeCardRes");   
+	for(var i=0; i<length;i++){
+		childNodeEle.removeChild(childNodeEle.childNodes[i]);
+	}
+}
+
+function removeACHNode(){
+	var length = document.getElementById("achADDResponse").childElementCount;
+	var childNodeEle = document.getElementById("achADDResponse");   
+	for(var i=0; i<length;i++){
+		childNodeEle.removeChild(childNodeEle.childNodes[i]);
+	}
 }

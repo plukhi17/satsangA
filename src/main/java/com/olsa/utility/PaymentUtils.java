@@ -17,6 +17,8 @@ public class PaymentUtils implements Serializable{
 	private String familyCode;
 	private Date transDate;
 	private String customerId;
+	private String nonce;
+
 	
 	
 	
@@ -89,6 +91,18 @@ public class PaymentUtils implements Serializable{
 	public String toString() {
 		return "PaymentUtils [amount=" + amount + ", cardNumber=" + cardNumber + ", expirationDate=" + expirationDate
 				+ ", cvv=" + cvv + ", contact=" + contact + ", familyCode=" + familyCode + "]";
+	}
+	/**
+	 * @return the nonce
+	 */
+	public String getNonce() {
+		return nonce;
+	}
+	/**
+	 * @param nonce the nonce to set
+	 */
+	public void setNonce(String nonce) {
+		this.nonce = nonce;
 	}
 	
 	
