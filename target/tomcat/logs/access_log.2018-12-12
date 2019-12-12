@@ -1,9 +1,0 @@
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:11:50 -0800] "GET /OnlineSA/ HTTP/1.1" 200 3307 http-bio-8080-exec-1 158
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:00 -0800] "POST /OnlineSA/validateUser.do?userDetails={%22userName%22:%221234567891%22,%22password%22:%22cisco123%22} HTTP/1.1" 200 1696 http-bio-8080-exec-3 439
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:00 -0800] "GET /OnlineSA/index.jsp HTTP/1.1" 200 11371 http-bio-8080-exec-4 64
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:00 -0800] "GET /OnlineSA/css/datepicker3.css HTTP/1.1" 200 33772 http-bio-8080-exec-6 6
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:00 -0800] "GET /OnlineSA/js/easypiechart-data.js HTTP/1.1" 200 534 http-bio-8080-exec-7 20
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:00 -0800] "GET /OnlineSA/demo_test.txt HTTP/1.1" 404 995 http-bio-8080-exec-8 1
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:11 -0800] "GET /OnlineSA/payisht.jsp HTTP/1.1" 200 42198 http-bio-8080-exec-9 16
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:11 -0800] "GET /OnlineSA/css/apps.css HTTP/1.1" 200 2207 http-bio-8080-exec-9 4
-0:0:0:0:0:0:0:1 - - [12/Dec/2018:11:12:12 -0800] "POST /OnlineSA/getIshtJSONObject.do?phoneNo=1234567891&applicationFlow=portalUser HTTP/1.1" 200 952 http-bio-8080-exec-9 85
