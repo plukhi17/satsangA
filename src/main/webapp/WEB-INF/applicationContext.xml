@@ -106,7 +106,12 @@
 		
 	</bean>
 	
+	<bean name="sqlUtility" class="com.olsa.utility" scope="prototype">
+		<property name="SQLTemplate">
+			<ref bean="sqlTemplate"/>
+		</property>
 	
+	</bean>
 
 	<bean name="ishtService" class="com.olsa.services.IshtServiceImpl" scope="prototype">
 		<property name="MongoBaseDao">

@@ -35,10 +35,20 @@ public class RootMDB
     private String indfamilyCode;
     private boolean migrated;
     private boolean firstLogin;
+ 
+    private List<RootMDB> rootMdbList;
+	
+   
     
     
  
 
+public List<RootMDB> getRootMdbList() {
+	return rootMdbList;
+}
+public void setRootMdbList(List<RootMDB> rootMdbList) {
+	this.rootMdbList = rootMdbList;
+}
 	public String getIndfamilyCode() {
 		return indfamilyCode;
 	}
